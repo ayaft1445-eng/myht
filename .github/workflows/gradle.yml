@@ -58,16 +58,3 @@ jobs:
         Как поставить: скачайте файл .jar ниже и положите его в папку plugins/ вашего сервера, затем перезапустите сервер. Старый файл плагина из папки удалите.
 
         Инструкция целиком: INSTALL-RU.md в репозитории."
-
-    - name: Dump Hytale API signatures
-      if: always()
-      run: |
-        set +e
-        JAR=$(find "$HOME" -name "Server-*.jar" 2>/dev/null | head -1)
-        echo "===== можно ли открыть ссылку в браузере из UI ====="
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE "(openurl|openlink|browser|weblink|hyperlink)" | sed 's#.*/##' | sort -u
-        echo "(пусто — значит таких классов нет)"
-        echo "===== команды UI ====="
-        javap -cp "$JAR" com.hypixel.hytale.protocol.packets.interface_.CustomUICommandType
-        javap -cp "$JAR" com.hypixel.hytale.server.core.ui.builder.UICommandBuilder | head -30
-        exit 0

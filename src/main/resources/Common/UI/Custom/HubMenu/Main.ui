@@ -40,7 +40,7 @@ Group {
         LayoutMode: Left;
 
         Group {
-          Anchor: (Width: 440, Height: 470);
+          Anchor: (Width: 560, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -74,7 +74,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 300, Height: 470);
+          Anchor: (Width: 260, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -108,7 +108,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 300, Height: 470);
+          Anchor: (Width: 260, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -142,7 +142,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 300, Height: 470);
+          Anchor: (Width: 260, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }

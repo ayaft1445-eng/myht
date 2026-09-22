@@ -80,11 +80,11 @@ Group {
       Group { Anchor: (Height: 18); }
 
       Group {
-        Anchor: (Height: 420);
+        Anchor: (Height: 500);
         LayoutMode: Left;
 
         Group {
-          Anchor: (Width: 335, Height: 420);
+          Anchor: (Width: 335, Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -106,14 +106,20 @@ Group {
 
               Label {
                 Text: "ЗАХВАТ ФЛАГА";
-                Anchor: (Height: 30, Bottom: 176);
-                Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 36, Bottom: 150);
+                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
 
               Label {
-                Text: "Две команды, один флаг";
-                Anchor: (Height: 24, Bottom: 138);
-                Style: (FontSize: 15, TextColor: #d0d0d0, HorizontalAlignment: Center);
+                Text: "Две команды бьются за флаг";
+                Anchor: (Height: 26, Bottom: 112);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
+              }
+
+              Label {
+                Text: "соперника. Кто принёс — тот и выиграл.";
+                Anchor: (Height: 26, Bottom: 84);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
               }
             }
 
@@ -124,7 +130,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 335, Height: 420);
+          Anchor: (Width: 335, Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -146,14 +152,20 @@ Group {
 
               Label {
                 Text: "ВЫЖИВАНИЕ";
-                Anchor: (Height: 30, Bottom: 176);
-                Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 36, Bottom: 150);
+                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
 
               Label {
-                Text: "Волны монстров";
-                Anchor: (Height: 24, Bottom: 138);
-                Style: (FontSize: 15, TextColor: #d0d0d0, HorizontalAlignment: Center);
+                Text: "Волны монстров идут одна за другой.";
+                Anchor: (Height: 26, Bottom: 112);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
+              }
+
+              Label {
+                Text: "Продержись дольше всех и забери награду.";
+                Anchor: (Height: 26, Bottom: 84);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
               }
             }
 
@@ -164,7 +176,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 335, Height: 420);
+          Anchor: (Width: 335, Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -186,14 +198,20 @@ Group {
 
               Label {
                 Text: "ПАРКУР";
-                Anchor: (Height: 30, Bottom: 176);
-                Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 36, Bottom: 150);
+                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
 
               Label {
-                Text: "Трасса на время";
-                Anchor: (Height: 24, Bottom: 138);
-                Style: (FontSize: 15, TextColor: #d0d0d0, HorizontalAlignment: Center);
+                Text: "Трасса с препятствиями на время.";
+                Anchor: (Height: 26, Bottom: 112);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
+              }
+
+              Label {
+                Text: "Побей рекорд сервера и попади в топ.";
+                Anchor: (Height: 26, Bottom: 84);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
               }
             }
 
@@ -204,7 +222,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 335, Height: 420);
+          Anchor: (Width: 335, Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -226,14 +244,20 @@ Group {
 
               Label {
                 Text: "АРЕНА";
-                Anchor: (Height: 30, Bottom: 176);
-                Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 36, Bottom: 150);
+                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
 
               Label {
-                Text: "Бои один на один";
-                Anchor: (Height: 24, Bottom: 138);
-                Style: (FontSize: 15, TextColor: #d0d0d0, HorizontalAlignment: Center);
+                Text: "Бои один на один на закрытой арене.";
+                Anchor: (Height: 26, Bottom: 112);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
+              }
+
+              Label {
+                Text: "Победитель остаётся, проигравший ждёт.";
+                Anchor: (Height: 26, Bottom: 84);
+                Style: (FontSize: 16, TextColor: #d0d0d0, HorizontalAlignment: Center);
               }
             }
 
