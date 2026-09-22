@@ -1,22 +1,16 @@
 // Главное окно HUB: четыре кнопки-карточки.
-// Обводка сделана четырьмя белыми полосками по краям, а не белой заливкой —
-// иначе полупрозрачный чёрный смешивался бы с белым и выглядел серым.
-// Прозрачность — число в скобках у цвета: меньше значит прозрачнее.
+// Обводка — четыре белые полоски по краям (белой подложки под содержимым нет,
+// иначе полупрозрачный чёрный выглядел бы серым).
+// Ширина окна и карточек — в Anchor; прозрачность — число в скобках у цвета.
 
 @Card = TextButtonStyle(
-  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
-);
-
-@Flat = TextButtonStyle(
-  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1280, Height: 620);
+  Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
   Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -42,11 +36,11 @@ Group {
       Group { Anchor: (Height: 16); }
 
       Group {
-        Anchor: (Height: 450);
+        Anchor: (Height: 470);
         LayoutMode: Left;
 
         Group {
-          Anchor: (Width: 382, Height: 450);
+          Anchor: (Width: 440, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -68,8 +62,8 @@ Group {
 
               Label {
                 Text: "МИНИ-ИГРЫ";
-                Anchor: (Height: 36, Bottom: 20);
-                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 40, Bottom: 20);
+                Style: (FontSize: 32, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
             }
 
@@ -80,7 +74,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 266, Height: 450);
+          Anchor: (Width: 300, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -102,8 +96,8 @@ Group {
 
               Label {
                 Text: "НОВОСТИ";
-                Anchor: (Height: 32, Bottom: 20);
-                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 34, Bottom: 20);
+                Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
             }
 
@@ -114,7 +108,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 266, Height: 450);
+          Anchor: (Width: 300, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -136,8 +130,8 @@ Group {
 
               Label {
                 Text: "ПРАВИЛА";
-                Anchor: (Height: 32, Bottom: 20);
-                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 34, Bottom: 20);
+                Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
             }
 
@@ -148,7 +142,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 266, Height: 450);
+          Anchor: (Width: 300, Height: 470);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -170,8 +164,8 @@ Group {
 
               Label {
                 Text: "ДС СЕРВЕР";
-                Anchor: (Height: 32, Bottom: 20);
-                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                Anchor: (Height: 34, Bottom: 20);
+                Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
               }
             }
 
@@ -182,8 +176,7 @@ Group {
         }
       }
 
-      Group { Anchor: (Height: 16); }
-
+      Group { Anchor: (Height: 14); }
 
       Label {
         Text: "ESC — закрыть меню";

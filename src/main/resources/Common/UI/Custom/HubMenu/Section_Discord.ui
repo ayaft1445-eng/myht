@@ -1,13 +1,13 @@
-// Окно раздела «ДС сервер». Ссылку меняй в строке Text ниже.
+// Окно «ДС сервер». Ссылку меняй и здесь, и в HubMenuPage.java (строка DISCORD_LINK).
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1280, Height: 620);
+  Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
   Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -24,66 +24,12 @@ Group {
       LayoutMode: Top;
       Padding: (Full: 24);
 
-      Label {
-        Text: "ДС СЕРВЕР";
+      Group {
         Anchor: (Height: 56);
-        Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-      }
-
-      Group { Anchor: (Height: 2); Background: #ffffff; }
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        FlexWeight: 1;
-        LayoutMode: Top;
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-
-        Group {
-          FlexWeight: 1;
-          LayoutMode: Left;
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
+        LayoutMode: Left;
 
           Group {
-            FlexWeight: 1;
-            Background: #000000(0.35);
-            LayoutMode: Top;
-            Padding: (Full: 20);
-
-                Label {
-                  Text: "Заходи в наш Discord:";
-                  Anchor: (Height: 30);
-                  Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
-                }
-                Group { Anchor: (Height: 14); }
-                Label {
-                  Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
-                  Anchor: (Height: 32);
-                  Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
-                }
-                Group { Anchor: (Height: 14); }
-                Label {
-                  Text: "Скопируй ссылку и открой её в браузере.";
-                  Anchor: (Height: 22);
-                  Style: (FontSize: 14, TextColor: #9a9a9a);
-                }
-          }
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
-        }
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-      }
-
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        Anchor: (Height: 46);
-        LayoutMode: Center;
-
-          Group {
-            Anchor: (Width: 220, Height: 46);
+            Anchor: (Width: 160, Height: 44);
             LayoutMode: Top;
 
             Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -110,38 +56,110 @@ Group {
             Group { Anchor: (Height: 2); Background: #ffffff; }
           }
 
-        Group { Anchor: (Width: 16); }
-
           Group {
-            Anchor: (Width: 220, Height: 46);
-            LayoutMode: Top;
+            FlexWeight: 1;
+            LayoutMode: Center;
 
-            Group { Anchor: (Height: 2); Background: #ffffff; }
-
-            Group {
-              FlexWeight: 1;
-              LayoutMode: Left;
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #CloseButton {
-                  Text: "ЗАКРЫТЬ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
-              }
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
+            Label {
+              Text: "ДС СЕРВЕР";
+              Anchor: (Height: 48);
+              Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
             }
-
-            Group { Anchor: (Height: 2); Background: #ffffff; }
           }
+
+          Group { Anchor: (Width: 160); }
       }
 
-      Group { Anchor: (Height: 8); }
+      Group { Anchor: (Height: 2); Background: #ffffff; }
+      Group { Anchor: (Height: 18); }
+
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            Background: #000000(0.35);
+            LayoutMode: Top;
+            Padding: (Full: 24);
+
+            Group { FlexWeight: 1; }
+
+            Label {
+              Text: "Наш Discord-сервер";
+              Anchor: (Height: 34);
+              Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+            }
+
+            Group { Anchor: (Height: 12); }
+
+            Label {
+              Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
+              Anchor: (Height: 32);
+              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+            }
+
+            Group { Anchor: (Height: 20); }
+
+            Group {
+              Anchor: (Height: 48);
+              LayoutMode: Center;
+
+              Group {
+                Anchor: (Width: 300, Height: 48);
+                LayoutMode: Top;
+
+                Group { Anchor: (Height: 2); Background: #ffffff; }
+
+                Group {
+                  FlexWeight: 1;
+                  LayoutMode: Left;
+
+                  Group { Anchor: (Width: 2); Background: #ffffff; }
+
+                  Group {
+                    FlexWeight: 1;
+
+                    TextButton #DiscordButton {
+                      Text: "ПОЛУЧИТЬ ССЫЛКУ";
+                      Anchor: (Full: 0);
+                      Style: @Flat;
+                    }
+                  }
+
+                  Group { Anchor: (Width: 2); Background: #ffffff; }
+                }
+
+                Group { Anchor: (Height: 2); Background: #ffffff; }
+              }
+            }
+
+            Group { Anchor: (Height: 12); }
+
+            Label {
+              Text: "Нажми кнопку — ссылка придёт в чат, оттуда её можно скопировать.";
+              Anchor: (Height: 22);
+              Style: (FontSize: 14, TextColor: #9a9a9a, HorizontalAlignment: Center);
+            }
+
+            Group { FlexWeight: 1; }
+          }
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+        }
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+      }
+
+      Group { Anchor: (Height: 14); }
 
       Label {
         Text: "ESC — закрыть меню";

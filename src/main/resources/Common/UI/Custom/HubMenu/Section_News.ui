@@ -1,13 +1,13 @@
-// Окно раздела «Новости». Текст новостей — в строках Text.
+// Окно «Новости». Текст новостей — в строках Text ниже.
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1280, Height: 620);
+  Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
   Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -24,234 +24,12 @@ Group {
       LayoutMode: Top;
       Padding: (Full: 24);
 
-      Label {
-        Text: "НОВОСТИ";
+      Group {
         Anchor: (Height: 56);
-        Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-      }
-
-      Group { Anchor: (Height: 2); Background: #ffffff; }
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        FlexWeight: 1;
-        LayoutMode: Top;
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-
-        Group {
-          FlexWeight: 1;
-          LayoutMode: Left;
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
+        LayoutMode: Left;
 
           Group {
-            FlexWeight: 1;
-            Background: #000000(0.35);
-            LayoutMode: Top;
-            Padding: (Full: 20);
-
-                Group {
-                  Anchor: (Height: 90);
-                  LayoutMode: Left;
-
-                  Group {
-                    Anchor: (Width: 80, Height: 80);
-                    LayoutMode: Top;
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-
-                    Group {
-                      FlexWeight: 1;
-                      LayoutMode: Left;
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-
-                      Group {
-                        FlexWeight: 1;
-                        Background: #000000(0.35);
-                        LayoutMode: Center;
-
-                        Label {
-                          Text: "ИКОНКА";
-                          Anchor: (Height: 16);
-                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
-                        }
-                      }
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-                    }
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-                  }
-
-                  Group { Anchor: (Width: 16); }
-
-                  Group {
-                    FlexWeight: 1;
-                    LayoutMode: Top;
-
-                    Label {
-                      Text: "ОТКРЫТИЕ СЕРВЕРА";
-                      Anchor: (Height: 28);
-                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
-                    }
-
-                    Group { Anchor: (Height: 6); }
-
-                    Label {
-                      Text: "Мы запустились! Заходите, зовите друзей";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-
-                    Label {
-                      Text: "и пишите о багах в Discord.";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-                  }
-                }
-                Group { Anchor: (Height: 14); }
-                Group {
-                  Anchor: (Height: 90);
-                  LayoutMode: Left;
-
-                  Group {
-                    Anchor: (Width: 80, Height: 80);
-                    LayoutMode: Top;
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-
-                    Group {
-                      FlexWeight: 1;
-                      LayoutMode: Left;
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-
-                      Group {
-                        FlexWeight: 1;
-                        Background: #000000(0.35);
-                        LayoutMode: Center;
-
-                        Label {
-                          Text: "ИКОНКА";
-                          Anchor: (Height: 16);
-                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
-                        }
-                      }
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-                    }
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-                  }
-
-                  Group { Anchor: (Width: 16); }
-
-                  Group {
-                    FlexWeight: 1;
-                    LayoutMode: Top;
-
-                    Label {
-                      Text: "НОВАЯ МИНИ-ИГРА";
-                      Anchor: (Height: 28);
-                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
-                    }
-
-                    Group { Anchor: (Height: 6); }
-
-                    Label {
-                      Text: "Скоро добавим «Захват флага»:";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-
-                    Label {
-                      Text: "две команды, один флаг, много шума.";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-                  }
-                }
-                Group { Anchor: (Height: 14); }
-                Group {
-                  Anchor: (Height: 90);
-                  LayoutMode: Left;
-
-                  Group {
-                    Anchor: (Width: 80, Height: 80);
-                    LayoutMode: Top;
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-
-                    Group {
-                      FlexWeight: 1;
-                      LayoutMode: Left;
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-
-                      Group {
-                        FlexWeight: 1;
-                        Background: #000000(0.35);
-                        LayoutMode: Center;
-
-                        Label {
-                          Text: "ИКОНКА";
-                          Anchor: (Height: 16);
-                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
-                        }
-                      }
-
-                      Group { Anchor: (Width: 2); Background: #ffffff; }
-                    }
-
-                    Group { Anchor: (Height: 2); Background: #ffffff; }
-                  }
-
-                  Group { Anchor: (Width: 16); }
-
-                  Group {
-                    FlexWeight: 1;
-                    LayoutMode: Top;
-
-                    Label {
-                      Text: "ОБНОВЛЕНИЕ МИРА";
-                      Anchor: (Height: 28);
-                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
-                    }
-
-                    Group { Anchor: (Height: 6); }
-
-                    Label {
-                      Text: "Спавн перестроен, добавлены порталы";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-
-                    Label {
-                      Text: "к аренам и торговой площади.";
-                      Anchor: (Height: 22);
-                      Style: (FontSize: 15, TextColor: #d0d0d0);
-                    }
-                  }
-                }
-          }
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
-        }
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-      }
-
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        Anchor: (Height: 46);
-        LayoutMode: Center;
-
-          Group {
-            Anchor: (Width: 220, Height: 46);
+            Anchor: (Width: 160, Height: 44);
             LayoutMode: Top;
 
             Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -278,38 +56,98 @@ Group {
             Group { Anchor: (Height: 2); Background: #ffffff; }
           }
 
-        Group { Anchor: (Width: 16); }
-
           Group {
-            Anchor: (Width: 220, Height: 46);
-            LayoutMode: Top;
+            FlexWeight: 1;
+            LayoutMode: Center;
 
-            Group { Anchor: (Height: 2); Background: #ffffff; }
-
-            Group {
-              FlexWeight: 1;
-              LayoutMode: Left;
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #CloseButton {
-                  Text: "ЗАКРЫТЬ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
-              }
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
+            Label {
+              Text: "НОВОСТИ";
+              Anchor: (Height: 48);
+              Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
             }
-
-            Group { Anchor: (Height: 2); Background: #ffffff; }
           }
+
+          Group { Anchor: (Width: 160); }
       }
 
-      Group { Anchor: (Height: 8); }
+      Group { Anchor: (Height: 2); Background: #ffffff; }
+      Group { Anchor: (Height: 18); }
+
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            Background: #000000(0.35);
+            LayoutMode: Top;
+            Padding: (Full: 24);
+
+                Label {
+                  Text: "ОТКРЫТИЕ СЕРВЕРА";
+                  Anchor: (Height: 32);
+                  Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+                }
+                Label {
+                  Text: "Мы запустились! Заходите, зовите друзей";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Label {
+                  Text: "и пишите о багах в Discord.";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Group { Anchor: (Height: 18); }
+                Label {
+                  Text: "НОВАЯ МИНИ-ИГРА";
+                  Anchor: (Height: 32);
+                  Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+                }
+                Label {
+                  Text: "Скоро добавим «Захват флага»:";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Label {
+                  Text: "две команды, один флаг, много шума.";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Group { Anchor: (Height: 18); }
+                Label {
+                  Text: "ОБНОВЛЕНИЕ МИРА";
+                  Anchor: (Height: 32);
+                  Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+                }
+                Label {
+                  Text: "Спавн перестроен, добавлены порталы";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Label {
+                  Text: "к аренам и торговой площади.";
+                  Anchor: (Height: 24);
+                  Style: (FontSize: 16, TextColor: #d0d0d0);
+                }
+                Group { Anchor: (Height: 18); }
+          }
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+        }
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+      }
+
+      Group { Anchor: (Height: 14); }
 
       Label {
         Text: "ESC — закрыть меню";

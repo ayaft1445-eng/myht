@@ -64,10 +64,10 @@ jobs:
       run: |
         set +e
         JAR=$(find "$HOME" -name "Server-*.jar" 2>/dev/null | head -1)
-        echo "===== классы про клавиши и привязки ввода ====="
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE "(inputbinding|keybind|hotkey|controlbinding|keyboard)" | sed 's#.*/##' | sort -u
-        echo "(если пусто — в серверном SDK таких классов нет)"
-        echo "===== типы ассетов, которые умеет сервер ====="
-        unzip -l "$JAR" | awk '{print $4}' | grep -oE "asset/type/[a-z]+/" | sort -u
+        echo "===== можно ли открыть ссылку в браузере из UI ====="
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE "(openurl|openlink|browser|weblink|hyperlink)" | sed 's#.*/##' | sort -u
+        echo "(пусто — значит таких классов нет)"
+        echo "===== команды UI ====="
+        javap -cp "$JAR" com.hypixel.hytale.protocol.packets.interface_.CustomUICommandType
+        javap -cp "$JAR" com.hypixel.hytale.server.core.ui.builder.UICommandBuilder | head -30
         exit 0
-

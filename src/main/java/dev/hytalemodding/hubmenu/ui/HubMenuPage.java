@@ -8,6 +8,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.PageManager;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -54,7 +55,19 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             "#BtnDiscord"
     };
 
+    /** Ссылка на Discord — её же покажи в Section_Discord.ui. */
+    private static final String DISCORD_LINK = "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
+
+    /** Номера разделов: порядок совпадает с SECTION_LAYOUTS. */
+    private static final int SECTION_MINIGAMES = 0;
+    private static final int SECTION_DISCORD = 3;
+
+    /** Кнопки режимов во вкладке мини-игр. */
+    private static final String[] MODE_BUTTONS = { "#Mode0", "#Mode1", "#Mode2", "#Mode3" };
+
     private static final String ACTION_OPEN_PREFIX = "open";
+    private static final String ACTION_MODE_PREFIX = "mode";
+    private static final String ACTION_DISCORD = "discord";
     private static final String ACTION_BACK = "back";
     private static final String ACTION_CLOSE = "close";
 
@@ -90,6 +103,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         } else {
             cmd.append(SECTION_LAYOUTS[this.section]);
 
+            // Кнопка «Назад» вверху слева, кнопки «Закрыть» нет: закрывает ESC
             evt.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     "#BackButton",
@@ -97,14 +111,25 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
                     false
             );
 
-            // Кнопка «Закрыть» есть только в окнах разделов:
-            // в главном окне её убрали, там закрывает ESC
-            evt.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#CloseButton",
-                    new EventData().append("Action", ACTION_CLOSE),
-                    false
-            );
+            if (this.section == SECTION_MINIGAMES) {
+                for (int i = 0; i < MODE_BUTTONS.length; i++) {
+                    evt.addEventBinding(
+                            CustomUIEventBindingType.Activating,
+                            MODE_BUTTONS[i],
+                            new EventData().append("Action", ACTION_MODE_PREFIX + i),
+                            false
+                    );
+                }
+            }
+
+            if (this.section == SECTION_DISCORD) {
+                evt.addEventBinding(
+                        CustomUIEventBindingType.Activating,
+                        "#DiscordButton",
+                        new EventData().append("Action", ACTION_DISCORD),
+                        false
+                );
+            }
         }
     }
 
@@ -123,6 +148,16 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
 
         if (ACTION_CLOSE.equals(action)) {
             this.close();
+            return;
+        }
+
+        if (ACTION_DISCORD.equals(action)) {
+            this.playerRef.sendMessage(Message.raw("Discord сервера: " + DISCORD_LINK));
+            return;
+        }
+
+        if (action.startsWith(ACTION_MODE_PREFIX)) {
+            this.playerRef.sendMessage(Message.raw("Режим пока в разработке."));
             return;
         }
 

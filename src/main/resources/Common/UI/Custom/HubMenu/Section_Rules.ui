@@ -1,13 +1,13 @@
-// Окно раздела «Правила». Текст правил — в строках Text ниже.
+// Окно «Правила». Текст правил — в строках Text ниже.
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1280, Height: 620);
+  Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
   Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -24,85 +24,12 @@ Group {
       LayoutMode: Top;
       Padding: (Full: 24);
 
-      Label {
-        Text: "ПРАВИЛА";
+      Group {
         Anchor: (Height: 56);
-        Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-      }
-
-      Group { Anchor: (Height: 2); Background: #ffffff; }
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        FlexWeight: 1;
-        LayoutMode: Top;
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-
-        Group {
-          FlexWeight: 1;
-          LayoutMode: Left;
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
+        LayoutMode: Left;
 
           Group {
-            FlexWeight: 1;
-            Background: #000000(0.35);
-            LayoutMode: Top;
-            Padding: (Full: 20);
-
-                Label {
-                  Text: "1. Уважай других игроков: без оскорблений и токсичности.";
-                  Anchor: (Height: 26);
-                  Style: (FontSize: 16, TextColor: #ffffff);
-                }
-                Group { Anchor: (Height: 10); }
-                Label {
-                  Text: "2. Читы, багоюз и сторонние программы запрещены.";
-                  Anchor: (Height: 26);
-                  Style: (FontSize: 16, TextColor: #ffffff);
-                }
-                Group { Anchor: (Height: 10); }
-                Label {
-                  Text: "3. Не ломай и не забирай чужие постройки и вещи.";
-                  Anchor: (Height: 26);
-                  Style: (FontSize: 16, TextColor: #ffffff);
-                }
-                Group { Anchor: (Height: 10); }
-                Label {
-                  Text: "4. Реклама других серверов запрещена.";
-                  Anchor: (Height: 26);
-                  Style: (FontSize: 16, TextColor: #ffffff);
-                }
-                Group { Anchor: (Height: 10); }
-                Label {
-                  Text: "5. Решение администрации окончательное.";
-                  Anchor: (Height: 26);
-                  Style: (FontSize: 16, TextColor: #ffffff);
-                }
-                Group { Anchor: (Height: 10); }
-                Group { Anchor: (Height: 10); }
-                Label {
-                  Text: "Это текст-заглушка — замени на свои правила.";
-                  Anchor: (Height: 20);
-                  Style: (FontSize: 13, TextColor: #9a9a9a);
-                }
-          }
-
-          Group { Anchor: (Width: 2); Background: #ffffff; }
-        }
-
-        Group { Anchor: (Height: 2); Background: #ffffff; }
-      }
-
-      Group { Anchor: (Height: 16); }
-
-      Group {
-        Anchor: (Height: 46);
-        LayoutMode: Center;
-
-          Group {
-            Anchor: (Width: 220, Height: 46);
+            Anchor: (Width: 160, Height: 44);
             LayoutMode: Top;
 
             Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -129,38 +56,86 @@ Group {
             Group { Anchor: (Height: 2); Background: #ffffff; }
           }
 
-        Group { Anchor: (Width: 16); }
-
           Group {
-            Anchor: (Width: 220, Height: 46);
-            LayoutMode: Top;
+            FlexWeight: 1;
+            LayoutMode: Center;
 
-            Group { Anchor: (Height: 2); Background: #ffffff; }
-
-            Group {
-              FlexWeight: 1;
-              LayoutMode: Left;
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #CloseButton {
-                  Text: "ЗАКРЫТЬ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
-              }
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
+            Label {
+              Text: "ПРАВИЛА";
+              Anchor: (Height: 48);
+              Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
             }
-
-            Group { Anchor: (Height: 2); Background: #ffffff; }
           }
+
+          Group { Anchor: (Width: 160); }
       }
 
-      Group { Anchor: (Height: 8); }
+      Group { Anchor: (Height: 2); Background: #ffffff; }
+      Group { Anchor: (Height: 18); }
+
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            Background: #000000(0.35);
+            LayoutMode: Top;
+            Padding: (Full: 24);
+
+                Label {
+                  Text: "1. Уважай других игроков: без оскорблений и токсичности.";
+                  Anchor: (Height: 28);
+                  Style: (FontSize: 17, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "2. Читы, багоюз и сторонние программы запрещены.";
+                  Anchor: (Height: 28);
+                  Style: (FontSize: 17, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "3. Не ломай и не забирай чужие постройки и вещи.";
+                  Anchor: (Height: 28);
+                  Style: (FontSize: 17, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "4. Реклама других серверов запрещена.";
+                  Anchor: (Height: 28);
+                  Style: (FontSize: 17, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "5. Решение администрации окончательное.";
+                  Anchor: (Height: 28);
+                  Style: (FontSize: 17, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Group { Anchor: (Height: 14); }
+                Label {
+                  Text: "Это текст-заглушка — замени на свои правила.";
+                  Anchor: (Height: 20);
+                  Style: (FontSize: 13, TextColor: #9a9a9a);
+                }
+          }
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+        }
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
+      }
+
+      Group { Anchor: (Height: 14); }
 
       Label {
         Text: "ESC — закрыть меню";
