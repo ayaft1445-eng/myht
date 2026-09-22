@@ -1,4 +1,4 @@
-package dev.hytalemodding.serverhub.commands;
+package dev.hytalemodding.hubmenu.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -9,11 +9,11 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import dev.hytalemodding.serverhub.ui.HubPage;
+import dev.hytalemodding.hubmenu.ui.HubMenuPage;
 
 import javax.annotation.Nonnull;
 
-/** Команда /hub — открывает меню сервера. */
+/** Команда /hub — открывает меню HUB. */
 public class HubCommand extends AbstractPlayerCommand {
 
     public HubCommand() {
@@ -37,7 +37,7 @@ public class HubCommand extends AbstractPlayerCommand {
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new HubPage(playerRef, player.getPageManager(), HubPage.SECTION_MAIN)
+                new HubMenuPage(playerRef, player.getPageManager(), HubMenuPage.SECTION_MAIN)
         );
     }
 }

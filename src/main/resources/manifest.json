@@ -1,8 +1,8 @@
 {
     "Group": "HytaleModding",
-    "Name": "serverhub",
+    "Name": "hubmenu",
     "Version": "1.0.0",
-    "Description": "Server hub menu: rules, minigames and discord sections",
+    "Description": "Black and white hub menu with three sections",
     "Authors": [
         {
             "Name": "ayaft1445-eng",
@@ -19,7 +19,7 @@
     "OptionalDependencies": {
     },
     "ServerVersion": ">=0.6.0 <0.7.0",
-    "Main": "dev.hytalemodding.serverhub.ServerHubPlugin",
+    "Main": "dev.hytalemodding.hubmenu.HubMenuPlugin",
     "UpdateChecker": {
         "CurseForge": ""
     }

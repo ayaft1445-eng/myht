@@ -32,7 +32,7 @@ jobs:
     - name: Upload plugin jar as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ServerHub-plugin
+        name: HubMenu-plugin
         path: build/libs/*.jar
         if-no-files-found: error
 
@@ -46,13 +46,14 @@ jobs:
         set -euo pipefail
         JARS=$(ls build/libs/*.jar | grep -v -- '-sources.jar' | grep -v -- '-javadoc.jar')
         echo "Публикуем: $JARS"
+        gh release delete hubmenu-latest --yes --cleanup-tag || true
         gh release delete serverhub-latest --yes --cleanup-tag || true
-        gh release create serverhub-latest $JARS \
+        gh release create hubmenu-latest $JARS \
           --target "$GITHUB_SHA" \
-          --title "ServerHub — последняя сборка" \
-          --notes "Меню сервера для Hytale: три раздела.
+          --title "HubMenu — последняя сборка" \
+          --notes "Чёрно-белое меню сервера для Hytale: три раздела.
 
-        Что делает: команда /hub открывает меню сервера с тремя кнопками — Правила, Мини-игры, Дискорд сервер. Нажатие на кнопку открывает окно с этим разделом.
+        Что делает: команда /hub открывает чёрно-белое меню HUB с тремя кнопками — Мини-игры, Новости, ДС сервер. Нажатие открывает окно раздела.
 
         Как поставить: скачайте файл .jar ниже и положите его в папку plugins/ вашего сервера, затем перезапустите сервер. Старый файл плагина из папки удалите.
 

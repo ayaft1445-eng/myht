@@ -1,0 +1,109 @@
+// Главное окно HUB: три кнопки-карточки с белой обводкой на чёрном фоне.
+// Ширина карточек и подписи меняются ниже; размер окна — в Anchor самой первой группы.
+
+@CardBig = TextButtonStyle(
+  Default: (Background: #000000, LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom))
+);
+
+@Card = TextButtonStyle(
+  Default: (Background: #000000, LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #000000, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1000, Height: 620);
+  Background: #ffffff;
+  Padding: (Full: 2);
+
+  Group {
+    Anchor: (Full: 0);
+    Background: #000000;
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    Label {
+      Text: "HUB";
+      Anchor: (Height: 60);
+      Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+    }
+
+    Group { Anchor: (Height: 16); }
+
+    Group {
+      Anchor: (Height: 380);
+      LayoutMode: Left;
+
+    Group {
+      Anchor: (Width: 380, Height: 380);
+      Background: #ffffff;
+      Padding: (Full: 2);
+
+      TextButton #BtnMinigames {
+        Text: "МИНИ-ИГРЫ";
+        Anchor: (Full: 0);
+        Style: @CardBig;
+      }
+    }
+    Group { Anchor: (Width: 16); }
+    Group {
+      Anchor: (Width: 260, Height: 380);
+      Background: #ffffff;
+      Padding: (Full: 2);
+
+      TextButton #BtnNews {
+        Text: "НОВОСТИ";
+        Anchor: (Full: 0);
+        Style: @Card;
+      }
+    }
+    Group { Anchor: (Width: 16); }
+    Group {
+      Anchor: (Width: 260, Height: 380);
+      Background: #ffffff;
+      Padding: (Full: 2);
+
+      TextButton #BtnDiscord {
+        Text: "ДС СЕРВЕР";
+        Anchor: (Full: 0);
+        Style: @Card;
+      }
+    }
+    }
+
+    Group { FlexWeight: 1; }
+
+    Group {
+      Anchor: (Height: 46);
+      LayoutMode: Center;
+
+      Group {
+        Anchor: (Width: 220, Height: 46);
+        Background: #ffffff;
+        Padding: (Full: 2);
+
+        TextButton #CloseButton {
+          Text: "ЗАКРЫТЬ";
+          Anchor: (Full: 0);
+          Style: @Flat;
+        }
+      }
+    }
+
+    Group { Anchor: (Height: 8); }
+
+    Label {
+      Text: "ESC — закрыть меню";
+      Anchor: (Height: 18);
+      Style: (FontSize: 13, TextColor: #888888, HorizontalAlignment: Center);
+    }
+  }
+}

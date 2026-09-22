@@ -1,0 +1,221 @@
+// Окно раздела «ДС сервер». Ссылку меняй в строке Text ниже.
+
+@Flat = TextButtonStyle(
+  Default: (Background: #000000, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1000, Height: 620);
+  Background: #ffffff;
+  Padding: (Full: 2);
+
+  Group {
+    Anchor: (Full: 0);
+    Background: #000000;
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    Label {
+      Text: "ДС СЕРВЕР";
+      Anchor: (Height: 56);
+      Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+    }
+
+    Group { Anchor: (Height: 2); Background: #ffffff; }
+    Group { Anchor: (Height: 16); }
+
+  Group {
+    FlexWeight: 1;
+    Background: #ffffff;
+    Padding: (Full: 2);
+
+    Group {
+      FlexWeight: 1;
+      Background: #000000;
+      LayoutMode: Top;
+      Padding: (Full: 20);
+
+      Group {
+        Anchor: (Height: 90);
+        LayoutMode: Left;
+
+        Group {
+          Anchor: (Width: 80, Height: 80);
+          Background: #ffffff;
+          Padding: (Full: 2);
+
+          Group {
+            Anchor: (Full: 0);
+            Background: #000000;
+            LayoutMode: Center;
+
+            Label {
+              Text: "ИКОНКА";
+              Anchor: (Height: 16);
+              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            }
+          }
+        }
+        Group { Anchor: (Width: 16); }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Top;
+
+          Label {
+            Text: "ЗАХОДИ В НАШ DISCORD";
+            Anchor: (Height: 28);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+          }
+          Group { Anchor: (Height: 6); }
+          Label {
+            Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+          Label {
+            Text: "Скопируй ссылку и открой в браузере.";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+        }
+      }
+      Group { Anchor: (Height: 14); }
+      Group {
+        Anchor: (Height: 90);
+        LayoutMode: Left;
+
+        Group {
+          Anchor: (Width: 80, Height: 80);
+          Background: #ffffff;
+          Padding: (Full: 2);
+
+          Group {
+            Anchor: (Full: 0);
+            Background: #000000;
+            LayoutMode: Center;
+
+            Label {
+              Text: "ИКОНКА";
+              Anchor: (Height: 16);
+              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            }
+          }
+        }
+        Group { Anchor: (Width: 16); }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Top;
+
+          Label {
+            Text: "ЧТО ТАМ ЕСТЬ";
+            Anchor: (Height: 28);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+          }
+          Group { Anchor: (Height: 6); }
+          Label {
+            Text: "Анонсы, поиск команды, поддержка";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+          Label {
+            Text: "и общение с админами.";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+        }
+      }
+      Group { Anchor: (Height: 14); }
+      Group {
+        Anchor: (Height: 90);
+        LayoutMode: Left;
+
+        Group {
+          Anchor: (Width: 80, Height: 80);
+          Background: #ffffff;
+          Padding: (Full: 2);
+
+          Group {
+            Anchor: (Full: 0);
+            Background: #000000;
+            LayoutMode: Center;
+
+            Label {
+              Text: "ИКОНКА";
+              Anchor: (Height: 16);
+              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            }
+          }
+        }
+        Group { Anchor: (Width: 16); }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Top;
+
+          Label {
+            Text: "ПРАВИЛА DISCORD";
+            Anchor: (Height: 28);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+          }
+          Group { Anchor: (Height: 6); }
+          Label {
+            Text: "Те же, что и на сервере:";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+          Label {
+            Text: "без токсичности и рекламы.";
+            Anchor: (Height: 22);
+            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+          }
+        }
+      }
+    }
+  }
+
+    Group { Anchor: (Height: 16); }
+
+    Group {
+      Anchor: (Height: 46);
+      LayoutMode: Center;
+
+      Group {
+        Anchor: (Width: 220, Height: 46);
+        Background: #ffffff;
+        Padding: (Full: 2);
+
+        TextButton #BackButton {
+          Text: "НАЗАД";
+          Anchor: (Full: 0);
+          Style: @Flat;
+        }
+      }
+
+      Group { Anchor: (Width: 16); }
+
+      Group {
+        Anchor: (Width: 220, Height: 46);
+        Background: #ffffff;
+        Padding: (Full: 2);
+
+        TextButton #CloseButton {
+          Text: "ЗАКРЫТЬ";
+          Anchor: (Full: 0);
+          Style: @Flat;
+        }
+      }
+    }
+
+    Group { Anchor: (Height: 8); }
+
+    Label {
+      Text: "ESC — закрыть меню";
+      Anchor: (Height: 18);
+      Style: (FontSize: 13, TextColor: #888888, HorizontalAlignment: Center);
+    }
+  }
+}

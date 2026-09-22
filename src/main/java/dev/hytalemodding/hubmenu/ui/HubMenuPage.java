@@ -1,4 +1,4 @@
-package dev.hytalemodding.serverhub.ui;
+package dev.hytalemodding.hubmenu.ui;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -20,35 +20,35 @@ import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
 /**
- * Меню сервера.
+ * Меню HUB в чёрно-белом стиле.
  *
- * Одна и та же страница показывает либо главное окно с тремя кнопками
+ * Одна страница показывает либо главное окно с тремя кнопками-карточками
  * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2).
  * По нажатию кнопки игроку открывается эта же страница с другим номером
- * раздела — поэтому каждое окно всегда собирается заново и целиком.
+ * раздела, поэтому каждое окно собирается заново и целиком.
  *
- * Разметка: src/main/resources/Common/UI/Custom/ServerHub/
+ * Разметка: src/main/resources/Common/UI/Custom/HubMenu/
  */
-public class HubPage extends InteractiveCustomUIPage<HubPage.HubEventData> {
+public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventData> {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     /** Главное окно с тремя кнопками. */
     public static final int SECTION_MAIN = -1;
 
-    private static final String MAIN_LAYOUT = "ServerHub/Main.ui";
+    private static final String MAIN_LAYOUT = "HubMenu/Main.ui";
 
     /** Окна разделов — порядок совпадает с порядком кнопок в главном окне. */
     private static final String[] SECTION_LAYOUTS = {
-            "ServerHub/Section_Rules.ui",
-            "ServerHub/Section_Minigames.ui",
-            "ServerHub/Section_Discord.ui"
+            "HubMenu/Section_Minigames.ui",
+            "HubMenu/Section_News.ui",
+            "HubMenu/Section_Discord.ui"
     };
 
     /** Кнопки главного окна — порядок совпадает с SECTION_LAYOUTS. */
     private static final String[] SECTION_BUTTONS = {
-            "#BtnRules",
             "#BtnMinigames",
+            "#BtnNews",
             "#BtnDiscord"
     };
 
@@ -60,7 +60,7 @@ public class HubPage extends InteractiveCustomUIPage<HubPage.HubEventData> {
     private final PageManager pageManager;
     private final int section;
 
-    public HubPage(@Nonnull PlayerRef playerRef, @Nonnull PageManager pageManager, int section) {
+    public HubMenuPage(@Nonnull PlayerRef playerRef, @Nonnull PageManager pageManager, int section) {
         super(playerRef, CustomPageLifetime.CanDismiss, HubEventData.CODEC);
         this.playerRef = playerRef;
         this.pageManager = pageManager;
@@ -111,7 +111,7 @@ public class HubPage extends InteractiveCustomUIPage<HubPage.HubEventData> {
             @Nonnull HubEventData data
     ) {
         String action = data.getAction();
-        LOGGER.at(Level.INFO).log("[ServerHub] menu event: " + action);
+        LOGGER.at(Level.INFO).log("[HubMenu] menu event: " + action);
 
         if (action == null) {
             return;
@@ -135,13 +135,13 @@ public class HubPage extends InteractiveCustomUIPage<HubPage.HubEventData> {
         }
     }
 
-    /** Открывает игроку эту же страницу с другим разделом. */
+    /** Открывает игроку это же меню с другим разделом. */
     private void openSection(
             @Nonnull Ref<EntityStore> ref,
             @Nonnull Store<EntityStore> store,
             int newSection
     ) {
-        this.pageManager.openCustomPage(ref, store, new HubPage(this.playerRef, this.pageManager, newSection));
+        this.pageManager.openCustomPage(ref, store, new HubMenuPage(this.playerRef, this.pageManager, newSection));
     }
 
     private static boolean isSection(int value) {
