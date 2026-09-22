@@ -1,32 +1,28 @@
-// Главное окно HUB: три кнопки-карточки с белой обводкой на чёрном фоне.
-// Ширина карточек и подписи меняются ниже; размер окна — в Anchor самой первой группы.
-
-@CardBig = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
-);
+// Главное окно HUB: три кнопки-карточки с белой обводкой.
+// Подпись у каждой карточки — отдельная надпись, прижатая к низу по центру
+// (Anchor: Bottom). Прозрачность фона — число в скобках у цвета: чем меньше,
+// тем прозрачнее. Ширина окна и карточек — в Anchor.
 
 @Card = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1000, Height: 620);
+  Anchor: (Width: 1280, Height: 620);
   Background: #ffffff;
   Padding: (Full: 2);
 
   Group {
     Anchor: (Full: 0);
-    Background: #000000;
+    Background: #000000(0.60);
     LayoutMode: Top;
     Padding: (Full: 24);
 
@@ -39,42 +35,72 @@ Group {
     Group { Anchor: (Height: 16); }
 
     Group {
-      Anchor: (Height: 380);
+      Anchor: (Height: 400);
       LayoutMode: Left;
 
     Group {
-      Anchor: (Width: 380, Height: 380);
+      Anchor: (Width: 480, Height: 400);
       Background: #ffffff;
       Padding: (Full: 2);
 
-      TextButton #BtnMinigames {
-        Text: "МИНИ-ИГРЫ";
+      Group {
         Anchor: (Full: 0);
-        Style: @CardBig;
+
+        TextButton #BtnMinigames {
+          Text: "";
+          Anchor: (Full: 0);
+          Style: @Card;
+        }
+
+        Label {
+          Text: "МИНИ-ИГРЫ";
+          Anchor: (Height: 38, Bottom: 20);
+          Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+        }
       }
     }
     Group { Anchor: (Width: 16); }
     Group {
-      Anchor: (Width: 260, Height: 380);
+      Anchor: (Width: 350, Height: 400);
       Background: #ffffff;
       Padding: (Full: 2);
 
-      TextButton #BtnNews {
-        Text: "НОВОСТИ";
+      Group {
         Anchor: (Full: 0);
-        Style: @Card;
+
+        TextButton #BtnNews {
+          Text: "";
+          Anchor: (Full: 0);
+          Style: @Card;
+        }
+
+        Label {
+          Text: "НОВОСТИ";
+          Anchor: (Height: 34, Bottom: 20);
+          Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+        }
       }
     }
     Group { Anchor: (Width: 16); }
     Group {
-      Anchor: (Width: 260, Height: 380);
+      Anchor: (Width: 350, Height: 400);
       Background: #ffffff;
       Padding: (Full: 2);
 
-      TextButton #BtnDiscord {
-        Text: "ДС СЕРВЕР";
+      Group {
         Anchor: (Full: 0);
-        Style: @Card;
+
+        TextButton #BtnDiscord {
+          Text: "";
+          Anchor: (Full: 0);
+          Style: @Card;
+        }
+
+        Label {
+          Text: "ДС СЕРВЕР";
+          Anchor: (Height: 34, Bottom: 20);
+          Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+        }
       }
     }
     }

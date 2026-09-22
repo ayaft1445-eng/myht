@@ -1,19 +1,19 @@
 // Окно раздела «ДС сервер». Ссылку меняй в строке Text ниже.
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 16, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
-  Anchor: (Width: 1000, Height: 620);
+  Anchor: (Width: 1280, Height: 620);
   Background: #ffffff;
   Padding: (Full: 2);
 
   Group {
     Anchor: (Full: 0);
-    Background: #000000;
+    Background: #000000(0.55);
     LayoutMode: Top;
     Padding: (Full: 24);
 
@@ -33,7 +33,7 @@ Group {
 
     Group {
       FlexWeight: 1;
-      Background: #000000;
+      Background: #000000(0.55);
       LayoutMode: Top;
       Padding: (Full: 20);
 
@@ -48,7 +48,7 @@ Group {
 
           Group {
             Anchor: (Full: 0);
-            Background: #000000;
+            Background: #000000(0.55);
             LayoutMode: Center;
 
             Label {
@@ -94,7 +94,7 @@ Group {
 
           Group {
             Anchor: (Full: 0);
-            Background: #000000;
+            Background: #000000(0.55);
             LayoutMode: Center;
 
             Label {
@@ -140,7 +140,7 @@ Group {
 
           Group {
             Anchor: (Full: 0);
-            Background: #000000;
+            Background: #000000(0.55);
             LayoutMode: Center;
 
             Label {
