@@ -1,221 +1,325 @@
-// Окно раздела «Мини-игры». Режимы тестовые: название и описание меняются в строках Text.
+// Окно раздела «Мини-игры». Названия и описания режимов — в строках Text.
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1280, Height: 620);
-  Background: #ffffff;
-  Padding: (Full: 2);
+  LayoutMode: Top;
 
-  Group {
-    Anchor: (Full: 0);
-    Background: #000000(0.55);
-    LayoutMode: Top;
-    Padding: (Full: 24);
-
-    Label {
-      Text: "МИНИ-ИГРЫ";
-      Anchor: (Height: 56);
-      Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-    }
-
-    Group { Anchor: (Height: 2); Background: #ffffff; }
-    Group { Anchor: (Height: 16); }
+  Group { Anchor: (Height: 2); Background: #ffffff; }
 
   Group {
     FlexWeight: 1;
-    Background: #ffffff;
-    Padding: (Full: 2);
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #ffffff; }
 
     Group {
       FlexWeight: 1;
       Background: #000000(0.55);
       LayoutMode: Top;
-      Padding: (Full: 20);
+      Padding: (Full: 24);
 
-      Group {
-        Anchor: (Height: 90);
-        LayoutMode: Left;
-
-        Group {
-          Anchor: (Width: 80, Height: 80);
-          Background: #ffffff;
-          Padding: (Full: 2);
-
-          Group {
-            Anchor: (Full: 0);
-            Background: #000000(0.55);
-            LayoutMode: Center;
-
-            Label {
-              Text: "ИКОНКА";
-              Anchor: (Height: 16);
-              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
-            }
-          }
-        }
-        Group { Anchor: (Width: 16); }
-
-        Group {
-          FlexWeight: 1;
-          LayoutMode: Top;
-
-          Label {
-            Text: "ЗАХВАТ ФЛАГА";
-            Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
-          }
-          Group { Anchor: (Height: 6); }
-          Label {
-            Text: "Две команды. Унеси флаг соперника";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
-          Label {
-            Text: "на свою базу раньше врага.";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
-        }
+      Label {
+        Text: "МИНИ-ИГРЫ";
+        Anchor: (Height: 56);
+        Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
       }
-      Group { Anchor: (Height: 14); }
+
+      Group { Anchor: (Height: 2); Background: #ffffff; }
+      Group { Anchor: (Height: 16); }
+
       Group {
-        Anchor: (Height: 90);
-        LayoutMode: Left;
+        FlexWeight: 1;
+        LayoutMode: Top;
 
-        Group {
-          Anchor: (Width: 80, Height: 80);
-          Background: #ffffff;
-          Padding: (Full: 2);
-
-          Group {
-            Anchor: (Full: 0);
-            Background: #000000(0.55);
-            LayoutMode: Center;
-
-            Label {
-              Text: "ИКОНКА";
-              Anchor: (Height: 16);
-              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
-            }
-          }
-        }
-        Group { Anchor: (Width: 16); }
+        Group { Anchor: (Height: 2); Background: #ffffff; }
 
         Group {
           FlexWeight: 1;
-          LayoutMode: Top;
+          LayoutMode: Left;
 
-          Label {
-            Text: "ВЫЖИВАНИЕ";
-            Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+          Group { Anchor: (Width: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            Background: #000000(0.35);
+            LayoutMode: Top;
+            Padding: (Full: 20);
+
+                Group {
+                  Anchor: (Height: 90);
+                  LayoutMode: Left;
+
+                  Group {
+                    Anchor: (Width: 80, Height: 80);
+                    LayoutMode: Top;
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+
+                    Group {
+                      FlexWeight: 1;
+                      LayoutMode: Left;
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+
+                      Group {
+                        FlexWeight: 1;
+                        Background: #000000(0.35);
+                        LayoutMode: Center;
+
+                        Label {
+                          Text: "ИКОНКА";
+                          Anchor: (Height: 16);
+                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
+                        }
+                      }
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+                    }
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+                  }
+
+                  Group { Anchor: (Width: 16); }
+
+                  Group {
+                    FlexWeight: 1;
+                    LayoutMode: Top;
+
+                    Label {
+                      Text: "ЗАХВАТ ФЛАГА";
+                      Anchor: (Height: 28);
+                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+                    }
+
+                    Group { Anchor: (Height: 6); }
+
+                    Label {
+                      Text: "Две команды. Унеси флаг соперника";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+
+                    Label {
+                      Text: "на свою базу раньше врага.";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+                  }
+                }
+                Group { Anchor: (Height: 14); }
+                Group {
+                  Anchor: (Height: 90);
+                  LayoutMode: Left;
+
+                  Group {
+                    Anchor: (Width: 80, Height: 80);
+                    LayoutMode: Top;
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+
+                    Group {
+                      FlexWeight: 1;
+                      LayoutMode: Left;
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+
+                      Group {
+                        FlexWeight: 1;
+                        Background: #000000(0.35);
+                        LayoutMode: Center;
+
+                        Label {
+                          Text: "ИКОНКА";
+                          Anchor: (Height: 16);
+                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
+                        }
+                      }
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+                    }
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+                  }
+
+                  Group { Anchor: (Width: 16); }
+
+                  Group {
+                    FlexWeight: 1;
+                    LayoutMode: Top;
+
+                    Label {
+                      Text: "ВЫЖИВАНИЕ";
+                      Anchor: (Height: 28);
+                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+                    }
+
+                    Group { Anchor: (Height: 6); }
+
+                    Label {
+                      Text: "Держись как можно дольше";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+
+                    Label {
+                      Text: "против волн монстров.";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+                  }
+                }
+                Group { Anchor: (Height: 14); }
+                Group {
+                  Anchor: (Height: 90);
+                  LayoutMode: Left;
+
+                  Group {
+                    Anchor: (Width: 80, Height: 80);
+                    LayoutMode: Top;
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+
+                    Group {
+                      FlexWeight: 1;
+                      LayoutMode: Left;
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+
+                      Group {
+                        FlexWeight: 1;
+                        Background: #000000(0.35);
+                        LayoutMode: Center;
+
+                        Label {
+                          Text: "ИКОНКА";
+                          Anchor: (Height: 16);
+                          Style: (FontSize: 11, TextColor: #9a9a9a, HorizontalAlignment: Center, VerticalAlignment: Center);
+                        }
+                      }
+
+                      Group { Anchor: (Width: 2); Background: #ffffff; }
+                    }
+
+                    Group { Anchor: (Height: 2); Background: #ffffff; }
+                  }
+
+                  Group { Anchor: (Width: 16); }
+
+                  Group {
+                    FlexWeight: 1;
+                    LayoutMode: Top;
+
+                    Label {
+                      Text: "ПАРКУР";
+                      Anchor: (Height: 28);
+                      Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+                    }
+
+                    Group { Anchor: (Height: 6); }
+
+                    Label {
+                      Text: "Пройди трассу с препятствиями";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+
+                    Label {
+                      Text: "на время. Есть рекорд сервера.";
+                      Anchor: (Height: 22);
+                      Style: (FontSize: 15, TextColor: #d0d0d0);
+                    }
+                  }
+                }
           }
-          Group { Anchor: (Height: 6); }
-          Label {
-            Text: "Держись как можно дольше";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
-          Label {
-            Text: "против волн монстров.";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
+
+          Group { Anchor: (Width: 2); Background: #ffffff; }
         }
+
+        Group { Anchor: (Height: 2); Background: #ffffff; }
       }
-      Group { Anchor: (Height: 14); }
-      Group {
-        Anchor: (Height: 90);
-        LayoutMode: Left;
 
-        Group {
-          Anchor: (Width: 80, Height: 80);
-          Background: #ffffff;
-          Padding: (Full: 2);
+      Group { Anchor: (Height: 16); }
+
+      Group {
+        Anchor: (Height: 46);
+        LayoutMode: Center;
 
           Group {
-            Anchor: (Full: 0);
-            Background: #000000(0.55);
-            LayoutMode: Center;
+            Anchor: (Width: 220, Height: 46);
+            LayoutMode: Top;
 
-            Label {
-              Text: "ИКОНКА";
-              Anchor: (Height: 16);
-              Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Group { Anchor: (Height: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
+
+              Group {
+                FlexWeight: 1;
+
+                TextButton #BackButton {
+                  Text: "НАЗАД";
+                  Anchor: (Full: 0);
+                  Style: @Flat;
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
             }
+
+            Group { Anchor: (Height: 2); Background: #ffffff; }
           }
-        }
+
         Group { Anchor: (Width: 16); }
 
-        Group {
-          FlexWeight: 1;
-          LayoutMode: Top;
+          Group {
+            Anchor: (Width: 220, Height: 46);
+            LayoutMode: Top;
 
-          Label {
-            Text: "ПАРКУР";
-            Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+            Group { Anchor: (Height: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
+
+              Group {
+                FlexWeight: 1;
+
+                TextButton #CloseButton {
+                  Text: "ЗАКРЫТЬ";
+                  Anchor: (Full: 0);
+                  Style: @Flat;
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #ffffff; }
           }
-          Group { Anchor: (Height: 6); }
-          Label {
-            Text: "Пройди трассу с препятствиями";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
-          Label {
-            Text: "на время. Есть рекорд сервера.";
-            Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb);
-          }
-        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Label {
+        Text: "ESC — закрыть меню";
+        Anchor: (Height: 18);
+        Style: (FontSize: 13, TextColor: #9a9a9a, HorizontalAlignment: Center);
       }
     }
+
+    Group { Anchor: (Width: 2); Background: #ffffff; }
   }
 
-    Group { Anchor: (Height: 16); }
-
-    Group {
-      Anchor: (Height: 46);
-      LayoutMode: Center;
-
-      Group {
-        Anchor: (Width: 220, Height: 46);
-        Background: #ffffff;
-        Padding: (Full: 2);
-
-        TextButton #BackButton {
-          Text: "НАЗАД";
-          Anchor: (Full: 0);
-          Style: @Flat;
-        }
-      }
-
-      Group { Anchor: (Width: 16); }
-
-      Group {
-        Anchor: (Width: 220, Height: 46);
-        Background: #ffffff;
-        Padding: (Full: 2);
-
-        TextButton #CloseButton {
-          Text: "ЗАКРЫТЬ";
-          Anchor: (Full: 0);
-          Style: @Flat;
-        }
-      }
-    }
-
-    Group { Anchor: (Height: 8); }
-
-    Label {
-      Text: "ESC — закрыть меню";
-      Anchor: (Height: 18);
-      Style: (FontSize: 13, TextColor: #888888, HorizontalAlignment: Center);
-    }
-  }
+  Group { Anchor: (Height: 2); Background: #ffffff; }
 }

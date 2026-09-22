@@ -42,6 +42,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private static final String[] SECTION_LAYOUTS = {
             "HubMenu/Section_Minigames.ui",
             "HubMenu/Section_News.ui",
+            "HubMenu/Section_Rules.ui",
             "HubMenu/Section_Discord.ui"
     };
 
@@ -49,6 +50,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private static final String[] SECTION_BUTTONS = {
             "#BtnMinigames",
             "#BtnNews",
+            "#BtnRules",
             "#BtnDiscord"
     };
 

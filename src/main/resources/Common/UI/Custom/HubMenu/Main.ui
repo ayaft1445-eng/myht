@@ -1,135 +1,233 @@
-// Главное окно HUB: три кнопки-карточки с белой обводкой.
-// Подпись у каждой карточки — отдельная надпись, прижатая к низу по центру
-// (Anchor: Bottom). Прозрачность фона — число в скобках у цвета: чем меньше,
-// тем прозрачнее. Ширина окна и карточек — в Anchor.
+// Главное окно HUB: четыре кнопки-карточки.
+// Обводка сделана четырьмя белыми полосками по краям, а не белой заливкой —
+// иначе полупрозрачный чёрный смешивался бы с белым и выглядел серым.
+// Прозрачность — число в скобках у цвета: меньше значит прозрачнее.
 
 @Card = TextButtonStyle(
-  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #000000(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #ffffff(0.18), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Pressed: (Background: #ffffff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1280, Height: 620);
-  Background: #ffffff;
-  Padding: (Full: 2);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #ffffff; }
 
   Group {
-    Anchor: (Full: 0);
-    Background: #000000(0.60);
-    LayoutMode: Top;
-    Padding: (Full: 24);
+    FlexWeight: 1;
+    LayoutMode: Left;
 
-    Label {
-      Text: "HUB";
-      Anchor: (Height: 60);
-      Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-    }
-
-    Group { Anchor: (Height: 16); }
+    Group { Anchor: (Width: 2); Background: #ffffff; }
 
     Group {
-      Anchor: (Height: 400);
-      LayoutMode: Left;
+      FlexWeight: 1;
+      Background: #000000(0.55);
+      LayoutMode: Top;
+      Padding: (Full: 24);
 
-    Group {
-      Anchor: (Width: 480, Height: 400);
-      Background: #ffffff;
-      Padding: (Full: 2);
+      Label {
+        Text: "HUB";
+        Anchor: (Height: 60);
+        Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+      }
+
+      Group { Anchor: (Height: 16); }
 
       Group {
-        Anchor: (Full: 0);
+        Anchor: (Height: 400);
+        LayoutMode: Left;
 
-        TextButton #BtnMinigames {
-          Text: "";
-          Anchor: (Full: 0);
-          Style: @Card;
+        Group {
+          Anchor: (Width: 340, Height: 400);
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+
+              TextButton #BtnMinigames {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Card;
+              }
+
+              Label {
+                Text: "МИНИ-ИГРЫ";
+                Anchor: (Height: 36, Bottom: 20);
+                Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
         }
+        Group { Anchor: (Width: 16); }
+        Group {
+          Anchor: (Width: 280, Height: 400);
+          LayoutMode: Top;
 
-        Label {
-          Text: "МИНИ-ИГРЫ";
-          Anchor: (Height: 38, Bottom: 20);
-          Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+
+              TextButton #BtnNews {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Card;
+              }
+
+              Label {
+                Text: "НОВОСТИ";
+                Anchor: (Height: 32, Bottom: 20);
+                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+        }
+        Group { Anchor: (Width: 16); }
+        Group {
+          Anchor: (Width: 280, Height: 400);
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+
+              TextButton #BtnRules {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Card;
+              }
+
+              Label {
+                Text: "ПРАВИЛА";
+                Anchor: (Height: 32, Bottom: 20);
+                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+        }
+        Group { Anchor: (Width: 16); }
+        Group {
+          Anchor: (Width: 280, Height: 400);
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+
+              TextButton #BtnDiscord {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Card;
+              }
+
+              Label {
+                Text: "ДС СЕРВЕР";
+                Anchor: (Height: 32, Bottom: 20);
+                Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #ffffff; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #ffffff; }
         }
       }
-    }
-    Group { Anchor: (Width: 16); }
-    Group {
-      Anchor: (Width: 350, Height: 400);
-      Background: #ffffff;
-      Padding: (Full: 2);
+
+      Group { FlexWeight: 1; }
 
       Group {
-        Anchor: (Full: 0);
+        Anchor: (Height: 46);
+        LayoutMode: Center;
 
-        TextButton #BtnNews {
-          Text: "";
-          Anchor: (Full: 0);
-          Style: @Card;
-        }
+          Group {
+            Anchor: (Width: 220, Height: 46);
+            LayoutMode: Top;
 
-        Label {
-          Text: "НОВОСТИ";
-          Anchor: (Height: 34, Bottom: 20);
-          Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-        }
+            Group { Anchor: (Height: 2); Background: #ffffff; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
+
+              Group {
+                FlexWeight: 1;
+
+                TextButton #CloseButton {
+                  Text: "ЗАКРЫТЬ";
+                  Anchor: (Full: 0);
+                  Style: @Flat;
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #ffffff; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #ffffff; }
+          }
       }
-    }
-    Group { Anchor: (Width: 16); }
-    Group {
-      Anchor: (Width: 350, Height: 400);
-      Background: #ffffff;
-      Padding: (Full: 2);
 
-      Group {
-        Anchor: (Full: 0);
+      Group { Anchor: (Height: 8); }
 
-        TextButton #BtnDiscord {
-          Text: "";
-          Anchor: (Full: 0);
-          Style: @Card;
-        }
-
-        Label {
-          Text: "ДС СЕРВЕР";
-          Anchor: (Height: 34, Bottom: 20);
-          Style: (FontSize: 26, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-        }
-      }
-    }
-    }
-
-    Group { FlexWeight: 1; }
-
-    Group {
-      Anchor: (Height: 46);
-      LayoutMode: Center;
-
-      Group {
-        Anchor: (Width: 220, Height: 46);
-        Background: #ffffff;
-        Padding: (Full: 2);
-
-        TextButton #CloseButton {
-          Text: "ЗАКРЫТЬ";
-          Anchor: (Full: 0);
-          Style: @Flat;
-        }
+      Label {
+        Text: "ESC — закрыть меню";
+        Anchor: (Height: 18);
+        Style: (FontSize: 13, TextColor: #9a9a9a, HorizontalAlignment: Center);
       }
     }
 
-    Group { Anchor: (Height: 8); }
-
-    Label {
-      Text: "ESC — закрыть меню";
-      Anchor: (Height: 18);
-      Style: (FontSize: 13, TextColor: #888888, HorizontalAlignment: Center);
-    }
+    Group { Anchor: (Width: 2); Background: #ffffff; }
   }
+
+  Group { Anchor: (Height: 2); Background: #ffffff; }
 }

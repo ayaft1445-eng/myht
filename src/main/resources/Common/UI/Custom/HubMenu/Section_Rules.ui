@@ -1,4 +1,4 @@
-// Окно раздела «ДС сервер». Ссылку меняй в строке Text ниже.
+// Окно раздела «Правила». Текст правил — в строках Text ниже.
 
 @Flat = TextButtonStyle(
   Default: (Background: #000000(0.35), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -25,7 +25,7 @@ Group {
       Padding: (Full: 24);
 
       Label {
-        Text: "ДС СЕРВЕР";
+        Text: "ПРАВИЛА";
         Anchor: (Height: 56);
         Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
       }
@@ -52,21 +52,40 @@ Group {
             Padding: (Full: 20);
 
                 Label {
-                  Text: "Заходи в наш Discord:";
-                  Anchor: (Height: 30);
-                  Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
+                  Text: "1. Уважай других игроков: без оскорблений и токсичности.";
+                  Anchor: (Height: 26);
+                  Style: (FontSize: 16, TextColor: #ffffff);
                 }
-                Group { Anchor: (Height: 14); }
+                Group { Anchor: (Height: 10); }
                 Label {
-                  Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
-                  Anchor: (Height: 32);
-                  Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+                  Text: "2. Читы, багоюз и сторонние программы запрещены.";
+                  Anchor: (Height: 26);
+                  Style: (FontSize: 16, TextColor: #ffffff);
                 }
-                Group { Anchor: (Height: 14); }
+                Group { Anchor: (Height: 10); }
                 Label {
-                  Text: "Скопируй ссылку и открой её в браузере.";
-                  Anchor: (Height: 22);
-                  Style: (FontSize: 14, TextColor: #9a9a9a);
+                  Text: "3. Не ломай и не забирай чужие постройки и вещи.";
+                  Anchor: (Height: 26);
+                  Style: (FontSize: 16, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "4. Реклама других серверов запрещена.";
+                  Anchor: (Height: 26);
+                  Style: (FontSize: 16, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "5. Решение администрации окончательное.";
+                  Anchor: (Height: 26);
+                  Style: (FontSize: 16, TextColor: #ffffff);
+                }
+                Group { Anchor: (Height: 10); }
+                Group { Anchor: (Height: 10); }
+                Label {
+                  Text: "Это текст-заглушка — замени на свои правила.";
+                  Anchor: (Height: 20);
+                  Style: (FontSize: 13, TextColor: #9a9a9a);
                 }
           }
 
