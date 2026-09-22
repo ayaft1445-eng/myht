@@ -42,11 +42,11 @@ Group {
       Group { Anchor: (Height: 16); }
 
       Group {
-        Anchor: (Height: 400);
+        Anchor: (Height: 450);
         LayoutMode: Left;
 
         Group {
-          Anchor: (Width: 340, Height: 400);
+          Anchor: (Width: 382, Height: 450);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -80,7 +80,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 280, Height: 400);
+          Anchor: (Width: 266, Height: 450);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -114,7 +114,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 280, Height: 400);
+          Anchor: (Width: 266, Height: 450);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -148,7 +148,7 @@ Group {
         }
         Group { Anchor: (Width: 16); }
         Group {
-          Anchor: (Width: 280, Height: 400);
+          Anchor: (Width: 266, Height: 450);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #ffffff; }
@@ -182,42 +182,8 @@ Group {
         }
       }
 
-      Group { FlexWeight: 1; }
+      Group { Anchor: (Height: 16); }
 
-      Group {
-        Anchor: (Height: 46);
-        LayoutMode: Center;
-
-          Group {
-            Anchor: (Width: 220, Height: 46);
-            LayoutMode: Top;
-
-            Group { Anchor: (Height: 2); Background: #ffffff; }
-
-            Group {
-              FlexWeight: 1;
-              LayoutMode: Left;
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #CloseButton {
-                  Text: "ЗАКРЫТЬ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
-              }
-
-              Group { Anchor: (Width: 2); Background: #ffffff; }
-            }
-
-            Group { Anchor: (Height: 2); Background: #ffffff; }
-          }
-      }
-
-      Group { Anchor: (Height: 8); }
 
       Label {
         Text: "ESC — закрыть меню";

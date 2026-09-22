@@ -58,3 +58,16 @@ jobs:
         Как поставить: скачайте файл .jar ниже и положите его в папку plugins/ вашего сервера, затем перезапустите сервер. Старый файл плагина из папки удалите.
 
         Инструкция целиком: INSTALL-RU.md в репозитории."
+
+    - name: Dump Hytale API signatures
+      if: always()
+      run: |
+        set +e
+        JAR=$(find "$HOME" -name "Server-*.jar" 2>/dev/null | head -1)
+        echo "===== классы про клавиши и привязки ввода ====="
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE "(inputbinding|keybind|hotkey|controlbinding|keyboard)" | sed 's#.*/##' | sort -u
+        echo "(если пусто — в серверном SDK таких классов нет)"
+        echo "===== типы ассетов, которые умеет сервер ====="
+        unzip -l "$JAR" | awk '{print $4}' | grep -oE "asset/type/[a-z]+/" | sort -u
+        exit 0
+

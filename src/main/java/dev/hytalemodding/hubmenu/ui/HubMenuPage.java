@@ -96,14 +96,16 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
                     new EventData().append("Action", ACTION_BACK),
                     false
             );
-        }
 
-        evt.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#CloseButton",
-                new EventData().append("Action", ACTION_CLOSE),
-                false
-        );
+            // Кнопка «Закрыть» есть только в окнах разделов:
+            // в главном окне её убрали, там закрывает ESC
+            evt.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    "#CloseButton",
+                    new EventData().append("Action", ACTION_CLOSE),
+                    false
+            );
+        }
     }
 
     @Override
