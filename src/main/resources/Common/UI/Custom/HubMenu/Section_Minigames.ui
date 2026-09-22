@@ -67,18 +67,18 @@ Group {
           Label {
             Text: "ЗАХВАТ ФЛАГА";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Две команды. Унеси флаг соперника";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "на свою базу раньше врага.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }
@@ -113,18 +113,18 @@ Group {
           Label {
             Text: "ВЫЖИВАНИЕ";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Держись как можно дольше";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "против волн монстров.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }
@@ -159,18 +159,18 @@ Group {
           Label {
             Text: "ПАРКУР";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Пройди трассу с препятствиями";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "на время. Есть рекорд сервера.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }

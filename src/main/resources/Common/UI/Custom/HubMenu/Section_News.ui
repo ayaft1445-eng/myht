@@ -67,18 +67,18 @@ Group {
           Label {
             Text: "ОТКРЫТИЕ СЕРВЕРА";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Мы запустились! Заходите, зовите друзей";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "и пишите о багах в Discord.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }
@@ -113,18 +113,18 @@ Group {
           Label {
             Text: "НОВАЯ МИНИ-ИГРА";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Скоро добавим «Захват флага»:";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "две команды, один флаг, много шума.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }
@@ -159,18 +159,18 @@ Group {
           Label {
             Text: "ОБНОВЛЕНИЕ МИРА";
             Anchor: (Height: 28);
-            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start);
+            Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true);
           }
           Group { Anchor: (Height: 6); }
           Label {
             Text: "Спавн перестроен, добавлены порталы";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
           Label {
             Text: "к аренам и торговой площади.";
             Anchor: (Height: 22);
-            Style: (FontSize: 15, TextColor: #bbbbbb, RenderBold: false, HorizontalAlignment: Start);
+            Style: (FontSize: 15, TextColor: #bbbbbb);
           }
         }
       }

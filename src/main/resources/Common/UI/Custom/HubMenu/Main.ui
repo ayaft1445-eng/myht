@@ -2,15 +2,15 @@
 // Ширина карточек и подписи меняются ниже; размер окна — в Anchor самой первой группы.
 
 @CardBig = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom))
+  Default: (Background: #000000, LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 28, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Card = TextButtonStyle(
-  Default: (Background: #000000, LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
-  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom)),
-  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Bottom))
+  Default: (Background: #000000, LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #bbbbbb, LabelStyle: (FontSize: 22, TextColor: #000000, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
