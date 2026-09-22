@@ -1,0 +1,26 @@
+{
+    "Group": "HytaleModding",
+    "Name": "serverhub",
+    "Version": "1.0.0",
+    "Description": "Server hub menu: rules, minigames and discord sections",
+    "Authors": [
+        {
+            "Name": "ayaft1445-eng",
+            "Email": "noreply@example.com",
+            "Url": "https://github.com/ayaft1445-eng"
+        }
+    ],
+    "Website": "https://github.com/ayaft1445-eng/myht",
+    "DisabledByDefault": false,
+    "IncludesAssetPack": true,
+    "Dependencies": {
+        "Hytale:AssetModule": "*"
+    },
+    "OptionalDependencies": {
+    },
+    "ServerVersion": ">=0.6.0 <0.7.0",
+    "Main": "dev.hytalemodding.serverhub.ServerHubPlugin",
+    "UpdateChecker": {
+        "CurseForge": ""
+    }
+}

@@ -1,0 +1,84 @@
+// Окно раздела «ДИСКОРД СЕРВЕР». Текст меняется в строках Text ниже.
+
+@BackStyle = TextButtonStyle(
+  Default: (Background: #7c3aed, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #8b5cf6, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #6d28d9, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@CloseStyle = TextButtonStyle(
+  Default: (Background: #2d1b4e, LabelStyle: (FontSize: 16, TextColor: #c4b5fd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #3b2566, LabelStyle: (FontSize: 16, TextColor: #e9d5ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #241040, LabelStyle: (FontSize: 16, TextColor: #c4b5fd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 860, Height: 600);
+  Background: #1a0f2e(0.98);
+  LayoutMode: Top;
+  Padding: (Full: 24);
+
+  Label {
+    Text: "ДИСКОРД СЕРВЕР";
+    Anchor: (Height: 46);
+    Style: (FontSize: 30, TextColor: #e9d5ff, HorizontalAlignment: Center, RenderBold: true);
+  }
+
+  Group { Anchor: (Height: 2); Background: #6d28d9; }
+  Group { Anchor: (Height: 18); }
+
+  Group {
+    FlexWeight: 1;
+    Background: #150b26(0.9);
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    Label {
+      Text: "Заходи в наш Discord:";
+      Anchor: (Height: 34);
+      Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+    }
+    Group { Anchor: (Height: 16); }
+    Label {
+      Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
+      Anchor: (Height: 32);
+      Style: (FontSize: 20, TextColor: #a78bfa, RenderBold: true);
+    }
+    Group { Anchor: (Height: 16); }
+    Label {
+      Text: "Скопируй ссылку и открой её в браузере.";
+      Anchor: (Height: 30);
+      Style: (FontSize: 15, TextColor: #8b7bb8, RenderBold: false);
+    }
+
+  }
+
+  Group { Anchor: (Height: 18); }
+
+  Group {
+    Anchor: (Height: 46);
+    LayoutMode: Center;
+
+    TextButton #BackButton {
+      Text: "НАЗАД";
+      Anchor: (Width: 200, Height: 46);
+      Style: @BackStyle;
+    }
+
+    Group { Anchor: (Width: 16); }
+
+    TextButton #CloseButton {
+      Text: "ЗАКРЫТЬ";
+      Anchor: (Width: 200, Height: 46);
+      Style: @CloseStyle;
+    }
+  }
+
+  Group { Anchor: (Height: 8); }
+
+  Label {
+    Text: "ESC — закрыть меню";
+    Anchor: (Height: 18);
+    Style: (FontSize: 13, TextColor: #6b5a94, HorizontalAlignment: Center);
+  }
+}
