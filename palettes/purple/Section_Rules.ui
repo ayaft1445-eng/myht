@@ -1,0 +1,198 @@
+// Окно «Правила». Текст — в строках Text.
+
+@Card = TextButtonStyle(
+  Default: (Background: #4b1d7a(0.10), LabelStyle: (FontSize: 26, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #9b5de5(0.28), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8a2ff(0.35), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #4b1d7a(0.55), LabelStyle: (FontSize: 15, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #6a2ba8(0.75), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #9b5de5(0.60), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #9b5de5; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #9b5de5; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { FlexWeight: 1; Background: #1a0b2e(0.72); }
+        Group { FlexWeight: 1; Background: #1c0c31(0.72); }
+        Group { FlexWeight: 1; Background: #1e0c34(0.72); }
+        Group { FlexWeight: 1; Background: #1f0d37(0.72); }
+        Group { FlexWeight: 1; Background: #210e3a(0.72); }
+        Group { FlexWeight: 1; Background: #230e3d(0.72); }
+        Group { FlexWeight: 1; Background: #250f41(0.72); }
+        Group { FlexWeight: 1; Background: #270f44(0.72); }
+        Group { FlexWeight: 1; Background: #291047(0.72); }
+        Group { FlexWeight: 1; Background: #2a114a(0.72); }
+        Group { FlexWeight: 1; Background: #2c114d(0.72); }
+        Group { FlexWeight: 1; Background: #2e1250(0.72); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+            Group {
+              Anchor: (Width: 160, Height: 44);
+              LayoutMode: Top;
+
+              Group { Anchor: (Height: 2); Background: #9b5de5; }
+
+              Group {
+                FlexWeight: 1;
+                LayoutMode: Left;
+
+                Group { Anchor: (Width: 2); Background: #9b5de5; }
+
+                Group {
+                  FlexWeight: 1;
+
+                  TextButton #BackButton {
+                    Text: "НАЗАД";
+                    Anchor: (Full: 0);
+                    Style: @Flat;
+                  }
+                }
+
+                Group { Anchor: (Width: 2); Background: #9b5de5; }
+              }
+
+              Group { Anchor: (Height: 2); Background: #9b5de5; }
+            }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Center;
+
+              Label {
+                Text: "ПРАВИЛА";
+                Anchor: (Height: 48);
+                Style: (FontSize: 36, TextColor: #c8a2ff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 160); }
+        }
+
+        Group { Anchor: (Height: 2); Background: #9b5de5; }
+        Group { Anchor: (Height: 18); }
+
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #9b5de5; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #9b5de5; }
+
+            Group {
+              FlexWeight: 1;
+
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+
+                Group { FlexWeight: 1; Background: #2e1250(0.4); }
+                Group { FlexWeight: 1; Background: #311354(0.4); }
+                Group { FlexWeight: 1; Background: #331458(0.4); }
+                Group { FlexWeight: 1; Background: #36155b(0.4); }
+                Group { FlexWeight: 1; Background: #39165f(0.4); }
+                Group { FlexWeight: 1; Background: #3b1763(0.4); }
+                Group { FlexWeight: 1; Background: #3e1867(0.4); }
+                Group { FlexWeight: 1; Background: #40196b(0.4); }
+                Group { FlexWeight: 1; Background: #431a6f(0.4); }
+                Group { FlexWeight: 1; Background: #461b72(0.4); }
+                Group { FlexWeight: 1; Background: #481c76(0.4); }
+                Group { FlexWeight: 1; Background: #4b1d7a(0.4); }
+              }
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+                Padding: (Full: 24);
+
+                  Label {
+                    Text: "1. Уважай других игроков: без оскорблений и токсичности.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #ffffff, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "2. Читы, багоюз и сторонние программы запрещены.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #ffffff, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "3. Не ломай и не забирай чужие постройки и вещи.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #ffffff, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "4. Реклама других серверов запрещена.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #ffffff, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "5. Решение администрации окончательное.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #ffffff, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Group { Anchor: (Height: 14); }
+                  Label {
+                    Text: "Это текст-заглушка — замени на свои правила.";
+                    Anchor: (Height: 20);
+                    Style: (FontSize: 13, TextColor: #9b5de5, HorizontalAlignment: Center);
+                  }
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #9b5de5; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #9b5de5; }
+        }
+
+        Group { Anchor: (Height: 14); }
+
+        Label {
+          Text: "ESC — закрыть меню";
+          Anchor: (Height: 18);
+          Style: (FontSize: 13, TextColor: #9b5de5, HorizontalAlignment: Center);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #9b5de5; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #9b5de5; }
+}
