@@ -9,15 +9,21 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.hytalemodding.hubmenu.lang.LanguageStore;
+import dev.hytalemodding.hubmenu.lang.MenuLanguage;
 import dev.hytalemodding.hubmenu.ui.HubMenuPage;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 /** Команда /hub — открывает меню HUB. */
 public class HubCommand extends AbstractPlayerCommand {
 
-    public HubCommand() {
+    private final LanguageStore languages;
+
+    public HubCommand(@Nonnull LanguageStore languages) {
         super("hub", "Открыть меню сервера");
+        this.languages = languages;
     }
 
     @Override
@@ -34,10 +40,18 @@ public class HubCommand extends AbstractPlayerCommand {
             return;
         }
 
+        UUID playerId = playerRef.getUuid();
+        MenuLanguage language = this.languages.get(playerId, MenuLanguage.fromCode(playerRef.getLanguage()));
+
+        // Кто ещё ни разу не выбирал язык — сначала попадает в окно выбора.
+        int section = this.languages.hasChosen(playerId)
+                ? HubMenuPage.SECTION_MAIN
+                : HubMenuPage.SECTION_LANGUAGE;
+
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new HubMenuPage(playerRef, player.getPageManager(), HubMenuPage.SECTION_MAIN)
+                new HubMenuPage(playerRef, player.getPageManager(), this.languages, language, section)
         );
     }
 }

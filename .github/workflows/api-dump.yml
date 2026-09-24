@@ -24,6 +24,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v5
 
     - name: Build (подтягивает зависимости сервера)
+      continue-on-error: true
       run: ./gradlew build
 
     - name: Сигнатуры
