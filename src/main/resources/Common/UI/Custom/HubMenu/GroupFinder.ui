@@ -1,6 +1,8 @@
-// Окно «Поиск группы». Строки режимов заполняет сервер:
-// #Status, #Name0..#Name5, #Info0..#Info5, подписи кнопок #Join0..#Join5.
-// Собрано из тех же элементов, что и остальные окна мода: Group, Label, TextButton.
+// Окно «Поиск группы». Текст строк проставляет сервер:
+// #Status, #Name0..#Name5, #Info0..#Info5, #Join0..#Join5.
+// Меняющийся текст сидит на TextButton: ID на Label клиент этой
+// версии в рабочих окнах мода не встречает, проверять его на живых
+// игроках нельзя — ошибка разбора не пускает на сервер.
 
 @Action = TextButtonStyle(
   Default: (Background: #ffffff(0.06), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -12,6 +14,24 @@
   Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Name = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Dim = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Accent = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 17, TextColor: #c8102e, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 17, TextColor: #c8102e, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 17, TextColor: #c8102e, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
@@ -50,370 +70,431 @@ Group {
         Group {
           Anchor: (Height: 52);
           LayoutMode: Left;
-          Group {
-            Anchor: (Width: 160, Height: 44);
-            LayoutMode: Top;
+        Group {
+          Anchor: (Width: 160, Height: 44);
+          LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
 
-            Group {
-              FlexWeight: 1;
-              LayoutMode: Left;
-
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #BackButton {
-                  Text: "НАЗАД";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
-              }
-
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
-            }
-
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
-          }
           Group {
             FlexWeight: 1;
-            LayoutMode: Center;
+            LayoutMode: Left;
 
-            Label {
-              Text: "ПОИСК ГРУППЫ";
-              Anchor: (Height: 48);
-              Style: (FontSize: 32, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-            }
-          }
-          Group {
-            Anchor: (Width: 160, Height: 44);
-            LayoutMode: Top;
-
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
-              LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #RefreshButton {
-                  Text: "ОБНОВИТЬ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
+              TextButton #BackButton {
+                Text: "НАЗАД";
+                Anchor: (Full: 0);
+                Style: @Flat;
               }
-
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
           }
+
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
+
+          Label {
+            Text: "ПОИСК ГРУППЫ";
+            Anchor: (Height: 46);
+            Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 160, Height: 44);
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+
+              TextButton #RefreshButton {
+                Text: "ОБНОВИТЬ";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+        }
         }
         Group { Anchor: (Height: 2); Background: #c8102e; }
-        Group { Anchor: (Height: 12); }
-        Label #Status {
-          Text: "ВЫ НЕ В ОЧЕРЕДИ";
-          Anchor: (Height: 30);
-          Style: (FontSize: 18, TextColor: #c8102e, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-        }
-        Group { Anchor: (Height: 12); }
+        Group { Anchor: (Height: 10); }
         Group {
-          Anchor: (Height: 66);
+          Anchor: (Height: 34);
+          LayoutMode: Left;
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 20, Height: 30);
+
+            TextButton #Status {
+              Text: "ВЫ НЕ В ОЧЕРЕДИ";
+              Anchor: (Full: 0);
+              Style: @Accent;
+            }
+          }
+        }
+        }
+        Group { Anchor: (Height: 10); }
+        Group {
+          Anchor: (Height: 64);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
-
-            Label #Name0 {
-              Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
-            }
-          }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
-
-            Label #Info0 {
-              Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
-            }
-          }
-          Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
-
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join0 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
-            }
-          }
-          Group { Anchor: (Width: 10); }
-        }
-        Group { Anchor: (Height: 6); }
+        Group { Anchor: (Width: 12); }
         Group {
-          Anchor: (Height: 66);
-          LayoutMode: Left;
-          Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
 
-            Label #Name1 {
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name0 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Name;
             }
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #Info1 {
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info0 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
+            Anchor: (Width: 258, Height: 50);
 
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join1 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #Join0 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 66);
+          Anchor: (Height: 64);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
 
-            Label #Name2 {
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name1 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Name;
             }
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #Info2 {
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info1 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
+            Anchor: (Width: 258, Height: 50);
 
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join2 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #Join1 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 66);
+          Anchor: (Height: 64);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
 
-            Label #Name3 {
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name2 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Name;
             }
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #Info3 {
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info2 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
+            Anchor: (Width: 258, Height: 50);
 
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join3 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #Join2 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 66);
+          Anchor: (Height: 64);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
 
-            Label #Name4 {
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name3 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Name;
             }
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #Info4 {
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info3 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
+            Anchor: (Width: 258, Height: 50);
 
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join4 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #Join3 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 66);
+          Anchor: (Height: 64);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 16); }
-          Group {
-            Anchor: (Width: 400, Height: 66);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
 
-            Label #Name5 {
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name4 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Name;
             }
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #Info5 {
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info4 {
               Text: "";
-              Anchor: (Height: 34);
-              Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 66);
-            LayoutMode: Center;
+            Anchor: (Width: 258, Height: 50);
 
-            Group {
-              Anchor: (Width: 248, Height: 52);
-
-              TextButton #Join5 {
-                Text: "";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #Join4 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
+        }
+        Group { Anchor: (Height: 6); }
+        Group {
+          Anchor: (Height: 64);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 380, Height: 64);
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 368, Height: 50);
+
+            TextButton #Name5 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Name;
+            }
+          }
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 20, Height: 50);
+
+            TextButton #Info5 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Dim;
+            }
+          }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 64);
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 258, Height: 50);
+
+            TextButton #Join5 {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Action;
+            }
+          }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 6); }
         Group { FlexWeight: 1; }
         Group {
-          Anchor: (Height: 52);
+          Anchor: (Height: 50);
           LayoutMode: Left;
-          Group { FlexWeight: 1; }
-          Group {
-            Anchor: (Width: 300, Height: 44);
-            LayoutMode: Top;
+        Group { FlexWeight: 1; }
+        Group {
+          Anchor: (Width: 300, Height: 44);
+          LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
-              LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #LeaveButton {
-                  Text: "ВЫЙТИ ИЗ ОЧЕРЕДИ";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
+              TextButton #LeaveButton {
+                Text: "ВЫЙТИ ИЗ ОЧЕРЕДИ";
+                Anchor: (Full: 0);
+                Style: @Flat;
               }
-
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
           }
-          Group { FlexWeight: 1; }
+
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 8); }
         Label {
           Text: "ESC — ЗАКРЫТЬ";
           Anchor: (Height: 20);
-          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }

@@ -1,4 +1,4 @@
-// Окно настройки одного режима. Значения проставляет сервер:
+// Окно настройки одного режима. Текст проставляет сервер:
 // #Title, #EnabledValue, #MinValue, #MaxValue, #CdValue, #SpreadValue,
 // #CardValue, #ArenaValue, #QueueValue, #Hint.
 
@@ -18,6 +18,24 @@
   Default: (Background: #c8102e(0.25), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #c8102e(0.70), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Pressed: (Background: #c8102e(0.95), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Dim = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 16, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Value = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Head = TextButtonStyle(
+  Default: (Background: #ffffff(0.00), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.00), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #ffffff(0.00), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
@@ -56,486 +74,524 @@ Group {
         Group {
           Anchor: (Height: 52);
           LayoutMode: Left;
-          Group {
-            Anchor: (Width: 160, Height: 44);
-            LayoutMode: Top;
+        Group {
+          Anchor: (Width: 160, Height: 44);
+          LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
-              LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
-
-              Group {
-                FlexWeight: 1;
-
-                TextButton #BackButton {
-                  Text: "НАЗАД";
-                  Anchor: (Full: 0);
-                  Style: @Flat;
-                }
+              TextButton #BackButton {
+                Text: "НАЗАД";
+                Anchor: (Full: 0);
+                Style: @Flat;
               }
-
-              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a3a3e; }
           }
+
+          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
+
           Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+            Anchor: (Width: 20, Height: 46);
 
-            Label #Title {
+            TextButton #Title {
               Text: "РЕЖИМ";
-              Anchor: (Height: 48);
-              Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Head;
             }
           }
-          Group { Anchor: (Width: 160); }
+        }
+        Group { Anchor: (Width: 160); }
         }
         Group { Anchor: (Height: 2); Background: #c8102e; }
-        Group { Anchor: (Height: 14); }
+        Group { Anchor: (Height: 12); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "СОСТОЯНИЕ";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 270, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "СОСТОЯНИЕ";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 258, Height: 40);
+
+            TextButton #EnabledValue {
+              Text: "ВЫКЛЮЧЕН";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
-          Group {
-            Anchor: (Width: 270, Height: 56);
-            LayoutMode: Center;
-
-            Group {
-              Anchor: (Width: 258, Height: 42);
-
-              TextButton #EnabledValue {
-                Text: "ВЫКЛЮЧЕН";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
-            }
-          }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "МИНИМУМ ИГРОКОВ ДЛЯ СТАРТА";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "МИНИМУМ ИГРОКОВ ДЛЯ СТАРТА";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 60, Height: 40);
+
+            TextButton #MinMinus {
+              Text: "-";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 120, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 108, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #MinMinus {
-                Text: "-";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
-            }
-          }
-          Group {
-            Anchor: (Width: 120, Height: 56);
-            LayoutMode: Center;
-
-            Label #MinValue {
+            TextButton #MinValue {
               Text: "2";
-              Anchor: (Height: 34);
-              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Value;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 60, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #MinPlus {
-                Text: "+";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #MinPlus {
+              Text: "+";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "МАКСИМУМ ИГРОКОВ В ГРУППЕ";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "МАКСИМУМ ИГРОКОВ В ГРУППЕ";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 60, Height: 40);
+
+            TextButton #MaxMinus {
+              Text: "-";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 120, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 108, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #MaxMinus {
-                Text: "-";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
-            }
-          }
-          Group {
-            Anchor: (Width: 120, Height: 56);
-            LayoutMode: Center;
-
-            Label #MaxValue {
+            TextButton #MaxValue {
               Text: "2";
-              Anchor: (Height: 34);
-              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Value;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 60, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #MaxPlus {
-                Text: "+";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #MaxPlus {
+              Text: "+";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "ОТСЧЁТ ПЕРЕД ТЕЛЕПОРТОМ, СЕК";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "ОТСЧЁТ ПЕРЕД ТЕЛЕПОРТОМ, СЕК";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 60, Height: 40);
+
+            TextButton #CdMinus {
+              Text: "-";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 120, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 108, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #CdMinus {
-                Text: "-";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
-            }
-          }
-          Group {
-            Anchor: (Width: 120, Height: 56);
-            LayoutMode: Center;
-
-            Label #CdValue {
+            TextButton #CdValue {
               Text: "5";
-              Anchor: (Height: 34);
-              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Value;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 60, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #CdPlus {
-                Text: "+";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #CdPlus {
+              Text: "+";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "РАЗБРОС ВОКРУГ ТОЧКИ, БЛОКОВ";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "РАЗБРОС ВОКРУГ ТОЧКИ, БЛОКОВ";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 60, Height: 40);
+
+            TextButton #SpreadMinus {
+              Text: "-";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 120, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 108, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #SpreadMinus {
-                Text: "-";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
-            }
-          }
-          Group {
-            Anchor: (Width: 120, Height: 56);
-            LayoutMode: Center;
-
-            Label #SpreadValue {
+            TextButton #SpreadValue {
               Text: "0";
-              Anchor: (Height: 34);
-              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Value;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 60, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #SpreadPlus {
-                Text: "+";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #SpreadPlus {
+              Text: "+";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 6); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
+          Label {
+            Text: "КНОПКА В ОКНЕ «МИНИ-ИГРЫ»";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
 
-            Label {
-              Text: "КНОПКА В ОКНЕ «МИНИ-ИГРЫ»";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+          Group {
+            Anchor: (Width: 60, Height: 40);
+
+            TextButton #CardPrev {
+              Text: "-";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 200, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 188, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #CardPrev {
-                Text: "-";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
-            }
-          }
-          Group {
-            Anchor: (Width: 200, Height: 56);
-            LayoutMode: Center;
-
-            Label #CardValue {
+            TextButton #CardValue {
               Text: "нет";
-              Anchor: (Height: 34);
-              Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Value;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 72, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 72, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 60, Height: 40);
 
-            Group {
-              Anchor: (Width: 60, Height: 42);
-
-              TextButton #CardNext {
-                Text: "+";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #CardNext {
+              Text: "+";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
+        }
+        Group { FlexWeight: 1; }
         }
         Group { Anchor: (Height: 12); }
         Group {
-          Anchor: (Height: 70);
+          Anchor: (Height: 68);
           LayoutMode: Left;
           Background: #ffffff(0.05);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 240, Height: 70);
-            LayoutMode: Center;
-
-            Label {
-              Text: "ТОЧКА ТЕЛЕПОРТА";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
-            }
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 230, Height: 68);
+          LayoutMode: Center;
+          Label {
+            Text: "ТОЧКА ТЕЛЕПОРТА";
+            Anchor: (Height: 34);
+            Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
           }
-          Group {
-            FlexWeight: 1;
-            LayoutMode: Center;
+        }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
 
-            Label #ArenaValue {
+          Group {
+            Anchor: (Width: 20, Height: 54);
+
+            TextButton #ArenaValue {
               Text: "не задана";
-              Anchor: (Height: 34);
-              Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 300, Height: 68);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 300, Height: 70);
-            LayoutMode: Center;
+            Anchor: (Width: 288, Height: 54);
 
-            Group {
-              Anchor: (Width: 288, Height: 56);
-
-              TextButton #SetHereButton {
-                Text: "ПОСТАВИТЬ ТОЧКУ ЗДЕСЬ";
-                Anchor: (Full: 0);
-                Style: @Action;
-              }
+            TextButton #SetHereButton {
+              Text: "ПОСТАВИТЬ ТОЧКУ ЗДЕСЬ";
+              Anchor: (Full: 0);
+              Style: @Action;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 170, Height: 68);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 170, Height: 70);
-            LayoutMode: Center;
+            Anchor: (Width: 158, Height: 54);
 
-            Group {
-              Anchor: (Width: 158, Height: 56);
-
-              TextButton #TestButton {
-                Text: "ПРОВЕРИТЬ";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #TestButton {
+              Text: "ПРОВЕРИТЬ";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 160, Height: 68);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 160, Height: 70);
-            LayoutMode: Center;
+            Anchor: (Width: 148, Height: 54);
 
-            Group {
-              Anchor: (Width: 148, Height: 56);
-
-              TextButton #ClearArenaButton {
-                Text: "СБРОСИТЬ";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #ClearArenaButton {
+              Text: "СБРОСИТЬ";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Width: 12); }
         }
         Group { Anchor: (Height: 10); }
         Group {
-          Anchor: (Height: 56);
+          Anchor: (Height: 54);
           LayoutMode: Left;
           Background: #ffffff(0.03);
-          Group { Anchor: (Width: 12); }
-          Group {
-            Anchor: (Width: 430, Height: 56);
-            LayoutMode: Center;
+        Group { Anchor: (Width: 12); }
+        Group {
+          Anchor: (Width: 430, Height: 54);
+          LayoutMode: Center;
 
-            Label #QueueValue {
+          Group {
+            Anchor: (Width: 418, Height: 40);
+
+            TextButton #QueueValue {
               Text: "в очереди: 0";
-              Anchor: (Height: 34);
-              Style: (FontSize: 18, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+              Anchor: (Full: 0);
+              Style: @Dim;
             }
           }
+        }
+        Group {
+          Anchor: (Width: 260, Height: 54);
+          LayoutMode: Center;
+
           Group {
-            Anchor: (Width: 260, Height: 56);
-            LayoutMode: Center;
+            Anchor: (Width: 248, Height: 40);
 
-            Group {
-              Anchor: (Width: 248, Height: 42);
-
-              TextButton #ClearQueueButton {
-                Text: "ОЧИСТИТЬ ОЧЕРЕДЬ";
-                Anchor: (Full: 0);
-                Style: @Flat;
-              }
+            TextButton #ClearQueueButton {
+              Text: "ОЧИСТИТЬ ОЧЕРЕДЬ";
+              Anchor: (Full: 0);
+              Style: @Flat;
             }
           }
-          Group { FlexWeight: 1; }
-          Group {
-            Anchor: (Width: 220, Height: 56);
-            LayoutMode: Center;
-
-            Group {
-              Anchor: (Width: 208, Height: 42);
-
-              TextButton #DeleteButton {
-                Text: "УДАЛИТЬ РЕЖИМ";
-                Anchor: (Full: 0);
-                Style: @Danger;
-              }
-            }
-          }
-          Group { Anchor: (Width: 10); }
         }
         Group { FlexWeight: 1; }
-        Label #Hint {
-          Text: "ключ режима";
-          Anchor: (Height: 24);
-          Style: (FontSize: 15, TextColor: #6e6e74, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: false);
+        Group {
+          Anchor: (Width: 220, Height: 54);
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 208, Height: 40);
+
+            TextButton #DeleteButton {
+              Text: "УДАЛИТЬ РЕЖИМ";
+              Anchor: (Full: 0);
+              Style: @Danger;
+            }
+          }
+        }
+        Group { Anchor: (Width: 12); }
+        }
+        Group { FlexWeight: 1; }
+        Group {
+          Anchor: (Height: 26);
+          LayoutMode: Left;
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Center;
+
+          Group {
+            Anchor: (Width: 20, Height: 24);
+
+            TextButton #Hint {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Dim;
+            }
+          }
+        }
         }
         Group { Anchor: (Height: 6); }
         Label {
           Text: "ESC — ЗАКРЫТЬ";
           Anchor: (Height: 20);
-          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }
