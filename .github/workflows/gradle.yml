@@ -23,6 +23,11 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
 
+    # Ошибка в .ui или в селекторе не ломает компиляцию — она рвёт
+    # соединение игроку уже на сервере, поэтому ловим её до сборки.
+    - name: Check UI markup and selectors
+      run: python3 tools/check_ui.py
+
     - name: Build plugin
       run: ./gradlew build
 

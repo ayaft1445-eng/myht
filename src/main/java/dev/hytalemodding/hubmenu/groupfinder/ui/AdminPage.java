@@ -92,6 +92,10 @@ public class AdminPage extends InteractiveCustomUIPage<AdminPage.AdminEventData>
     // -------------------------------------------------------- список режимов
 
     private void buildList(UICommandBuilder cmd, UIEventBuilder evt) {
+        // Разметку грузим первой: без неё все set ниже целятся в пустоту,
+        // и клиент рвёт соединение на первом же несуществующем элементе.
+        cmd.append(LIST_LAYOUT);
+
         GroupFinderConfig config = this.service.config();
         List<GameModeConfig> modes = config.getModes();
 
@@ -178,6 +182,8 @@ public class AdminPage extends InteractiveCustomUIPage<AdminPage.AdminEventData>
     // ------------------------------------------------------- настройка режима
 
     private void buildMode(UICommandBuilder cmd, UIEventBuilder evt, GameModeConfig mode) {
+        cmd.append(MODE_LAYOUT);
+
         ArenaPoint arena = mode.getArena();
 
         cmd.set("#Title.Text", "НАСТРОЙКА · " + mode.getName());
