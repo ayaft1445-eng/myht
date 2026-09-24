@@ -128,7 +128,7 @@ Group {
                 }
 
                 Label {
-                  Text: "МИНИ-ИГРЫ";
+                  Text: "MINIGAMES";
                   Anchor: (Height: 38, Bottom: 22);
                   Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
@@ -183,7 +183,7 @@ Group {
                 }
 
                 Label {
-                  Text: "НОВОСТИ";
+                  Text: "NEWS";
                   Anchor: (Height: 30, Bottom: 22);
                   Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
@@ -238,7 +238,7 @@ Group {
                 }
 
                 Label {
-                  Text: "ПРАВИЛА";
+                  Text: "RULES";
                   Anchor: (Height: 30, Bottom: 22);
                   Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
@@ -286,14 +286,14 @@ Group {
                   Group { Anchor: (Height: 46); Background: #2e1b47(0.5); }
                   Group { Anchor: (Height: 46); Background: #321e4e(0.5); }
                 }
-                TextButton #BtnDiscord {
+                TextButton #BtnLanguage {
                   Text: "";
                   Anchor: (Full: 0);
                   Style: @Card;
                 }
 
                 Label {
-                  Text: "ДС СЕРВЕР";
+                  Text: "LANGUAGE";
                   Anchor: (Height: 30, Bottom: 22);
                   Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
@@ -320,7 +320,7 @@ Group {
         Group { Anchor: (Height: 48); }
 
         Label {
-          Text: "ESC — ЗАКРЫТЬ";
+          Text: "ESC — CLOSE";
           Anchor: (Height: 20);
           Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
         }

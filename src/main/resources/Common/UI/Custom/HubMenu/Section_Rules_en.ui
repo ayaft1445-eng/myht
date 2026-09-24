@@ -1,0 +1,208 @@
+// Окно «Правила». Текст — в строках Text.
+
+@Card = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 656); Background: #130c22(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #010002(0.5); }
+        Group { Anchor: (Height: 66); Background: #050309(0.5); }
+        Group { Anchor: (Height: 66); Background: #090510(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0817(0.5); }
+        Group { Anchor: (Height: 66); Background: #110a1e(0.5); }
+        Group { Anchor: (Height: 66); Background: #150d25(0.5); }
+        Group { Anchor: (Height: 65); Background: #190f2c(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1233(0.5); }
+        Group { Anchor: (Height: 65); Background: #21143a(0.5); }
+        Group { Anchor: (Height: 65); Background: #251640(0.5); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+            Group {
+              Anchor: (Width: 160, Height: 44);
+              LayoutMode: Top;
+
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+                LayoutMode: Left;
+
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+                Group {
+                  FlexWeight: 1;
+
+                  TextButton #BackButton {
+                    Text: "BACK";
+                    Anchor: (Full: 0);
+                    Style: @Flat;
+                  }
+                }
+
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
+              }
+
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
+            }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Center;
+
+              Label {
+                Text: "RULES";
+                Anchor: (Height: 48);
+                Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 160); }
+        }
+
+        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 16); }
+
+        // Высота задана числом: гибкая высота внутри слоя не растягивается,
+        // из-за этого заливка не доходила до рамки
+        Group {
+          Anchor: (Height: 500);
+          LayoutMode: Top;
+
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Left;
+
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+
+                Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+              }
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+
+                Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+              }
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+                Padding: (Full: 24);
+
+                  Label {
+                    Text: "1. Respect other players: no insults, no toxicity.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "2. Cheats, bug abuse and third-party tools are banned.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "3. Do not break or take other players' builds and items.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "4. Advertising other servers is banned.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Label {
+                    Text: "5. The staff decision is final.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 10); }
+                  Group { Anchor: (Height: 14); }
+                  Label {
+                    Text: "This is placeholder text — replace it with your rules.";
+                    Anchor: (Height: 20);
+                    Style: (FontSize: 13, TextColor: #6f6189, HorizontalAlignment: Center);
+                  }
+              }
+            }
+
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
+          }
+
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
+        }
+
+        Group { Anchor: (Height: 14); }
+
+        Label {
+          Text: "ESC — CLOSE";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+}

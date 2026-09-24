@@ -26,27 +26,23 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       run: ./gradlew build
 
-    - name: Что есть в пакете событий
+    - name: Пакет событий
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        echo "JAR=$JAR"
-        unzip -l "$JAR" | awk '{print $4}' | grep -E 'server/core/event/' | grep -v '\$' | head -60
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'plugin/(PluginBase|PluginInit|PluginManager)' | head -20
+        unzip -l "$JAR" | awk '{print $4}' | grep -E '^com/hypixel/hytale/event/' | grep -v '\$' | head -40
 
     - name: Сигнатуры
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
         for C in \
-          com.hypixel.hytale.server.core.plugin.PluginBase \
-          com.hypixel.hytale.server.core.event.EventRegistry \
-          com.hypixel.hytale.server.core.event.EventBus \
-          com.hypixel.hytale.server.core.event.EventManager \
-          com.hypixel.hytale.server.core.event.Event \
-          com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent \
-          com.hypixel.hytale.server.core.event.events.player.PlayerEvent \
-          com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent ; do
+          com.hypixel.hytale.event.EventRegistry \
+          com.hypixel.hytale.event.IEvent \
+          com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage \
+          com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage ; do
           echo "════════ $C"
-          javap -cp "$CP" "$C" 2>&1 | head -40
+          javap -cp "$CP" "$C" 2>&1 | head -45
         done
+        echo "════════ World (хранилище сущностей)"
+        javap -cp "$CP" com.hypixel.hytale.server.core.universe.world.World 2>&1 | grep -iE 'store|getEntity' | head -20
