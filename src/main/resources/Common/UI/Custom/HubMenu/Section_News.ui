@@ -31,7 +31,22 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 656); Background: #130b21(0.88); }
+        Group { Anchor: (Height: 656); Background: #130c22(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #010002(0.5); }
+        Group { Anchor: (Height: 66); Background: #050309(0.5); }
+        Group { Anchor: (Height: 66); Background: #090510(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0817(0.5); }
+        Group { Anchor: (Height: 66); Background: #110a1e(0.5); }
+        Group { Anchor: (Height: 66); Background: #150d25(0.5); }
+        Group { Anchor: (Height: 65); Background: #190f2c(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1233(0.5); }
+        Group { Anchor: (Height: 65); Background: #21143a(0.5); }
+        Group { Anchor: (Height: 65); Background: #251640(0.5); }
       }
 
       Group {
@@ -109,7 +124,22 @@ Group {
                 Anchor: (Full: 0);
                 LayoutMode: Top;
 
-                Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
+                Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+              }
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+
+                Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
               }
               Group {
                 Anchor: (Full: 0);

@@ -4,8 +4,8 @@
 // Главное окно HUB в тёмном стиле: почти чёрный фон, тонкие рамки,
 // белый капс и красный акцент.
 // Рамка выделенной карточки — в тон самой карточке, у остальных темнее.
-// Фон — одна заливка с заданной высотой. Раньше он собирался из полос ради
-// перехода оттенков, но на масштабе клиента между полосами видны щели.
+// Фон в два слоя: снизу сплошная заливка, поверх — полупрозрачные полосы
+// с оттенками, они и дают переход цвета книзу.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -38,7 +38,22 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 656); Background: #111113(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #050505(0.5); }
+        Group { Anchor: (Height: 66); Background: #080808(0.5); }
+        Group { Anchor: (Height: 66); Background: #0a0a0b(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0d0e(0.5); }
+        Group { Anchor: (Height: 66); Background: #101011(0.5); }
+        Group { Anchor: (Height: 66); Background: #121215(0.5); }
+        Group { Anchor: (Height: 65); Background: #151518(0.5); }
+        Group { Anchor: (Height: 65); Background: #18181b(0.5); }
+        Group { Anchor: (Height: 65); Background: #1a1a1e(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1d21(0.5); }
       }
 
       Group {
@@ -89,7 +104,22 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0a0b(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0d0d0e(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0f0f11(0.5); }
+                  Group { Anchor: (Height: 47); Background: #121214(0.5); }
+                  Group { Anchor: (Height: 47); Background: #151517(0.5); }
+                  Group { Anchor: (Height: 47); Background: #17171b(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1a1a1e(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1d1d21(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1f1f24(0.5); }
+                  Group { Anchor: (Height: 46); Background: #222227(0.5); }
                 }
                 TextButton #BtnMinigames {
                   Text: "";
@@ -129,7 +159,22 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0a0b(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0d0d0e(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0f0f11(0.5); }
+                  Group { Anchor: (Height: 47); Background: #121214(0.5); }
+                  Group { Anchor: (Height: 47); Background: #151517(0.5); }
+                  Group { Anchor: (Height: 47); Background: #17171b(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1a1a1e(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1d1d21(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1f1f24(0.5); }
+                  Group { Anchor: (Height: 46); Background: #222227(0.5); }
                 }
                 TextButton #BtnNews {
                   Text: "";
@@ -169,7 +214,22 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0a0b(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0d0d0e(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0f0f11(0.5); }
+                  Group { Anchor: (Height: 47); Background: #121214(0.5); }
+                  Group { Anchor: (Height: 47); Background: #151517(0.5); }
+                  Group { Anchor: (Height: 47); Background: #17171b(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1a1a1e(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1d1d21(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1f1f24(0.5); }
+                  Group { Anchor: (Height: 46); Background: #222227(0.5); }
                 }
                 TextButton #BtnRules {
                   Text: "";
@@ -209,7 +269,22 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0a0b(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0d0d0e(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0f0f11(0.5); }
+                  Group { Anchor: (Height: 47); Background: #121214(0.5); }
+                  Group { Anchor: (Height: 47); Background: #151517(0.5); }
+                  Group { Anchor: (Height: 47); Background: #17171b(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1a1a1e(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1d1d21(0.5); }
+                  Group { Anchor: (Height: 46); Background: #1f1f24(0.5); }
+                  Group { Anchor: (Height: 46); Background: #222227(0.5); }
                 }
                 TextButton #BtnDiscord {
                   Text: "";
