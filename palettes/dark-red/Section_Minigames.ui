@@ -1,0 +1,375 @@
+// Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
+
+@Card = TextButtonStyle(
+  Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.12), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
+        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
+        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
+        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
+        Group { FlexWeight: 1; Background: #101012(0.88); }
+        Group { FlexWeight: 1; Background: #121214(0.88); }
+        Group { FlexWeight: 1; Background: #131315(0.88); }
+        Group { FlexWeight: 1; Background: #141417(0.88); }
+        Group { FlexWeight: 1; Background: #161618(0.88); }
+        Group { FlexWeight: 1; Background: #17171a(0.88); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+            Group {
+              Anchor: (Width: 160, Height: 44);
+              LayoutMode: Top;
+
+              Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+                LayoutMode: Left;
+
+                Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+                Group {
+                  FlexWeight: 1;
+
+                  TextButton #BackButton {
+                    Text: "НАЗАД";
+                    Anchor: (Full: 0);
+                    Style: @Flat;
+                  }
+                }
+
+                Group { Anchor: (Width: 2); Background: #3a3a3e; }
+              }
+
+              Group { Anchor: (Height: 2); Background: #3a3a3e; }
+            }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Center;
+
+              Label {
+                Text: "МИНИ-ИГРЫ";
+                Anchor: (Height: 48);
+                Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 160); }
+        }
+
+        Group { Anchor: (Height: 2); Background: #c8102e; }
+        Group { Anchor: (Height: 16); }
+
+        Group {
+          Anchor: (Height: 500);
+          LayoutMode: Left;
+
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #Mode0 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "ДОСТУПНО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "ЗАХВАТ ФЛАГА";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Две команды бьются за флаг";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "соперника. Кто принёс — тот и выиграл.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #Mode1 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "ДОСТУПНО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "ВЫЖИВАНИЕ";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Волны монстров идут одна за другой.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Продержись дольше всех и забери награду.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #Mode2 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "СКОРО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #6e6e74, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "ПАРКУР";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Трасса с препятствиями на время.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Побей рекорд сервера и попади в топ.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #Mode3 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "СКОРО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #6e6e74, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "АРЕНА";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Бои один на один на закрытой арене.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Победитель остаётся, проигравший ждёт.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+        }
+
+        Group { Anchor: (Height: 14); }
+
+        Label {
+          Text: "ESC — ЗАКРЫТЬ";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+}

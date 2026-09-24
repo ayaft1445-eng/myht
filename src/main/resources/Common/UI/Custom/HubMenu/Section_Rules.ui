@@ -1,28 +1,28 @@
 // Окно «Правила». Текст — в строках Text.
 
 @Card = TextButtonStyle(
-  Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #ffffff(0.12), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #c8102e(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
-  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 
   Group {
     FlexWeight: 1;
     LayoutMode: Left;
 
-    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
 
     Group {
       FlexWeight: 1;
@@ -31,16 +31,16 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
-        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
-        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
-        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
-        Group { FlexWeight: 1; Background: #101012(0.88); }
-        Group { FlexWeight: 1; Background: #121214(0.88); }
-        Group { FlexWeight: 1; Background: #131315(0.88); }
-        Group { FlexWeight: 1; Background: #141417(0.88); }
-        Group { FlexWeight: 1; Background: #161618(0.88); }
-        Group { FlexWeight: 1; Background: #17171a(0.88); }
+        Group { FlexWeight: 1; Background: #0a0612(0.88); }
+        Group { FlexWeight: 1; Background: #0c0715(0.88); }
+        Group { FlexWeight: 1; Background: #0e0819(0.88); }
+        Group { FlexWeight: 1; Background: #100a1c(0.88); }
+        Group { FlexWeight: 1; Background: #120b20(0.88); }
+        Group { FlexWeight: 1; Background: #140c23(0.88); }
+        Group { FlexWeight: 1; Background: #160d27(0.88); }
+        Group { FlexWeight: 1; Background: #180f2a(0.88); }
+        Group { FlexWeight: 1; Background: #1a102e(0.88); }
+        Group { FlexWeight: 1; Background: #1c1131(0.88); }
       }
 
       Group {
@@ -56,13 +56,13 @@ Group {
               Anchor: (Width: 160, Height: 44);
               LayoutMode: Top;
 
-              Group { Anchor: (Height: 2); Background: #3a3a3e; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
                 LayoutMode: Left;
 
-                Group { Anchor: (Width: 2); Background: #3a3a3e; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
 
                 Group {
                   FlexWeight: 1;
@@ -74,10 +74,10 @@ Group {
                   }
                 }
 
-                Group { Anchor: (Width: 2); Background: #3a3a3e; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
               }
 
-              Group { Anchor: (Height: 2); Background: #3a3a3e; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
             }
 
             Group {
@@ -94,20 +94,20 @@ Group {
             Group { Anchor: (Width: 160); }
         }
 
-        Group { Anchor: (Height: 2); Background: #c8102e; }
+        Group { Anchor: (Height: 2); Background: #a35dff; }
         Group { Anchor: (Height: 16); }
 
         Group {
           FlexWeight: 1;
           LayoutMode: Top;
 
-          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
 
           Group {
             FlexWeight: 1;
             LayoutMode: Left;
 
-            Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
 
             Group {
               FlexWeight: 1;
@@ -116,16 +116,16 @@ Group {
                 Anchor: (Full: 0);
                 LayoutMode: Top;
 
-                Group { FlexWeight: 1; Background: #101012(0.75); }
-                Group { FlexWeight: 1; Background: #111114(0.75); }
-                Group { FlexWeight: 1; Background: #131315(0.75); }
-                Group { FlexWeight: 1; Background: #141417(0.75); }
-                Group { FlexWeight: 1; Background: #151518(0.75); }
-                Group { FlexWeight: 1; Background: #17171a(0.75); }
-                Group { FlexWeight: 1; Background: #18181b(0.75); }
-                Group { FlexWeight: 1; Background: #19191d(0.75); }
-                Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                Group { FlexWeight: 1; Background: #140c22(0.75); }
+                Group { FlexWeight: 1; Background: #160d25(0.75); }
+                Group { FlexWeight: 1; Background: #180f28(0.75); }
+                Group { FlexWeight: 1; Background: #1b102c(0.75); }
+                Group { FlexWeight: 1; Background: #1d112f(0.75); }
+                Group { FlexWeight: 1; Background: #1f1332(0.75); }
+                Group { FlexWeight: 1; Background: #211435(0.75); }
+                Group { FlexWeight: 1; Background: #241539(0.75); }
+                Group { FlexWeight: 1; Background: #26173c(0.75); }
+                Group { FlexWeight: 1; Background: #28183f(0.75); }
               }
               Group {
                 Anchor: (Full: 0);
@@ -135,46 +135,46 @@ Group {
                   Label {
                     Text: "1. Уважай других игроков: без оскорблений и токсичности.";
                     Anchor: (Height: 28);
-                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Group { Anchor: (Height: 10); }
                   Label {
                     Text: "2. Читы, багоюз и сторонние программы запрещены.";
                     Anchor: (Height: 28);
-                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Group { Anchor: (Height: 10); }
                   Label {
                     Text: "3. Не ломай и не забирай чужие постройки и вещи.";
                     Anchor: (Height: 28);
-                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Group { Anchor: (Height: 10); }
                   Label {
                     Text: "4. Реклама других серверов запрещена.";
                     Anchor: (Height: 28);
-                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Group { Anchor: (Height: 10); }
                   Label {
                     Text: "5. Решение администрации окончательное.";
                     Anchor: (Height: 28);
-                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Style: (FontSize: 17, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Group { Anchor: (Height: 10); }
                   Group { Anchor: (Height: 14); }
                   Label {
                     Text: "Это текст-заглушка — замени на свои правила.";
                     Anchor: (Height: 20);
-                    Style: (FontSize: 13, TextColor: #6e6e74, HorizontalAlignment: Center);
+                    Style: (FontSize: 13, TextColor: #6f6189, HorizontalAlignment: Center);
                   }
               }
             }
 
-            Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
           }
 
-          Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
         }
 
         Group { Anchor: (Height: 14); }
@@ -182,13 +182,13 @@ Group {
         Label {
           Text: "ESC — ЗАКРЫТЬ";
           Anchor: (Height: 20);
-          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }
 
-    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
   }
 
-  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 }

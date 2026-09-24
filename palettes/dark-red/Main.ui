@@ -1,0 +1,299 @@
+// Главное окно HUB в тёмном стиле: почти чёрный фон с лёгким переходом,
+// тонкие рамки, белый капс и красный акцент.
+// Яркая рамка = выделенная карточка, тусклая = остальные.
+
+@Card = TextButtonStyle(
+  Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.12), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
+        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
+        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
+        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
+        Group { FlexWeight: 1; Background: #101012(0.88); }
+        Group { FlexWeight: 1; Background: #121214(0.88); }
+        Group { FlexWeight: 1; Background: #131315(0.88); }
+        Group { FlexWeight: 1; Background: #141417(0.88); }
+        Group { FlexWeight: 1; Background: #161618(0.88); }
+        Group { FlexWeight: 1; Background: #17171a(0.88); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Label {
+          Text: "HUB";
+          Anchor: (Height: 54);
+          Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+        }
+
+        Group { Anchor: (Height: 2); Background: #c8102e; }
+        Group { Anchor: (Height: 14); }
+
+        Group {
+          Anchor: (Height: 470);
+          LayoutMode: Left;
+
+          Group {
+            Anchor: (Width: 40);
+            LayoutMode: Center;
+
+            Label {
+              Text: "<";
+              Anchor: (Height: 44);
+              Style: (FontSize: 34, TextColor: #6e6e74, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group { Anchor: (Width: 8); }
+          Group {
+            Anchor: (Width: 520, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #BtnMinigames {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "МИНИ-ИГРЫ";
+                  Anchor: (Height: 38, Bottom: 22);
+                  Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #BtnNews {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "НОВОСТИ";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #BtnRules {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "ПРАВИЛА";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { FlexWeight: 1; Background: #101012(0.75); }
+                  Group { FlexWeight: 1; Background: #111114(0.75); }
+                  Group { FlexWeight: 1; Background: #131315(0.75); }
+                  Group { FlexWeight: 1; Background: #141417(0.75); }
+                  Group { FlexWeight: 1; Background: #151518(0.75); }
+                  Group { FlexWeight: 1; Background: #17171a(0.75); }
+                  Group { FlexWeight: 1; Background: #18181b(0.75); }
+                  Group { FlexWeight: 1; Background: #19191d(0.75); }
+                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
+                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                }
+                TextButton #BtnDiscord {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "ДС СЕРВЕР";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group { Anchor: (Width: 8); }
+          Group {
+            Anchor: (Width: 40);
+            LayoutMode: Center;
+
+            Label {
+              Text: ">";
+              Anchor: (Height: 44);
+              Style: (FontSize: 34, TextColor: #6e6e74, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+        }
+
+        Group { Anchor: (Height: 14); }
+
+        Label {
+          Text: "ESC — ЗАКРЫТЬ";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+}

@@ -21,10 +21,10 @@ import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
 /**
- * Меню HUB в чёрно-белом стиле.
+ * Меню HUB в тёмно-фиолетовом стиле.
  *
- * Одна страница показывает либо главное окно с тремя кнопками-карточками
- * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2).
+ * Одна страница показывает либо главное окно с четырьмя кнопками-карточками
+ * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2, 3).
  * По нажатию кнопки игроку открывается эта же страница с другим номером
  * раздела, поэтому каждое окно собирается заново и целиком.
  *
@@ -34,7 +34,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    /** Главное окно с тремя кнопками. */
+    /** Главное окно с четырьмя кнопками. */
     public static final int SECTION_MAIN = -1;
 
     private static final String MAIN_LAYOUT = "HubMenu/Main.ui";
