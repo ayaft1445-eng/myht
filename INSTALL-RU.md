@@ -38,7 +38,7 @@
 
 ## Установка
 
-1. Скачай `HubMenu-4.1.0.jar`: <https://github.com/ayaft1445-eng/myht/releases/latest>
+1. Скачай `HubMenu-4.1.1.jar`: <https://github.com/ayaft1445-eng/myht/releases/latest>
    (файл внизу страницы, в разделе **Assets**).
 2. Останови сервер.
 3. Положи файл в папку **`mods`** сервера (рядом с уже стоящими модами).

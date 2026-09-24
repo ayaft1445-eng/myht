@@ -32,6 +32,17 @@ public final class ServerApi {
     private ServerApi() {
     }
 
+    /**
+     * Классы векторов, подсмотренные у живого игрока.
+     *
+     * Угадывать их по имени пакета оказалось нельзя: на сервере они лежат не
+     * там, где написано в документации. Зато TransformComponent игрока сам
+     * отдаёт готовые объекты — их классы и берём.
+     */
+    private static volatile Class<?> vector3dClass;
+    private static volatile Class<?> vector3fClass;
+    private static volatile Class<?> transformClass;
+
     /** Что удалось найти на этом сервере — для строки диагностики. */
     private static final Map<String, String> REPORT = new LinkedHashMap<>();
 
@@ -298,6 +309,7 @@ public final class ServerApi {
         if (targetWorld != null && !strategyChangesWorld(strategy)) {
             return "способ не умеет менять мир";
         }
+        learnClasses(store, ref);
         try {
             switch (strategy) {
                 case "Teleport-компонент":
@@ -482,13 +494,13 @@ public final class ServerApi {
     }
 
     private static Object newTransform(double x, double y, double z, float yaw, float pitch) {
-        Class<?> transformClass = findClass(TRANSFORM_CLASSES);
-        if (transformClass == null) {
+        Class<?> type = transformType();
+        if (type == null) {
             return null;
         }
         Object position = newVector3d(x, y, z);
         Object rotation = newVector3f(pitch, yaw, 0.0f);
-        for (Constructor<?> constructor : transformClass.getConstructors()) {
+        for (Constructor<?> constructor : type.getConstructors()) {
             Class<?>[] types = constructor.getParameterTypes();
             try {
                 if (types.length == 2 && position != null && rotation != null
@@ -606,27 +618,137 @@ public final class ServerApi {
         return false;
     }
 
-    private static Object newVector3d(double x, double y, double z) {
-        Class<?> vectorClass = findClass(VECTOR3D_CLASSES);
-        if (vectorClass == null) {
-            return null;
+    /**
+     * Подсматривает классы векторов у TransformComponent игрока.
+     *
+     * Дешёвая операция: как только классы найдены, больше не повторяется.
+     */
+    private static void learnClasses(Object store, Object ref) {
+        if (vector3dClass != null && vector3fClass != null) {
+            return;
         }
-        try {
-            return vectorClass.getConstructor(double.class, double.class, double.class).newInstance(x, y, z);
-        } catch (Throwable throwable) {
-            return null;
+        Object transform = transformComponent(store, ref);
+        if (transform == null) {
+            return;
+        }
+        Object position = call(transform, new String[] {"getPosition", "position"});
+        if (position != null && vector3dClass == null) {
+            vector3dClass = position.getClass();
+            note("класс Vector3d", vector3dClass.getName());
+        }
+        Object rotation = call(transform, new String[] {"getRotation", "rotation"});
+        if (rotation != null && vector3fClass == null) {
+            vector3fClass = rotation.getClass();
+            note("класс Vector3f", vector3fClass.getName());
+        }
+        Object whole = call(transform, new String[] {"getTransform"});
+        if (whole != null && transformClass == null) {
+            transformClass = whole.getClass();
+            note("класс Transform", transformClass.getName());
         }
     }
 
+    private static Class<?> vector3dType() {
+        if (vector3dClass == null) {
+            vector3dClass = findClass(VECTOR3D_CLASSES);
+        }
+        return vector3dClass;
+    }
+
+    private static Class<?> vector3fType() {
+        if (vector3fClass == null) {
+            vector3fClass = findClass(VECTOR3F_CLASSES);
+        }
+        return vector3fClass;
+    }
+
+    private static Class<?> transformType() {
+        if (transformClass == null) {
+            transformClass = findClass(TRANSFORM_CLASSES);
+        }
+        return transformClass;
+    }
+
+    private static Object newVector3d(double x, double y, double z) {
+        return newVector(vector3dType(), double.class, x, y, z);
+    }
+
     private static Object newVector3f(float x, float y, float z) {
-        Class<?> vectorClass = findClass(VECTOR3F_CLASSES);
-        if (vectorClass == null) {
+        return newVector(vector3fType(), float.class, x, y, z);
+    }
+
+    /**
+     * Собирает вектор: сначала конструктором из трёх чисел, а если такого нет —
+     * пустым конструктором и записью координат через сеттеры или поля.
+     */
+    private static Object newVector(Class<?> type, Class<?> number, double x, double y, double z) {
+        if (type == null) {
             return null;
         }
+        Object[] values = number == float.class
+                ? new Object[] {(float) x, (float) y, (float) z}
+                : new Object[] {x, y, z};
+
+        for (Constructor<?> constructor : type.getConstructors()) {
+            Class<?>[] types = constructor.getParameterTypes();
+            if (types.length == 3 && types[0] == number) {
+                try {
+                    return constructor.newInstance(values);
+                } catch (Throwable ignored) {
+                    // попробуем собрать вручную
+                }
+            }
+        }
+
+        Object vector;
         try {
-            return vectorClass.getConstructor(float.class, float.class, float.class).newInstance(x, y, z);
+            vector = type.getConstructor().newInstance();
         } catch (Throwable throwable) {
             return null;
+        }
+
+        // set(x, y, z) одним вызовом
+        for (Method method : type.getMethods()) {
+            if (method.getName().equals("set") && method.getParameterCount() == 3
+                    && method.getParameterTypes()[0] == number) {
+                try {
+                    invoke(vector, method, values);
+                    return vector;
+                } catch (Throwable ignored) {
+                    // пойдём по координатам
+                }
+            }
+        }
+
+        String[] setters = {"setX", "setY", "setZ"};
+        String[] fields = {"x", "y", "z"};
+        boolean filled = true;
+        for (int i = 0; i < 3; i++) {
+            if (!setValue(vector, setters[i], fields[i], number, values[i])) {
+                filled = false;
+            }
+        }
+        return filled ? vector : null;
+    }
+
+    private static boolean setValue(Object target, String setter, String field, Class<?> number, Object value) {
+        for (Method method : target.getClass().getMethods()) {
+            if (method.getName().equals(setter) && method.getParameterCount() == 1
+                    && method.getParameterTypes()[0] == number) {
+                try {
+                    invoke(target, method, value);
+                    return true;
+                } catch (Throwable ignored) {
+                    // попробуем поле
+                }
+            }
+        }
+        try {
+            Field declared = target.getClass().getField(field);
+            declared.set(target, value);
+            return true;
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 
