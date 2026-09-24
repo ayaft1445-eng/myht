@@ -5,6 +5,8 @@ name: Dump Hytale API
 
 on:
   workflow_dispatch:
+  push:
+    paths: ['.github/workflows/api-dump.yml']
 
 jobs:
   dump:
