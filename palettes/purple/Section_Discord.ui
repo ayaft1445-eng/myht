@@ -1,28 +1,28 @@
 // Окно «ДС сервер». Ссылку меняй здесь и в HubMenuPage.java (DISCORD_LINK).
 
 @Card = TextButtonStyle(
-  Default: (Background: #4b1d7a(0.10), LabelStyle: (FontSize: 26, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #9b5de5(0.28), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #c8a2ff(0.35), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #4b1d7a(0.55), LabelStyle: (FontSize: 15, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #6a2ba8(0.75), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #9b5de5(0.60), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
-  Group { Anchor: (Height: 2); Background: #9b5de5; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 
   Group {
     FlexWeight: 1;
     LayoutMode: Left;
 
-    Group { Anchor: (Width: 2); Background: #9b5de5; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
 
     Group {
       FlexWeight: 1;
@@ -31,14 +31,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 82); Background: #1a0b2e(0.72); }
-        Group { Anchor: (Height: 82); Background: #1d0c32(0.72); }
-        Group { Anchor: (Height: 82); Background: #200d36(0.72); }
-        Group { Anchor: (Height: 82); Background: #230e3a(0.72); }
-        Group { Anchor: (Height: 82); Background: #260f3f(0.72); }
-        Group { Anchor: (Height: 82); Background: #291043(0.72); }
-        Group { Anchor: (Height: 82); Background: #2b1147(0.72); }
-        Group { Anchor: (Height: 82); Background: #2e1250(0.72); }
+        Group { Anchor: (Height: 656); Background: #130b21(0.88); }
       }
 
       Group {
@@ -54,13 +47,13 @@ Group {
               Anchor: (Width: 160, Height: 44);
               LayoutMode: Top;
 
-              Group { Anchor: (Height: 2); Background: #9b5de5; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
                 LayoutMode: Left;
 
-                Group { Anchor: (Width: 2); Background: #9b5de5; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
 
                 Group {
                   FlexWeight: 1;
@@ -72,10 +65,10 @@ Group {
                   }
                 }
 
-                Group { Anchor: (Width: 2); Background: #9b5de5; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
               }
 
-              Group { Anchor: (Height: 2); Background: #9b5de5; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
             }
 
             Group {
@@ -85,27 +78,29 @@ Group {
               Label {
                 Text: "ДС СЕРВЕР";
                 Anchor: (Height: 48);
-                Style: (FontSize: 36, TextColor: #c8a2ff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+                Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
               }
             }
 
             Group { Anchor: (Width: 160); }
         }
 
-        Group { Anchor: (Height: 2); Background: #9b5de5; }
-        Group { Anchor: (Height: 18); }
+        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 16); }
 
+        // Высота задана числом: гибкая высота внутри слоя не растягивается,
+        // из-за этого заливка не доходила до рамки
         Group {
-          FlexWeight: 1;
+          Anchor: (Height: 500);
           LayoutMode: Top;
 
-          Group { Anchor: (Height: 2); Background: #9b5de5; }
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
 
           Group {
             FlexWeight: 1;
             LayoutMode: Left;
 
-            Group { Anchor: (Width: 2); Background: #9b5de5; }
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
 
             Group {
               FlexWeight: 1;
@@ -114,18 +109,7 @@ Group {
                 Anchor: (Full: 0);
                 LayoutMode: Top;
 
-                Group { FlexWeight: 1; Background: #2e1250(0.4); }
-                Group { FlexWeight: 1; Background: #311354(0.4); }
-                Group { FlexWeight: 1; Background: #331458(0.4); }
-                Group { FlexWeight: 1; Background: #36155b(0.4); }
-                Group { FlexWeight: 1; Background: #39165f(0.4); }
-                Group { FlexWeight: 1; Background: #3b1763(0.4); }
-                Group { FlexWeight: 1; Background: #3e1867(0.4); }
-                Group { FlexWeight: 1; Background: #40196b(0.4); }
-                Group { FlexWeight: 1; Background: #431a6f(0.4); }
-                Group { FlexWeight: 1; Background: #461b72(0.4); }
-                Group { FlexWeight: 1; Background: #481c76(0.4); }
-                Group { FlexWeight: 1; Background: #4b1d7a(0.4); }
+                Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
               }
               Group {
                 Anchor: (Full: 0);
@@ -134,7 +118,7 @@ Group {
 
                 Group { FlexWeight: 1; }
                 Label {
-                  Text: "Наш Discord-сервер";
+                  Text: "НАШ DISCORD-СЕРВЕР";
                   Anchor: (Height: 34);
                   Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
@@ -142,7 +126,7 @@ Group {
                 Label {
                   Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
                   Anchor: (Height: 32);
-                  Style: (FontSize: 22, TextColor: #c8a2ff, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 22, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Group { Anchor: (Height: 20); }
                 Group {
@@ -153,13 +137,13 @@ Group {
                     Anchor: (Width: 300, Height: 48);
                     LayoutMode: Top;
 
-                    Group { Anchor: (Height: 2); Background: #9b5de5; }
+                    Group { Anchor: (Height: 2); Background: #3a2a55; }
 
                     Group {
                       FlexWeight: 1;
                       LayoutMode: Left;
 
-                      Group { Anchor: (Width: 2); Background: #9b5de5; }
+                      Group { Anchor: (Width: 2); Background: #3a2a55; }
 
                       Group {
                         FlexWeight: 1;
@@ -171,10 +155,10 @@ Group {
                         }
                       }
 
-                      Group { Anchor: (Width: 2); Background: #9b5de5; }
+                      Group { Anchor: (Width: 2); Background: #3a2a55; }
                     }
 
-                    Group { Anchor: (Height: 2); Background: #9b5de5; }
+                    Group { Anchor: (Height: 2); Background: #3a2a55; }
                   }
                 }
 
@@ -182,30 +166,30 @@ Group {
                 Label {
                   Text: "Нажми кнопку — ссылка придёт в чат, оттуда её можно скопировать.";
                   Anchor: (Height: 22);
-                  Style: (FontSize: 14, TextColor: #9b5de5, HorizontalAlignment: Center);
+                  Style: (FontSize: 14, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
                 Group { FlexWeight: 1; }
               }
             }
 
-            Group { Anchor: (Width: 2); Background: #9b5de5; }
+            Group { Anchor: (Width: 2); Background: #3a2a55; }
           }
 
-          Group { Anchor: (Height: 2); Background: #9b5de5; }
+          Group { Anchor: (Height: 2); Background: #3a2a55; }
         }
 
         Group { Anchor: (Height: 14); }
 
         Label {
-          Text: "ESC — закрыть меню";
-          Anchor: (Height: 18);
-          Style: (FontSize: 13, TextColor: #9b5de5, HorizontalAlignment: Center);
+          Text: "ESC — ЗАКРЫТЬ";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }
 
-    Group { Anchor: (Width: 2); Background: #9b5de5; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
   }
 
-  Group { Anchor: (Height: 2); Background: #9b5de5; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 }

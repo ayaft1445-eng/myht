@@ -33,14 +33,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 82); Background: #0b0b0c(0.88); }
-        Group { Anchor: (Height: 82); Background: #0d0d0e(0.88); }
-        Group { Anchor: (Height: 82); Background: #0e0e10(0.88); }
-        Group { Anchor: (Height: 82); Background: #101012(0.88); }
-        Group { Anchor: (Height: 82); Background: #121214(0.88); }
-        Group { Anchor: (Height: 82); Background: #141416(0.88); }
-        Group { Anchor: (Height: 82); Background: #151518(0.88); }
-        Group { Anchor: (Height: 82); Background: #17171a(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.88); }
       }
 
       Group {
@@ -120,16 +113,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 496); Background: #161619(0.75); }
                 }
                 TextButton #Mode0 {
                   Text: "";
@@ -184,16 +168,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 496); Background: #161619(0.75); }
                 }
                 TextButton #Mode1 {
                   Text: "";
@@ -248,16 +223,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 496); Background: #161619(0.75); }
                 }
                 TextButton #Mode2 {
                   Text: "";
@@ -312,16 +278,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 496); Background: #161619(0.75); }
                 }
                 TextButton #Mode3 {
                   Text: "";

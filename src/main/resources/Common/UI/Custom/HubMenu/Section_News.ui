@@ -31,14 +31,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 82); Background: #0b0b0c(0.88); }
-        Group { Anchor: (Height: 82); Background: #0d0d0e(0.88); }
-        Group { Anchor: (Height: 82); Background: #0e0e10(0.88); }
-        Group { Anchor: (Height: 82); Background: #101012(0.88); }
-        Group { Anchor: (Height: 82); Background: #121214(0.88); }
-        Group { Anchor: (Height: 82); Background: #141416(0.88); }
-        Group { Anchor: (Height: 82); Background: #151518(0.88); }
-        Group { Anchor: (Height: 82); Background: #17171a(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.88); }
       }
 
       Group {
@@ -95,8 +88,10 @@ Group {
         Group { Anchor: (Height: 2); Background: #c8102e; }
         Group { Anchor: (Height: 16); }
 
+        // Высота задана числом: гибкая высота внутри слоя не растягивается,
+        // из-за этого заливка не доходила до рамки
         Group {
-          FlexWeight: 1;
+          Anchor: (Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #3a3a3e; }
@@ -114,16 +109,7 @@ Group {
                 Anchor: (Full: 0);
                 LayoutMode: Top;
 
-                Group { FlexWeight: 1; Background: #101012(0.75); }
-                Group { FlexWeight: 1; Background: #111114(0.75); }
-                Group { FlexWeight: 1; Background: #131315(0.75); }
-                Group { FlexWeight: 1; Background: #141417(0.75); }
-                Group { FlexWeight: 1; Background: #151518(0.75); }
-                Group { FlexWeight: 1; Background: #17171a(0.75); }
-                Group { FlexWeight: 1; Background: #18181b(0.75); }
-                Group { FlexWeight: 1; Background: #19191d(0.75); }
-                Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                Group { Anchor: (Height: 496); Background: #161619(0.75); }
               }
               Group {
                 Anchor: (Full: 0);

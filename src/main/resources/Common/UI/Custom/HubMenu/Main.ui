@@ -1,7 +1,8 @@
-// Главное окно HUB в тёмном стиле: почти чёрный фон с лёгким переходом,
-// тонкие рамки, белый капс и красный акцент.
+// Главное окно HUB в тёмном стиле: почти чёрный фон, тонкие рамки,
+// белый капс и красный акцент.
 // Рамка выделенной карточки — в тон самой карточке, у остальных темнее.
-// Полосы фона окна заданы по высоте: заливка доходит ровно до нижней рамки.
+// Фон — одна заливка с заданной высотой. Раньше он собирался из полос ради
+// перехода оттенков, но на масштабе клиента между полосами видны щели.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -34,14 +35,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 82); Background: #0b0b0c(0.88); }
-        Group { Anchor: (Height: 82); Background: #0d0d0e(0.88); }
-        Group { Anchor: (Height: 82); Background: #0e0e10(0.88); }
-        Group { Anchor: (Height: 82); Background: #101012(0.88); }
-        Group { Anchor: (Height: 82); Background: #121214(0.88); }
-        Group { Anchor: (Height: 82); Background: #141416(0.88); }
-        Group { Anchor: (Height: 82); Background: #151518(0.88); }
-        Group { Anchor: (Height: 82); Background: #17171a(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.88); }
       }
 
       Group {
@@ -92,16 +86,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnMinigames {
                   Text: "";
@@ -141,16 +126,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnNews {
                   Text: "";
@@ -190,16 +166,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnRules {
                   Text: "";
@@ -239,16 +206,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #101012(0.75); }
-                  Group { FlexWeight: 1; Background: #111114(0.75); }
-                  Group { FlexWeight: 1; Background: #131315(0.75); }
-                  Group { FlexWeight: 1; Background: #141417(0.75); }
-                  Group { FlexWeight: 1; Background: #151518(0.75); }
-                  Group { FlexWeight: 1; Background: #17171a(0.75); }
-                  Group { FlexWeight: 1; Background: #18181b(0.75); }
-                  Group { FlexWeight: 1; Background: #19191d(0.75); }
-                  Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                  Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnDiscord {
                   Text: "";
@@ -281,8 +239,7 @@ Group {
           }
         }
 
-        // Отступ тянется: ряд карточек ниже окна не уезжает, подсказка ESC прижата к низу
-        Group { FlexWeight: 1; }
+        Group { Anchor: (Height: 48); }
 
         Label {
           Text: "ESC — ЗАКРЫТЬ";

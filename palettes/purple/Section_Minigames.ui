@@ -1,28 +1,28 @@
-// Окно «Мини-игры»: карточки режимов. Название и две строки описания — в строках Text.
+// Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
 
 @Card = TextButtonStyle(
-  Default: (Background: #4b1d7a(0.10), LabelStyle: (FontSize: 26, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #9b5de5(0.28), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #c8a2ff(0.35), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #4b1d7a(0.55), LabelStyle: (FontSize: 15, TextColor: #c8a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #6a2ba8(0.75), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #9b5de5(0.60), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
-  Group { Anchor: (Height: 2); Background: #9b5de5; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 
   Group {
     FlexWeight: 1;
     LayoutMode: Left;
 
-    Group { Anchor: (Width: 2); Background: #9b5de5; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
 
     Group {
       FlexWeight: 1;
@@ -31,14 +31,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 82); Background: #1a0b2e(0.72); }
-        Group { Anchor: (Height: 82); Background: #1d0c32(0.72); }
-        Group { Anchor: (Height: 82); Background: #200d36(0.72); }
-        Group { Anchor: (Height: 82); Background: #230e3a(0.72); }
-        Group { Anchor: (Height: 82); Background: #260f3f(0.72); }
-        Group { Anchor: (Height: 82); Background: #291043(0.72); }
-        Group { Anchor: (Height: 82); Background: #2b1147(0.72); }
-        Group { Anchor: (Height: 82); Background: #2e1250(0.72); }
+        Group { Anchor: (Height: 656); Background: #130b21(0.88); }
       }
 
       Group {
@@ -54,13 +47,13 @@ Group {
               Anchor: (Width: 160, Height: 44);
               LayoutMode: Top;
 
-              Group { Anchor: (Height: 2); Background: #9b5de5; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
                 LayoutMode: Left;
 
-                Group { Anchor: (Width: 2); Background: #9b5de5; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
 
                 Group {
                   FlexWeight: 1;
@@ -72,10 +65,10 @@ Group {
                   }
                 }
 
-                Group { Anchor: (Width: 2); Background: #9b5de5; }
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
               }
 
-              Group { Anchor: (Height: 2); Background: #9b5de5; }
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
             }
 
             Group {
@@ -85,15 +78,15 @@ Group {
               Label {
                 Text: "МИНИ-ИГРЫ";
                 Anchor: (Height: 48);
-                Style: (FontSize: 36, TextColor: #c8a2ff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+                Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
               }
             }
 
             Group { Anchor: (Width: 160); }
         }
 
-        Group { Anchor: (Height: 2); Background: #9b5de5; }
-        Group { Anchor: (Height: 18); }
+        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 16); }
 
         Group {
           Anchor: (Height: 500);
@@ -103,13 +96,13 @@ Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); }
 
               Group {
                 FlexWeight: 1;
@@ -118,18 +111,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
                 }
                 TextButton #Mode0 {
                   Text: "";
@@ -138,39 +120,44 @@ Group {
                 }
 
                 Label {
+                  Text: "ДОСТУПНО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
                   Text: "ЗАХВАТ ФЛАГА";
-                  Anchor: (Height: 36, Bottom: 150);
+                  Anchor: (Height: 36, Bottom: 152);
                   Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Две команды бьются за флаг";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "соперника. Кто принёс — тот и выиграл.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); }
             }
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); }
           }
           Group { Anchor: (Width: 16); }
           Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
@@ -179,18 +166,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
                 }
                 TextButton #Mode1 {
                   Text: "";
@@ -199,39 +175,44 @@ Group {
                 }
 
                 Label {
+                  Text: "ДОСТУПНО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
                   Text: "ВЫЖИВАНИЕ";
-                  Anchor: (Height: 36, Bottom: 150);
-                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Волны монстров идут одна за другой.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Продержись дольше всех и забери награду.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
             }
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
           }
           Group { Anchor: (Width: 16); }
           Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
@@ -240,18 +221,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
                 }
                 TextButton #Mode2 {
                   Text: "";
@@ -260,39 +230,44 @@ Group {
                 }
 
                 Label {
+                  Text: "СКОРО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #6f6189, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
                   Text: "ПАРКУР";
-                  Anchor: (Height: 36, Bottom: 150);
-                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Трасса с препятствиями на время.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Побей рекорд сервера и попади в топ.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
             }
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
           }
           Group { Anchor: (Width: 16); }
           Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
 
               Group {
                 FlexWeight: 1;
@@ -301,18 +276,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.75); }
                 }
                 TextButton #Mode3 {
                   Text: "";
@@ -321,41 +285,46 @@ Group {
                 }
 
                 Label {
+                  Text: "СКОРО";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #6f6189, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
                   Text: "АРЕНА";
-                  Anchor: (Height: 36, Bottom: 150);
-                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Бои один на один на закрытой арене.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Победитель остаётся, проигравший ждёт.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #c8a2ff, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #6f6189, HorizontalAlignment: Center);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #c8a2ff; }
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
             }
 
-            Group { Anchor: (Height: 2); Background: #c8a2ff; }
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
           }
         }
 
         Group { Anchor: (Height: 14); }
 
         Label {
-          Text: "ESC — закрыть меню";
-          Anchor: (Height: 18);
-          Style: (FontSize: 13, TextColor: #9b5de5, HorizontalAlignment: Center);
+          Text: "ESC — ЗАКРЫТЬ";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }
 
-    Group { Anchor: (Width: 2); Background: #9b5de5; }
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
   }
 
-  Group { Anchor: (Height: 2); Background: #9b5de5; }
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
 }
