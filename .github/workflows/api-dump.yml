@@ -26,30 +26,27 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       run: ./gradlew build
 
-    - name: Найти jar сервера
-      run: |
-        find ~/.gradle/caches -name '*.jar' 2>/dev/null | grep -iv sources | grep -i hytale | head -40
-        find . -name '*.jar' 2>/dev/null | grep -iv "build/libs" | head -40
-
-    - name: Классы событий и подключения игрока
+    - name: Что есть в пакете событий
       run: |
         set +e
-        for JAR in $(find ~/.gradle/caches -name '*.jar' 2>/dev/null | grep -iv sources | grep -i hytale); do
-          echo "=== $JAR"
-          unzip -l "$JAR" | grep -iE 'Event|Listener|Join|Connect|Session' | grep -v '\$' | head -60
-        done
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        echo "JAR=$JAR"
+        unzip -l "$JAR" | awk '{print $4}' | grep -E 'server/core/event/' | grep -v '\$' | head -60
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'plugin/(PluginBase|PluginInit|PluginManager)' | head -20
 
-    - name: Сигнатуры ключевых классов
+    - name: Сигнатуры
       run: |
         set +e
-        CP=$(find ~/.gradle/caches -name '*.jar' 2>/dev/null | grep -iv sources | grep -i hytale | tr '\n' ':')
+        CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
         for C in \
-          com.hypixel.hytale.server.core.plugin.JavaPlugin \
-          com.hypixel.hytale.server.core.plugin.JavaPluginInit \
-          com.hypixel.hytale.server.core.universe.PlayerRef \
-          com.hypixel.hytale.server.core.entity.entities.Player \
-          com.hypixel.hytale.server.core.entity.entities.player.pages.PageManager \
-          com.hypixel.hytale.server.core.ui.builder.UICommandBuilder ; do
+          com.hypixel.hytale.server.core.plugin.PluginBase \
+          com.hypixel.hytale.server.core.event.EventRegistry \
+          com.hypixel.hytale.server.core.event.EventBus \
+          com.hypixel.hytale.server.core.event.EventManager \
+          com.hypixel.hytale.server.core.event.Event \
+          com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent \
+          com.hypixel.hytale.server.core.event.events.player.PlayerEvent \
+          com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent ; do
           echo "════════ $C"
-          javap -cp "$CP" "$C" | head -70
+          javap -cp "$CP" "$C" 2>&1 | head -40
         done
