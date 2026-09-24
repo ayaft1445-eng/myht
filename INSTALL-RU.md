@@ -92,15 +92,30 @@
 
 ```
 src/main/java/dev/hytalemodding/hubmenu/
-├── HubMenuPlugin.java        регистрирует команду /hub
-├── commands/HubCommand.java  сама команда
-└── ui/HubMenuPage.java       какое окно показывать
+├── HubMenuPlugin.java         команда /hub и показ выбора языка при входе
+├── commands/HubCommand.java   сама команда
+├── lang/MenuLanguage.java     языки меню и пути к разметке
+├── lang/LanguageStore.java    выбор языка каждого игрока, файл languages.properties
+└── ui/HubMenuPage.java        какое окно показывать
 
 src/main/resources/
-├── manifest.json             описание плагина для сервера
+├── manifest.json              описание плагина для сервера
 └── Common/UI/Custom/HubMenu/
-    ├── Main.ui               главное окно с тремя карточками
-    ├── Section_Minigames.ui  окно «Мини-игры»
-    ├── Section_News.ui       окно «Новости»
-    └── Section_Discord.ui    окно «ДС сервер»
+    ├── Main_ru.ui             главное окно, русский
+    ├── Main_en.ui             главное окно, английский
+    ├── Section_Minigames_ru.ui / _en.ui   окно «Мини-игры»
+    ├── Section_News_ru.ui / _en.ui        окно «Новости»
+    ├── Section_Rules_ru.ui / _en.ui       окно «Правила»
+    ├── Section_Language.ui    окно выбора языка, подписи на двух языках
+    └── Section_Discord.ui     окно «ДС сервер», сейчас в меню не показывается
 ```
+
+## Языки
+
+Игрок, зашедший на сервер впервые, сразу видит окно выбора языка: русский или
+английский. Выбор запоминается в `languages.properties` в папке данных плагина
+(строка вида `uuid=ru`), поэтому переживает перезапуск сервера. Поменять язык
+можно в любой момент — четвёртая карточка главного меню «Язык».
+
+Текст меню лежит прямо в разметке: русские строки в файлах `*_ru.ui`, английские
+в `*_en.ui`. Меняешь текст — меняй в обоих.
