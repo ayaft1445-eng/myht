@@ -22,6 +22,7 @@ import dev.hytalemodding.hubmenu.groupfinder.bridge.ServerApi;
 import dev.hytalemodding.hubmenu.groupfinder.model.ArenaPoint;
 import dev.hytalemodding.hubmenu.groupfinder.model.GameModeConfig;
 import dev.hytalemodding.hubmenu.groupfinder.model.GroupFinderConfig;
+import dev.hytalemodding.hubmenu.groupfinder.queue.QueueEntry;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -280,12 +281,15 @@ public class AdminPage extends InteractiveCustomUIPage<AdminPage.AdminEventData>
                 this.service.reloadConfig();
                 saveless(ref, store, "настройки перечитаны из файла.");
                 return;
-            case "diag":
+            case "diag": {
                 for (String line : ServerApi.diagnostics()) {
                     say(line);
                 }
+                String working = this.service.workingStrategy();
+                say("способ переноса: " + (working == null ? "ещё не подобран" : working));
                 say("файл настроек: " + this.service.store().getFile());
                 return;
+            }
             case "selfadmin": {
                 String username = ServerApi.username(this.playerRef);
                 config.addAdmin(username);
@@ -426,31 +430,38 @@ public class AdminPage extends InteractiveCustomUIPage<AdminPage.AdminEventData>
         saveAnd(ref, store, "точка режима «" + mode.getName() + "»: " + mode.getArena().describe());
     }
 
-    /** Уносит самого админа в точку — проверить, что она не в стене. */
+    /**
+     * Уносит самого админа в точку — проверить, что она не в стене.
+     *
+     * Идёт тем же путём, что и перенос группы, поэтому заодно показывает,
+     * работает ли телепорт на этой сборке сервера.
+     */
     private void testTeleport(Ref<EntityStore> ref, Store<EntityStore> store, GameModeConfig mode) {
         ArenaPoint arena = mode.getArena();
         if (!arena.isSet()) {
             say("точка не задана.");
             return;
         }
+
         Object targetWorld = null;
         String wanted = arena.getWorld();
-        if (wanted != null && !wanted.isEmpty() && !wanted.equalsIgnoreCase(ServerApi.worldName(this.world))) {
+        if (wanted != null && !wanted.isEmpty()
+                && !wanted.equalsIgnoreCase(ServerApi.worldName(this.world))) {
             targetWorld = ServerApi.findWorld(wanted);
             if (targetWorld == null) {
                 say("мир «" + wanted + "» не найден.");
                 return;
             }
         }
-        Player player = store.getComponent(ref, Player.getComponentType());
-        String error = ServerApi.teleport(store, ref, player, this.world, targetWorld,
-                arena.getX(), arena.getY(), arena.getZ(), arena.getYaw(), arena.getPitch());
-        if (error == null) {
-            say("переносим вас в точку режима «" + mode.getName() + "».");
-            this.close();
-        } else {
-            say("телепорт не сработал: " + error);
-        }
+
+        this.service.requestTeleport(
+                new QueueEntry(this.playerRef, ref, store, this.world),
+                mode,
+                targetWorld,
+                new double[] {arena.getX(), arena.getY(), arena.getZ()}
+        );
+        say("проверяем перенос в точку «" + mode.getName() + "» — пара секунд.");
+        this.close();
     }
 
     /** Следующая карточка меню по кругу: нет → 1 → 2 → 3 → 4 → нет. */

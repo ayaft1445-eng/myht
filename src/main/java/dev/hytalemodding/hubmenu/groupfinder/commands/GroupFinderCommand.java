@@ -41,7 +41,7 @@ public class GroupFinderCommand extends AbstractPlayerCommand {
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new GroupFinderPage(playerRef, player.getPageManager(), this.service, world)
+                new GroupFinderPage(playerRef, player.getPageManager(), this.service, world, false, null)
         );
     }
 }

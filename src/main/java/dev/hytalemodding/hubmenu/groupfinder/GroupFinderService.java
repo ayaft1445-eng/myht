@@ -43,6 +43,8 @@ public class GroupFinderService {
 
     private static final String PREFIX = "[Поиск] ";
     private static final long TICK_SECONDS = 1L;
+    /** На сколько блоков от точки считаем, что игрок доехал. */
+    private static final double ARRIVAL_RADIUS = 3.0;
 
     private final HytaleLogger logger;
     private final ConfigStore store;
@@ -50,6 +52,10 @@ public class GroupFinderService {
     private GroupFinderConfig config;
     /** Очереди по ключу режима. */
     private final Map<String, ModeQueue> queues = new LinkedHashMap<>();
+    /** Начатые переносы: каждый сам перебирает способы, пока игрок не окажется на месте. */
+    private final List<TeleportJob> teleports = new ArrayList<>();
+    /** Способ переноса, который на этом сервере уже сработал. */
+    private String workingStrategy;
     private ScheduledExecutorService ticker;
 
     public GroupFinderService(HytaleLogger logger, ConfigStore store) {
@@ -330,6 +336,7 @@ public class GroupFinderService {
                 }
                 stepCountdown(mode, queue, jobs);
             }
+            stepTeleports(jobs);
         }
         for (Runnable job : jobs) {
             job.run();
@@ -375,8 +382,12 @@ public class GroupFinderService {
 
         for (int i = 0; i < group.size(); i++) {
             QueueEntry entry = group.get(i);
-            double[] spot = spread(arena, i, group.size(), mode.getSpreadRadius());
-            jobs.add(() -> teleport(mode, entry, targetWorld, spot));
+            this.teleports.add(new TeleportJob(entry, mode, targetWorld,
+                    spread(arena, i, group.size(), mode.getSpreadRadius())));
+        }
+
+        for (QueueEntry entry : group) {
+            tell(entry, "группа собрана — переносим на «" + mode.getName() + "».");
         }
 
         StringBuilder names = new StringBuilder();
@@ -427,36 +438,175 @@ public class GroupFinderService {
         };
     }
 
-    /** Переносит одного игрока. Выполняется в потоке мира, если сервер даёт. */
-    private void teleport(GameModeConfig mode, QueueEntry entry, Object targetWorld, double[] spot) {
-        Runnable task = () -> {
-            if (!entry.isOnline() || entry.getStore() == null || entry.getRef() == null) {
-                log(Level.WARNING, "не переносим " + entry.getUsername() + ": игрока больше нет на сервере");
-                return;
+    // -------------------------------------------------------------- переносы
+
+    /** Способ переноса, который уже сработал на этом сервере, или null. */
+    public synchronized String workingStrategy() {
+        return this.workingStrategy;
+    }
+
+    /**
+     * Просит перенести игрока в точку режима — этим же путём работает кнопка
+     * «ПРОВЕРИТЬ» в панели админа.
+     */
+    public synchronized void requestTeleport(
+            QueueEntry entry, GameModeConfig mode, Object targetWorld, double[] spot) {
+        this.teleports.add(new TeleportJob(entry, mode, targetWorld, spot));
+    }
+
+    /**
+     * Двигает начатые переносы.
+     *
+     * Успехом считается только то, что игрок действительно оказался на месте:
+     * часть способов молча меняет позицию лишь на сервере, клиент остаётся
+     * стоять где стоял. Поэтому после каждой попытки ждём пару тактов и
+     * смотрим, где игрок на самом деле, а не что вернул вызов.
+     */
+    private void stepTeleports(List<Runnable> jobs) {
+        Iterator<TeleportJob> iterator = this.teleports.iterator();
+        while (iterator.hasNext()) {
+            TeleportJob job = iterator.next();
+
+            if (!job.entry.isOnline()) {
+                iterator.remove();
+                continue;
             }
-            ArenaPoint arena = mode.getArena();
-            Player player = entry.getStore().getComponent(entry.getRef(), Player.getComponentType());
-            String error = ServerApi.teleport(
-                    entry.getStore(),
-                    entry.getRef(),
-                    player,
-                    entry.getWorld(),
-                    targetWorld,
-                    spot[0],
-                    spot[1],
-                    spot[2],
-                    arena.getYaw(),
-                    arena.getPitch()
-            );
-            if (error == null) {
-                tell(entry, "группа собрана — переносим на «" + mode.getName() + "». Удачи!");
-            } else {
-                tell(entry, "не получилось перенести вас на арену, скажите админу.");
-                log(Level.SEVERE, "телепорт не сработал (" + mode.getId() + "): " + error);
+
+            if (job.current != null) {
+                if (--job.wait > 0) {
+                    continue;
+                }
+                if (arrived(job)) {
+                    this.workingStrategy = job.current;
+                    log(Level.INFO, "перенос удался способом «" + job.current + "» · "
+                            + job.entry.getUsername());
+                    tell(job.entry, "вы на арене «" + job.mode.getName() + "». Удачи!");
+                    iterator.remove();
+                    continue;
+                }
+                job.tried.add(job.current + " — игрок не сдвинулся");
+                log(Level.INFO, "перенос: способ «" + job.current + "» не сдвинул "
+                        + job.entry.getUsername() + ", пробуем следующий");
+                job.current = null;
+            }
+
+            String strategy = nextStrategy(job);
+            if (strategy == null) {
+                tell(job.entry, "не получилось перенести вас на арену, скажите админу.");
+                log(Level.SEVERE, "перенос не удался (" + job.mode.getId() + ", "
+                        + job.entry.getUsername() + "): " + String.join("; ", job.tried));
+                iterator.remove();
+                continue;
+            }
+
+            job.current = strategy;
+            job.wait = 2;
+            jobs.add(() -> runStrategy(job, strategy));
+        }
+    }
+
+    /** Следующий неиспробованный способ: сначала тот, что уже работал на этом сервере. */
+    private String nextStrategy(TeleportJob job) {
+        boolean needsWorld = job.targetWorld != null;
+        if (this.workingStrategy != null
+                && !job.usedNames().contains(this.workingStrategy)
+                && (!needsWorld || ServerApi.strategyChangesWorld(this.workingStrategy))) {
+            return this.workingStrategy;
+        }
+        for (String strategy : ServerApi.TELEPORT_STRATEGIES) {
+            if (job.usedNames().contains(strategy)) {
+                continue;
+            }
+            if (needsWorld && !ServerApi.strategyChangesWorld(strategy)) {
+                continue;
+            }
+            return strategy;
+        }
+        return null;
+    }
+
+    /** Выполняет одну попытку — в потоке мира, если сервер это позволяет. */
+    private void runStrategy(TeleportJob job, String strategy) {
+        QueueEntry entry = job.entry;
+        Runnable task = () -> {
+            String error;
+            try {
+                Player player = entry.getStore() == null || entry.getRef() == null
+                        ? null
+                        : entry.getStore().getComponent(entry.getRef(), Player.getComponentType());
+                error = ServerApi.runTeleport(
+                        strategy,
+                        entry.getStore(),
+                        entry.getRef(),
+                        player,
+                        entry.getPlayerRef(),
+                        job.targetWorld,
+                        job.spot[0],
+                        job.spot[1],
+                        job.spot[2],
+                        job.mode.getArena().getYaw(),
+                        job.mode.getArena().getPitch()
+                );
+            } catch (Throwable throwable) {
+                error = String.valueOf(throwable);
+            }
+            if (error != null) {
+                synchronized (GroupFinderService.this) {
+                    job.tried.add(strategy + " — " + error);
+                    job.current = null;
+                    job.wait = 0;
+                }
             }
         };
         if (!ServerApi.runOnWorldThread(entry.getWorld(), task)) {
             task.run();
+        }
+    }
+
+    /** Игрок действительно оказался возле точки? */
+    private static boolean arrived(TeleportJob job) {
+        double[] position = ServerApi.position(job.entry.getStore(), job.entry.getRef());
+        if (position == null) {
+            return false;
+        }
+        double dx = position[0] - job.spot[0];
+        double dy = position[1] - job.spot[1];
+        double dz = position[2] - job.spot[2];
+        return dx * dx + dy * dy + dz * dz <= ARRIVAL_RADIUS * ARRIVAL_RADIUS;
+    }
+
+    /** Одна начатая попытка переноса. */
+    private static final class TeleportJob {
+
+        private final QueueEntry entry;
+        private final GameModeConfig mode;
+        private final Object targetWorld;
+        private final double[] spot;
+        /** Уже испробованные способы с причиной неудачи. */
+        private final List<String> tried = new ArrayList<>();
+        /** Способ, результат которого сейчас ждём. */
+        private String current;
+        /** Сколько тактов ещё ждать результата. */
+        private int wait;
+
+        private TeleportJob(QueueEntry entry, GameModeConfig mode, Object targetWorld, double[] spot) {
+            this.entry = entry;
+            this.mode = mode;
+            this.targetWorld = targetWorld;
+            this.spot = spot;
+        }
+
+        /** Имена испробованных способов без пояснений. */
+        private List<String> usedNames() {
+            List<String> names = new ArrayList<>();
+            for (String line : this.tried) {
+                int dash = line.indexOf(" — ");
+                names.add(dash < 0 ? line : line.substring(0, dash));
+            }
+            if (this.current != null) {
+                names.add(this.current);
+            }
+            return names;
         }
     }
 

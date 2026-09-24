@@ -19,6 +19,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
 import dev.hytalemodding.hubmenu.groupfinder.bridge.ServerApi;
 import dev.hytalemodding.hubmenu.groupfinder.model.GameModeConfig;
+import dev.hytalemodding.hubmenu.ui.HubMenuPage;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -48,18 +49,26 @@ public class GroupFinderPage extends InteractiveCustomUIPage<GroupFinderPage.Fin
     private final PageManager pageManager;
     private final GroupFinderService service;
     private final World world;
+    /** Пришли из меню — тогда «НАЗАД» возвращает в раздел «Мини-игры», а не закрывает всё. */
+    private final boolean fromMenu;
+    /** Режим карточки, с которой пришли: он помечен в списке. null — ниоткуда. */
+    private final String highlightModeId;
 
     public GroupFinderPage(
             @Nonnull PlayerRef playerRef,
             @Nonnull PageManager pageManager,
             @Nonnull GroupFinderService service,
-            @Nonnull World world
+            @Nonnull World world,
+            boolean fromMenu,
+            String highlightModeId
     ) {
         super(playerRef, CustomPageLifetime.CanDismiss, FinderEventData.CODEC);
         this.playerRef = playerRef;
         this.pageManager = pageManager;
         this.service = service;
         this.world = world;
+        this.fromMenu = fromMenu;
+        this.highlightModeId = highlightModeId;
     }
 
     @Override
@@ -88,7 +97,8 @@ public class GroupFinderPage extends InteractiveCustomUIPage<GroupFinderPage.Fin
             GameModeConfig mode = modes.get(row);
             boolean here = mode.getId().equals(queuedMode);
 
-            cmd.set("#Name" + row + ".Text", mode.getName());
+            boolean chosen = mode.getId().equals(this.highlightModeId);
+            cmd.set("#Name" + row + ".Text", chosen ? "> " + mode.getName() + " <" : mode.getName());
             cmd.set("#Info" + row + ".Text", infoText(mode));
             cmd.set("#Join" + row + ".Text", buttonText(mode, here));
 
@@ -122,7 +132,17 @@ public class GroupFinderPage extends InteractiveCustomUIPage<GroupFinderPage.Fin
         }
 
         if (ACTION_BACK.equals(action)) {
-            this.close();
+            if (this.fromMenu) {
+                this.pageManager.openCustomPage(ref, store, new HubMenuPage(
+                        this.playerRef,
+                        this.pageManager,
+                        HubMenuPage.SECTION_MINIGAMES,
+                        this.service,
+                        this.world
+                ));
+            } else {
+                this.close();
+            }
             return;
         }
 
@@ -167,6 +187,12 @@ public class GroupFinderPage extends InteractiveCustomUIPage<GroupFinderPage.Fin
             return "ПОИСК ГРУППЫ ВЫКЛЮЧЕН";
         }
         if (queuedMode == null) {
+            GameModeConfig chosen = this.highlightModeId == null
+                    ? null
+                    : this.service.config().findMode(this.highlightModeId);
+            if (chosen != null) {
+                return "ВЫБРАН РЕЖИМ: " + chosen.getName() + " — НАЖМИТЕ «ВСТАТЬ В ОЧЕРЕДЬ»";
+            }
             return "ВЫ НЕ В ОЧЕРЕДИ — ВЫБЕРИТЕ РЕЖИМ";
         }
         return "ВЫ В ОЧЕРЕДИ · " + this.service.statusLine(playerKey).toUpperCase(Locale.ROOT);
@@ -202,8 +228,9 @@ public class GroupFinderPage extends InteractiveCustomUIPage<GroupFinderPage.Fin
     // ------------------------------------------------------------ мелочи
 
     private void reopen(Ref<EntityStore> ref, Store<EntityStore> store) {
-        this.pageManager.openCustomPage(ref, store,
-                new GroupFinderPage(this.playerRef, this.pageManager, this.service, this.world));
+        this.pageManager.openCustomPage(ref, store, new GroupFinderPage(
+                this.playerRef, this.pageManager, this.service, this.world,
+                this.fromMenu, this.highlightModeId));
     }
 
     private void say(String text) {

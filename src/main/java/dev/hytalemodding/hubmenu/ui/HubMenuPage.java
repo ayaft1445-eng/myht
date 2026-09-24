@@ -66,7 +66,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private static final String DISCORD_LINK = "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
 
     /** Номера разделов: порядок совпадает с SECTION_LAYOUTS. */
-    private static final int SECTION_MINIGAMES = 0;
+    public static final int SECTION_MINIGAMES = 0;
     private static final int SECTION_DISCORD = 3;
 
     /** Кнопки режимов во вкладке мини-игр. */
@@ -175,7 +175,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
 
         if (action.startsWith(ACTION_MODE_PREFIX)) {
             int card = parseIndex(action, ACTION_MODE_PREFIX);
-            startSearch(ref, store, card);
+            openGroupFinder(ref, store, card);
             return;
         }
 
@@ -193,23 +193,20 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     }
 
     /**
-     * Нажали карточку мини-игры: ставим игрока в очередь режима, который
-     * админ привязал к этой карточке, и показываем окно поиска.
+     * Нажали карточку мини-игры: открываем окно поиска группы со списком всех
+     * режимов. В очередь сразу не ставим — игрок выбирает сам, а режим этой
+     * карточки в списке помечен.
      */
-    private void startSearch(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, int card) {
+    private void openGroupFinder(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, int card) {
         GameModeConfig mode = card < 0 ? null : this.groupFinder.config().findByCard(card);
-        if (mode == null) {
-            this.playerRef.sendMessage(Message.raw(
-                    "[Поиск] к этой карточке ещё не привязан режим — админ настраивает это в /gfadmin."));
-            return;
-        }
-
-        GroupFinderService.JoinResult result =
-                this.groupFinder.join(mode.getId(), this.playerRef, ref, store, this.world);
-        this.playerRef.sendMessage(Message.raw("[Поиск] " + result.getMessage()));
-
-        this.pageManager.openCustomPage(ref, store,
-                new GroupFinderPage(this.playerRef, this.pageManager, this.groupFinder, this.world));
+        this.pageManager.openCustomPage(ref, store, new GroupFinderPage(
+                this.playerRef,
+                this.pageManager,
+                this.groupFinder,
+                this.world,
+                true,
+                mode == null ? null : mode.getId()
+        ));
     }
 
     /** Открывает игроку это же меню с другим разделом. */

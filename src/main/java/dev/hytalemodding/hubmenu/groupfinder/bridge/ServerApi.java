@@ -56,6 +56,11 @@ public final class ServerApi {
             "com.hypixel.hytale.component.TransformComponent"
     };
 
+    private static final String[] TRANSFORM_CLASSES = {
+            "com.hypixel.hytale.math.vector.Transform",
+            "com.hypixel.hytale.math.Transform"
+    };
+
     private static final String[] UNIVERSE_CLASSES = {
             "com.hypixel.hytale.server.core.universe.Universe"
     };
@@ -252,22 +257,37 @@ public final class ServerApi {
     // -------------------------------------------------------------- телепорт
 
     /**
-     * Переносит игрока в точку. Возвращает null при успехе или текст ошибки.
+     * Способы перенести игрока, по порядку — от правильного к запасному.
      *
-     * Прямой вызов (когда под рукой SDK):
-     * <pre>
-     * store.addComponent(ref, Teleport.getComponentType(),
-     *         new Teleport(targetWorld, new Vector3d(x, y, z), new Vector3f(pitch, yaw, 0)));
-     * </pre>
-     *
-     * Здесь по очереди пробуются три пути: компонент Teleport, метод
-     * {@code player.moveTo(...)} и прямая запись позиции в TransformComponent.
+     * Ни один из них нельзя считать сработавшим по тому, что вызов не бросил
+     * исключение: прямая запись позиции, например, двигает игрока только на
+     * сервере, клиент об этом не узнаёт и остаётся на месте. Поэтому
+     * {@code GroupFinderService} после каждой попытки смотрит, где игрок
+     * оказался на самом деле, и при неудаче берёт следующий способ.
      */
-    public static String teleport(
+    public static final String[] TELEPORT_STRATEGIES = {
+            "Teleport-компонент",
+            "player.teleport",
+            "world.addPlayer",
+            "player.moveTo",
+            "TransformComponent"
+    };
+
+    /** Умеет ли способ переносить между мирами. */
+    public static boolean strategyChangesWorld(String strategy) {
+        return "Teleport-компонент".equals(strategy) || "world.addPlayer".equals(strategy);
+    }
+
+    /**
+     * Выполняет один способ переноса. Возвращает null, если вызов прошёл, или
+     * текст, почему не вышло. Проверять, сдвинулся ли игрок, — забота вызывающего.
+     */
+    public static String runTeleport(
+            String strategy,
             Object store,
             Object ref,
             Object player,
-            Object currentWorld,
+            Object playerRef,
             Object targetWorld,
             double x,
             double y,
@@ -275,100 +295,153 @@ public final class ServerApi {
             float yaw,
             float pitch
     ) {
-        Object world = targetWorld == null || targetWorld == currentWorld ? null : targetWorld;
-
-        String viaComponent = teleportViaComponent(store, ref, world, x, y, z, yaw, pitch);
-        if (viaComponent == null) {
-            note("телепорт", "компонент Teleport");
-            return null;
+        if (targetWorld != null && !strategyChangesWorld(strategy)) {
+            return "способ не умеет менять мир";
         }
-
-        // Запасные пути двигают игрока внутри текущего мира. Если нужен другой
-        // мир — ими пользоваться нельзя: игрок окажется не там, где ждут.
-        if (world != null) {
-            note("телепорт", "между мирами не вышло");
-            return "перенос в другой мир недоступен (" + viaComponent + ")";
+        try {
+            switch (strategy) {
+                case "Teleport-компонент":
+                    return viaTeleportComponent(store, ref, targetWorld, x, y, z, yaw, pitch);
+                case "player.teleport":
+                    return viaPlayerTeleport(player, x, y, z);
+                case "world.addPlayer":
+                    return viaWorldAddPlayer(targetWorld, playerRef, x, y, z, yaw, pitch);
+                case "player.moveTo":
+                    return viaMoveTo(player, store, ref, x, y, z);
+                case "TransformComponent":
+                    return viaTransform(store, ref, x, y, z, yaw, pitch);
+                default:
+                    return "неизвестный способ";
+            }
+        } catch (Throwable throwable) {
+            return short_(throwable);
         }
-
-        String viaMoveTo = teleportViaMoveTo(player, store, ref, x, y, z);
-        if (viaMoveTo == null) {
-            note("телепорт", "player.moveTo");
-            return null;
-        }
-
-        String viaTransform = teleportViaTransform(store, ref, x, y, z, yaw, pitch);
-        if (viaTransform == null) {
-            note("телепорт", "TransformComponent");
-            return null;
-        }
-
-        note("телепорт", "не найден способ");
-        return "Teleport: " + viaComponent + "; moveTo: " + viaMoveTo + "; Transform: " + viaTransform;
     }
 
-    private static String teleportViaComponent(
+    /**
+     * Правильный путь: компонент Teleport, его разбирает система сервера и шлёт
+     * клиенту пакет. Прямой вызов при наличии SDK:
+     * {@code store.addComponent(ref, Teleport.getComponentType(), new Teleport(world, pos, rot));}
+     */
+    private static String viaTeleportComponent(
             Object store, Object ref, Object world, double x, double y, double z, float yaw, float pitch) {
         Class<?> teleportClass = findClass(TELEPORT_CLASSES);
         if (teleportClass == null) {
             return "класс Teleport не найден";
         }
-        try {
-            Object position = newVector3d(x, y, z);
-            Object rotation = newVector3f(pitch, yaw, 0.0f);
-            if (position == null || rotation == null) {
-                return "классы векторов не найдены";
-            }
+        Object position = newVector3d(x, y, z);
+        Object rotation = newVector3f(pitch, yaw, 0.0f);
+        if (position == null || rotation == null) {
+            return "классы векторов не найдены";
+        }
 
-            Object teleport = null;
-            for (Constructor<?> constructor : teleportClass.getConstructors()) {
-                Class<?>[] types = constructor.getParameterTypes();
-                if (world != null
-                        && types.length == 3
+        Object teleport = null;
+        for (Constructor<?> constructor : teleportClass.getConstructors()) {
+            Class<?>[] types = constructor.getParameterTypes();
+            try {
+                if (world != null && types.length == 3
                         && types[0].isInstance(world)
                         && types[1].isInstance(position)
                         && types[2].isInstance(rotation)) {
                     teleport = constructor.newInstance(world, position, rotation);
                     break;
                 }
-                if (world == null
-                        && types.length == 2
+                if (world == null && types.length == 2
                         && types[0].isInstance(position)
                         && types[1].isInstance(rotation)) {
                     teleport = constructor.newInstance(position, rotation);
                     break;
                 }
+            } catch (Throwable ignored) {
+                // пробуем следующий конструктор
             }
-            if (teleport == null) {
-                return "подходящий конструктор не найден";
-            }
-
-            Object componentType = teleportClass.getMethod("getComponentType").invoke(null);
-            if (componentType == null) {
-                return "getComponentType вернул null";
-            }
-            if (!addComponent(store, ref, componentType, teleport)) {
-                return "store.addComponent недоступен";
-            }
-            return null;
-        } catch (Throwable throwable) {
-            return short_(throwable);
         }
+        if (teleport == null) {
+            return "подходящий конструктор не найден";
+        }
+
+        Object componentType;
+        try {
+            componentType = teleportClass.getMethod("getComponentType").invoke(null);
+        } catch (Throwable throwable) {
+            return "getComponentType: " + short_(throwable);
+        }
+        if (componentType == null) {
+            return "getComponentType вернул null";
+        }
+        return addComponent(store, ref, componentType, teleport) ? null : "addComponent недоступен";
     }
 
-    private static String teleportViaMoveTo(Object player, Object store, Object ref, double x, double y, double z) {
+    /** Метод самого игрока, если он есть: player.teleport(...). */
+    private static String viaPlayerTeleport(Object player, double x, double y, double z) {
         if (player == null) {
             return "игрок не передан";
         }
-        try {
-            for (Method method : player.getClass().getMethods()) {
-                if (!method.getName().equals("moveTo")) {
-                    continue;
+        Object position = newVector3d(x, y, z);
+        for (Method method : player.getClass().getMethods()) {
+            if (!method.getName().equals("teleport")) {
+                continue;
+            }
+            Class<?>[] types = method.getParameterTypes();
+            try {
+                if (types.length == 1 && position != null && types[0].isInstance(position)) {
+                    invoke(player, method, position);
+                    return null;
                 }
-                Class<?>[] types = method.getParameterTypes();
-                if (types.length == 5
-                        && types[0].isInstance(ref)
-                        && types[1] == double.class
-                        && types[4].isInstance(store)) {
+                if (types.length == 3 && types[0] == double.class) {
+                    invoke(player, method, x, y, z);
+                    return null;
+                }
+            } catch (Throwable ignored) {
+                // пробуем следующую перегрузку
+            }
+        }
+        return "метод teleport не найден";
+    }
+
+    /** Перенос через мир: world.addPlayer(playerRef, transform). Работает и между мирами. */
+    private static String viaWorldAddPlayer(
+            Object world, Object playerRef, double x, double y, double z, float yaw, float pitch) {
+        if (world == null) {
+            return "мир не передан";
+        }
+        if (playerRef == null) {
+            return "ссылка на игрока не передана";
+        }
+        Object transform = newTransform(x, y, z, yaw, pitch);
+        if (transform == null) {
+            return "класс Transform не найден";
+        }
+        for (Method method : world.getClass().getMethods()) {
+            if (!method.getName().equals("addPlayer")) {
+                continue;
+            }
+            Class<?>[] types = method.getParameterTypes();
+            if (types.length == 2 && types[0].isInstance(playerRef) && types[1].isInstance(transform)) {
+                try {
+                    invoke(world, method, playerRef, transform);
+                    return null;
+                } catch (Throwable throwable) {
+                    return short_(throwable);
+                }
+            }
+        }
+        return "метод addPlayer не найден";
+    }
+
+    /** Прямой вызов: {@code player.moveTo(ref, x, y, z, store)}. */
+    private static String viaMoveTo(Object player, Object store, Object ref, double x, double y, double z) {
+        if (player == null) {
+            return "игрок не передан";
+        }
+        for (Method method : player.getClass().getMethods()) {
+            if (!method.getName().equals("moveTo")) {
+                continue;
+            }
+            Class<?>[] types = method.getParameterTypes();
+            try {
+                if (types.length == 5 && types[0].isInstance(ref)
+                        && types[1] == double.class && types[4].isInstance(store)) {
                     invoke(player, method, ref, x, y, z, store);
                     return null;
                 }
@@ -376,37 +449,62 @@ public final class ServerApi {
                     invoke(player, method, ref, x, y, z);
                     return null;
                 }
+            } catch (Throwable ignored) {
+                // пробуем следующую перегрузку
             }
-            return "метод moveTo не найден";
-        } catch (Throwable throwable) {
-            return short_(throwable);
         }
+        return "метод moveTo не найден";
     }
 
-    private static String teleportViaTransform(
+    /**
+     * Последний запасной путь: прямая запись в TransformComponent. Клиенту
+     * при этом ничего не уходит, поэтому способ и стоит последним — годится
+     * разве что если сервер сам разошлёт позицию следующим тиком.
+     */
+    private static String viaTransform(
             Object store, Object ref, double x, double y, double z, float yaw, float pitch) {
         Object transform = transformComponent(store, ref);
         if (transform == null) {
             return "TransformComponent не найден";
         }
-        try {
-            Object position = newVector3d(x, y, z);
-            Object rotation = newVector3f(pitch, yaw, 0.0f);
-            if (position == null) {
-                return "класс Vector3d не найден";
-            }
-            boolean moved = invokeWith(transform, new String[] {"teleportPosition", "setPosition"}, position);
-            if (!moved) {
-                return "метод установки позиции не найден";
-            }
-            if (rotation != null) {
-                invokeWith(transform, new String[] {"teleportRotation", "setRotation"}, rotation);
-            }
-            return null;
-        } catch (Throwable throwable) {
-            return short_(throwable);
+        Object position = newVector3d(x, y, z);
+        Object rotation = newVector3f(pitch, yaw, 0.0f);
+        if (position == null) {
+            return "класс Vector3d не найден";
         }
+        if (!invokeWith(transform, new String[] {"teleportPosition", "setPosition"}, position)) {
+            return "метод установки позиции не найден";
+        }
+        if (rotation != null) {
+            invokeWith(transform, new String[] {"teleportRotation", "setRotation"}, rotation);
+        }
+        return null;
     }
+
+    private static Object newTransform(double x, double y, double z, float yaw, float pitch) {
+        Class<?> transformClass = findClass(TRANSFORM_CLASSES);
+        if (transformClass == null) {
+            return null;
+        }
+        Object position = newVector3d(x, y, z);
+        Object rotation = newVector3f(pitch, yaw, 0.0f);
+        for (Constructor<?> constructor : transformClass.getConstructors()) {
+            Class<?>[] types = constructor.getParameterTypes();
+            try {
+                if (types.length == 2 && position != null && rotation != null
+                        && types[0].isInstance(position) && types[1].isInstance(rotation)) {
+                    return constructor.newInstance(position, rotation);
+                }
+                if (types.length == 6 && types[0] == double.class) {
+                    return constructor.newInstance(x, y, z, yaw, pitch, 0.0f);
+                }
+            } catch (Throwable ignored) {
+                // пробуем следующий конструктор
+            }
+        }
+        return null;
+    }
+
 
     // ------------------------------------------------------------- настройки
 
