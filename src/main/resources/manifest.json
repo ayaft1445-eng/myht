@@ -1,8 +1,8 @@
 {
     "Group": "HytaleModding",
     "Name": "hubmenu",
-    "Version": "3.0.0",
-    "Description": "Black and white hub menu with three sections",
+    "Version": "4.0.0",
+    "Description": "Black and white hub menu with a group finder for mini-games",
     "Authors": [
         {
             "Name": "ayaft1445-eng",

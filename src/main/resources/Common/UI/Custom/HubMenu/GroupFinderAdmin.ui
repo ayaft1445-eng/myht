@@ -1,0 +1,641 @@
+// Панель настроек поиска группы. Значения проставляет сервер:
+// #Banner, #SystemValue, #AnnounceValue, #TimeoutValue,
+// #MName0..#MName5, #MInfo0..#MInfo5, #MToggle0..#MToggle5, #MEdit0..#MEdit5.
+
+@Action = TextButtonStyle(
+  Default: (Background: #ffffff(0.06), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #c8102e(0.60), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.85), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1320, Height: 720);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { FlexWeight: 1; Background: #0b0b0c(0.92); }
+        Group { FlexWeight: 1; Background: #0d0d0f(0.92); }
+        Group { FlexWeight: 1; Background: #0f0f11(0.92); }
+        Group { FlexWeight: 1; Background: #111114(0.92); }
+        Group { FlexWeight: 1; Background: #131316(0.92); }
+        Group { FlexWeight: 1; Background: #151518(0.92); }
+        Group { FlexWeight: 1; Background: #17171a(0.92); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 22);
+
+        Group {
+          Anchor: (Height: 52);
+          LayoutMode: Left;
+          Group {
+            Anchor: (Width: 160, Height: 44);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                TextButton #BackButton {
+                  Text: "НАЗАД";
+                  Anchor: (Full: 0);
+                  Style: @Flat;
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label {
+              Text: "ПОИСК ГРУППЫ · НАСТРОЙКИ";
+              Anchor: (Height: 48);
+              Style: (FontSize: 32, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            Anchor: (Width: 160, Height: 44);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+
+              Group {
+                FlexWeight: 1;
+
+                TextButton #DiagButton {
+                  Text: "ДИАГНОСТИКА";
+                  Anchor: (Full: 0);
+                  Style: @Flat;
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
+          }
+        }
+        Group { Anchor: (Height: 2); Background: #c8102e; }
+        Group { Anchor: (Height: 10); }
+        Label #Banner {
+          Text: "";
+          Anchor: (Height: 26);
+          Style: (FontSize: 16, TextColor: #c8102e, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+        }
+        Group { Anchor: (Height: 8); }
+        Group {
+          Anchor: (Height: 58);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 140, Height: 58);
+            LayoutMode: Center;
+
+            Label {
+              Text: "СИСТЕМА";
+              Anchor: (Height: 34);
+              Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            Anchor: (Width: 140, Height: 58);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 128, Height: 44);
+
+              TextButton #SystemValue {
+                Text: "ВКЛ";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 230, Height: 58);
+            LayoutMode: Center;
+
+            Label {
+              Text: "ОПОВЕЩЕНИЯ В ЧАТ";
+              Anchor: (Height: 34);
+              Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            Anchor: (Width: 140, Height: 58);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 128, Height: 44);
+
+              TextButton #AnnounceValue {
+                Text: "ВКЛ";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 220, Height: 58);
+            LayoutMode: Center;
+
+            Label {
+              Text: "ТАЙМАУТ ОЧЕРЕДИ";
+              Anchor: (Height: 34);
+              Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            Anchor: (Width: 62, Height: 58);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 50, Height: 44);
+
+              TextButton #TimeoutMinus {
+                Text: "-";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 120, Height: 58);
+            LayoutMode: Center;
+
+            Label #TimeoutValue {
+              Text: "выкл";
+              Anchor: (Height: 34);
+              Style: (FontSize: 18, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            Anchor: (Width: 62, Height: 58);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 50, Height: 44);
+
+              TextButton #TimeoutPlus {
+                Text: "+";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group { FlexWeight: 1; }
+        }
+        Group { Anchor: (Height: 10); }
+        Label {
+          Text: "РЕЖИМЫ";
+          Anchor: (Height: 26);
+          Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+        }
+        Group { Anchor: (Height: 6); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName0 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo0 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle0 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit0 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName1 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo1 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle1 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit1 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName2 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo2 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle2 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit2 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName3 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo3 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle3 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit3 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName4 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo4 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle4 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit4 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group {
+          Anchor: (Height: 62);
+          LayoutMode: Left;
+          Background: #ffffff(0.03);
+          Group { Anchor: (Width: 12); }
+          Group {
+            Anchor: (Width: 300, Height: 62);
+            LayoutMode: Center;
+
+            Label #MName5 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 20, TextColor: #ffffff, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Center;
+
+            Label #MInfo5 {
+              Text: "";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #b8b8bd, HorizontalAlignment: Left, VerticalAlignment: Center, RenderBold: false);
+            }
+          }
+          Group {
+            Anchor: (Width: 150, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 138, Height: 48);
+
+              TextButton #MToggle5 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group {
+            Anchor: (Width: 190, Height: 62);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 178, Height: 48);
+
+              TextButton #MEdit5 {
+                Text: "";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+        }
+        Group { Anchor: (Height: 5); }
+        Group { FlexWeight: 1; }
+        Group {
+          Anchor: (Height: 52);
+          LayoutMode: Left;
+          Group {
+            Anchor: (Width: 240, Height: 52);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 228, Height: 38);
+
+              TextButton #AddButton {
+                Text: "ДОБАВИТЬ РЕЖИМ";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+          Group {
+            Anchor: (Width: 260, Height: 52);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 248, Height: 38);
+
+              TextButton #ReloadButton {
+                Text: "ПЕРЕЧИТАТЬ ФАЙЛ";
+                Anchor: (Full: 0);
+                Style: @Flat;
+              }
+            }
+          }
+          Group { Anchor: (Width: 10); }
+          Group {
+            Anchor: (Width: 320, Height: 52);
+            LayoutMode: Center;
+
+            Group {
+              Anchor: (Width: 308, Height: 38);
+
+              TextButton #SelfAdminButton {
+                Text: "СДЕЛАТЬ СЕБЯ АДМИНОМ";
+                Anchor: (Full: 0);
+                Style: @Action;
+              }
+            }
+          }
+          Group { FlexWeight: 1; }
+          Group {
+            Anchor: (Width: 220, Height: 52);
+            LayoutMode: Center;
+
+            Label {
+              Text: "ESC — ЗАКРЫТЬ";
+              Anchor: (Height: 34);
+              Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Right, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
+}

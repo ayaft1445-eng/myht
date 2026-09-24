@@ -1,4 +1,4 @@
-package dev.hytalemodding.hubmenu.commands;
+package dev.hytalemodding.hubmenu.groupfinder.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -10,18 +10,18 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
-import dev.hytalemodding.hubmenu.ui.HubMenuPage;
+import dev.hytalemodding.hubmenu.groupfinder.ui.GroupFinderPage;
 
 import javax.annotation.Nonnull;
 
-/** Команда /hub — открывает меню HUB. */
-public class HubCommand extends AbstractPlayerCommand {
+/** Команда /gf — открывает окно поиска группы. */
+public class GroupFinderCommand extends AbstractPlayerCommand {
 
-    private final GroupFinderService groupFinder;
+    private final GroupFinderService service;
 
-    public HubCommand(GroupFinderService groupFinder) {
-        super("hub", "Открыть меню сервера");
-        this.groupFinder = groupFinder;
+    public GroupFinderCommand(GroupFinderService service) {
+        super("gf", "Поиск группы для мини-игры");
+        this.service = service;
     }
 
     @Override
@@ -34,20 +34,14 @@ public class HubCommand extends AbstractPlayerCommand {
     ) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) {
-            context.sendMessage(Message.raw("Не удалось открыть меню: игрок не найден."));
+            context.sendMessage(Message.raw("Не удалось открыть поиск: игрок не найден."));
             return;
         }
 
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new HubMenuPage(
-                        playerRef,
-                        player.getPageManager(),
-                        HubMenuPage.SECTION_MAIN,
-                        this.groupFinder,
-                        world
-                )
+                new GroupFinderPage(playerRef, player.getPageManager(), this.service, world)
         );
     }
 }

@@ -18,16 +18,32 @@
 В каждом окне раздела внизу кнопки **НАЗАД** и **ЗАКРЫТЬ**, ESC тоже закрывает.
 При наведении на карточку она становится белой, а текст — чёрным.
 
+Вторая часть мода — **поиск группы**. Игрок командой `/gf` или нажатием на
+карточку в окне «Мини-игры» встаёт в очередь; как только набирается нужное
+число игроков, поиск прекращается и группу уносит на арену режима.
+Настраивается панелью `/gfadmin` — там же задаётся точка телепорта
+(встал на место, нажал кнопку).
+
+| Команда | Кому | Что делает |
+|---|---|---|
+| `/hub` | всем | меню сервера |
+| `/gf` | всем | окно поиска группы |
+| `/gfstatus` | всем | состояние очередей в чат |
+| `/gfleave` | всем | выйти из очереди |
+| `/gfadmin` | админам | панель настроек поиска группы |
+
+Подробности: [docs/POISK-GRUPPY.md](docs/POISK-GRUPPY.md).
+
 ---
 
 ## Установка
 
-1. Скачай `HubMenu-1.2.0.jar`: <https://github.com/ayaft1445-eng/myht/releases/latest>
+1. Скачай `HubMenu-4.0.0.jar`: <https://github.com/ayaft1445-eng/myht/releases/latest>
    (файл внизу страницы, в разделе **Assets**).
 2. Останови сервер.
 3. Положи файл в папку **`plugins`** сервера.
 4. Запусти сервер. В консоли должна появиться строка:
-   `[HubMenu] Loaded. Type /hub in chat to open the menu.`
+   `[HubMenu] Loaded. /hub — меню, /gf — поиск группы, /gfadmin — настройки.`
 5. В игре напиши `/hub`.
 
 Если раньше стоял `ServerHub-1.0.0.jar` — удали его, этот мод пришёл ему на замену.
@@ -51,6 +67,8 @@
 | Текст новостей | `Section_News.ui` | строки `Text: "...";` |
 | Режимы мини-игр | `Section_Minigames.ui` | строки `Text: "...";` |
 | Название команды | `src/main/java/dev/hytalemodding/hubmenu/commands/HubCommand.java` | `super("hub", ...)` |
+| Настройки поиска группы | панель `/gfadmin` или `groupfinder.json` в папке плагина | см. docs/POISK-GRUPPY.md |
+| Названия режимов поиска | `groupfinder.json` | поле `"name"` у режима |
 
 Белая обводка собрана из четырёх тонких полосок по краям. Так сделано специально:
 если залить белым всю подложку, полупрозрачный чёрный смешается с ней и станет серым.
@@ -84,15 +102,27 @@
 
 ```
 src/main/java/dev/hytalemodding/hubmenu/
-├── HubMenuPlugin.java        регистрирует команду /hub
-├── commands/HubCommand.java  сама команда
-└── ui/HubMenuPage.java       какое окно показывать
+├── HubMenuPlugin.java            регистрирует команды и поднимает поиск группы
+├── commands/HubCommand.java      команда /hub
+├── ui/HubMenuPage.java           какое окно меню показывать
+└── groupfinder/                  поиск группы
+    ├── GroupFinderService.java   очереди, отсчёт, перенос группы
+    ├── bridge/ServerApi.java     телепорт и прочие вызовы к серверу
+    ├── model/                    настройки: режимы, точки, общий конфиг
+    ├── queue/QueueEntry.java     игрок в очереди
+    ├── storage/                  чтение и запись groupfinder.json
+    ├── commands/                 /gf, /gfstatus, /gfleave, /gfadmin
+    └── ui/                       окно поиска и панель админа
 
 src/main/resources/
-├── manifest.json             описание плагина для сервера
+├── manifest.json                 описание плагина для сервера
 └── Common/UI/Custom/HubMenu/
-    ├── Main.ui               главное окно с тремя карточками
-    ├── Section_Minigames.ui  окно «Мини-игры»
-    ├── Section_News.ui       окно «Новости»
-    └── Section_Discord.ui    окно «ДС сервер»
+    ├── Main.ui                   главное окно с четырьмя карточками
+    ├── Section_Minigames.ui      окно «Мини-игры»
+    ├── Section_News.ui           окно «Новости»
+    ├── Section_Rules.ui          окно «Правила»
+    ├── Section_Discord.ui        окно «ДС сервер»
+    ├── GroupFinder.ui            окно поиска группы
+    ├── GroupFinderAdmin.ui       панель настроек
+    └── GroupFinderMode.ui        настройка одного режима
 ```

@@ -15,7 +15,11 @@ import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
+import dev.hytalemodding.hubmenu.groupfinder.model.GameModeConfig;
+import dev.hytalemodding.hubmenu.groupfinder.ui.GroupFinderPage;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
@@ -27,6 +31,9 @@ import java.util.logging.Level;
  * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2).
  * По нажатию кнопки игроку открывается эта же страница с другим номером
  * раздела, поэтому каждое окно собирается заново и целиком.
+ *
+ * Карточки во вкладке «Мини-игры» привязаны к поиску группы: какая карточка
+ * к какому режиму ведёт, настраивается в панели /gfadmin.
  *
  * Разметка: src/main/resources/Common/UI/Custom/HubMenu/
  */
@@ -74,12 +81,22 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private final PlayerRef playerRef;
     private final PageManager pageManager;
     private final int section;
+    private final GroupFinderService groupFinder;
+    private final World world;
 
-    public HubMenuPage(@Nonnull PlayerRef playerRef, @Nonnull PageManager pageManager, int section) {
+    public HubMenuPage(
+            @Nonnull PlayerRef playerRef,
+            @Nonnull PageManager pageManager,
+            int section,
+            @Nonnull GroupFinderService groupFinder,
+            @Nonnull World world
+    ) {
         super(playerRef, CustomPageLifetime.CanDismiss, HubEventData.CODEC);
         this.playerRef = playerRef;
         this.pageManager = pageManager;
         this.section = isSection(section) ? section : SECTION_MAIN;
+        this.groupFinder = groupFinder;
+        this.world = world;
     }
 
     @Override
@@ -157,7 +174,8 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         }
 
         if (action.startsWith(ACTION_MODE_PREFIX)) {
-            this.playerRef.sendMessage(Message.raw("Режим пока в разработке."));
+            int card = parseIndex(action, ACTION_MODE_PREFIX);
+            startSearch(ref, store, card);
             return;
         }
 
@@ -167,11 +185,31 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         }
 
         if (action.startsWith(ACTION_OPEN_PREFIX)) {
-            int requested = parseSection(action);
+            int requested = parseIndex(action, ACTION_OPEN_PREFIX);
             if (isSection(requested)) {
                 this.openSection(ref, store, requested);
             }
         }
+    }
+
+    /**
+     * Нажали карточку мини-игры: ставим игрока в очередь режима, который
+     * админ привязал к этой карточке, и показываем окно поиска.
+     */
+    private void startSearch(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, int card) {
+        GameModeConfig mode = card < 0 ? null : this.groupFinder.config().findByCard(card);
+        if (mode == null) {
+            this.playerRef.sendMessage(Message.raw(
+                    "[Поиск] к этой карточке ещё не привязан режим — админ настраивает это в /gfadmin."));
+            return;
+        }
+
+        GroupFinderService.JoinResult result =
+                this.groupFinder.join(mode.getId(), this.playerRef, ref, store, this.world);
+        this.playerRef.sendMessage(Message.raw("[Поиск] " + result.getMessage()));
+
+        this.pageManager.openCustomPage(ref, store,
+                new GroupFinderPage(this.playerRef, this.pageManager, this.groupFinder, this.world));
     }
 
     /** Открывает игроку это же меню с другим разделом. */
@@ -180,16 +218,17 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             @Nonnull Store<EntityStore> store,
             int newSection
     ) {
-        this.pageManager.openCustomPage(ref, store, new HubMenuPage(this.playerRef, this.pageManager, newSection));
+        this.pageManager.openCustomPage(ref, store,
+                new HubMenuPage(this.playerRef, this.pageManager, newSection, this.groupFinder, this.world));
     }
 
     private static boolean isSection(int value) {
         return value >= 0 && value < SECTION_LAYOUTS.length;
     }
 
-    private static int parseSection(@Nonnull String action) {
+    private static int parseIndex(@Nonnull String action, @Nonnull String prefix) {
         try {
-            return Integer.parseInt(action.substring(ACTION_OPEN_PREFIX.length()));
+            return Integer.parseInt(action.substring(prefix.length()));
         } catch (NumberFormatException exception) {
             return SECTION_MAIN;
         }
