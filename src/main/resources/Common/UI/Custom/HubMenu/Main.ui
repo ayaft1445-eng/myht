@@ -1,6 +1,7 @@
 // Главное окно HUB в тёмном стиле: почти чёрный фон с лёгким переходом,
 // тонкие рамки, белый капс и красный акцент.
-// Яркая рамка = выделенная карточка, тусклая = остальные.
+// Рамка выделенной карточки — в тон самой карточке, у остальных темнее.
+// Полосы фона окна заданы по высоте: заливка доходит ровно до нижней рамки.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -33,16 +34,14 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
-        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
-        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
-        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
-        Group { FlexWeight: 1; Background: #101012(0.88); }
-        Group { FlexWeight: 1; Background: #121214(0.88); }
-        Group { FlexWeight: 1; Background: #131315(0.88); }
-        Group { FlexWeight: 1; Background: #141417(0.88); }
-        Group { FlexWeight: 1; Background: #161618(0.88); }
-        Group { FlexWeight: 1; Background: #17171a(0.88); }
+        Group { Anchor: (Height: 82); Background: #0b0b0c(0.88); }
+        Group { Anchor: (Height: 82); Background: #0d0d0e(0.88); }
+        Group { Anchor: (Height: 82); Background: #0e0e10(0.88); }
+        Group { Anchor: (Height: 82); Background: #101012(0.88); }
+        Group { Anchor: (Height: 82); Background: #121214(0.88); }
+        Group { Anchor: (Height: 82); Background: #141416(0.88); }
+        Group { Anchor: (Height: 82); Background: #151518(0.88); }
+        Group { Anchor: (Height: 82); Background: #17171a(0.88); }
       }
 
       Group {
@@ -78,13 +77,13 @@ Group {
             Anchor: (Width: 520, Height: 470);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+            Group { Anchor: (Height: 2); Background: #4a4a52; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+              Group { Anchor: (Width: 2); Background: #4a4a52; }
 
               Group {
                 FlexWeight: 1;
@@ -117,10 +116,10 @@ Group {
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+              Group { Anchor: (Width: 2); Background: #4a4a52; }
             }
 
-            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+            Group { Anchor: (Height: 2); Background: #4a4a52; }
           }
           Group { Anchor: (Width: 14); }
           Group {
@@ -282,7 +281,8 @@ Group {
           }
         }
 
-        Group { Anchor: (Height: 14); }
+        // Отступ тянется: ряд карточек ниже окна не уезжает, подсказка ESC прижата к низу
+        Group { FlexWeight: 1; }
 
         Label {
           Text: "ESC — ЗАКРЫТЬ";

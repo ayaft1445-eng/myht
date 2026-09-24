@@ -1,4 +1,6 @@
 // Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
+// У карточки «Захват флага» рамки нет: полосы по краям оставлены как отступ,
+// чтобы карточка совпадала по размеру с остальными.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -31,16 +33,14 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
-        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
-        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
-        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
-        Group { FlexWeight: 1; Background: #101012(0.88); }
-        Group { FlexWeight: 1; Background: #121214(0.88); }
-        Group { FlexWeight: 1; Background: #131315(0.88); }
-        Group { FlexWeight: 1; Background: #141417(0.88); }
-        Group { FlexWeight: 1; Background: #161618(0.88); }
-        Group { FlexWeight: 1; Background: #17171a(0.88); }
+        Group { Anchor: (Height: 82); Background: #0b0b0c(0.88); }
+        Group { Anchor: (Height: 82); Background: #0d0d0e(0.88); }
+        Group { Anchor: (Height: 82); Background: #0e0e10(0.88); }
+        Group { Anchor: (Height: 82); Background: #101012(0.88); }
+        Group { Anchor: (Height: 82); Background: #121214(0.88); }
+        Group { Anchor: (Height: 82); Background: #141416(0.88); }
+        Group { Anchor: (Height: 82); Background: #151518(0.88); }
+        Group { Anchor: (Height: 82); Background: #17171a(0.88); }
       }
 
       Group {
@@ -105,13 +105,13 @@ Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+            Group { Anchor: (Height: 2); }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+              Group { Anchor: (Width: 2); }
 
               Group {
                 FlexWeight: 1;
@@ -159,10 +159,10 @@ Group {
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #f2f2f2; }
+              Group { Anchor: (Width: 2); }
             }
 
-            Group { Anchor: (Height: 2); Background: #f2f2f2; }
+            Group { Anchor: (Height: 2); }
           }
           Group { Anchor: (Width: 16); }
           Group {

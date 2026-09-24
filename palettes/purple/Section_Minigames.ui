@@ -31,18 +31,14 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { FlexWeight: 1; Background: #1a0b2e(0.72); }
-        Group { FlexWeight: 1; Background: #1c0c31(0.72); }
-        Group { FlexWeight: 1; Background: #1e0c34(0.72); }
-        Group { FlexWeight: 1; Background: #1f0d37(0.72); }
-        Group { FlexWeight: 1; Background: #210e3a(0.72); }
-        Group { FlexWeight: 1; Background: #230e3d(0.72); }
-        Group { FlexWeight: 1; Background: #250f41(0.72); }
-        Group { FlexWeight: 1; Background: #270f44(0.72); }
-        Group { FlexWeight: 1; Background: #291047(0.72); }
-        Group { FlexWeight: 1; Background: #2a114a(0.72); }
-        Group { FlexWeight: 1; Background: #2c114d(0.72); }
-        Group { FlexWeight: 1; Background: #2e1250(0.72); }
+        Group { Anchor: (Height: 82); Background: #1a0b2e(0.72); }
+        Group { Anchor: (Height: 82); Background: #1d0c32(0.72); }
+        Group { Anchor: (Height: 82); Background: #200d36(0.72); }
+        Group { Anchor: (Height: 82); Background: #230e3a(0.72); }
+        Group { Anchor: (Height: 82); Background: #260f3f(0.72); }
+        Group { Anchor: (Height: 82); Background: #291043(0.72); }
+        Group { Anchor: (Height: 82); Background: #2b1147(0.72); }
+        Group { Anchor: (Height: 82); Background: #2e1250(0.72); }
       }
 
       Group {
