@@ -26,23 +26,19 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       run: ./gradlew build
 
-    - name: Пакет событий
-      run: |
-        set +e
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        unzip -l "$JAR" | awk '{print $4}' | grep -E '^com/hypixel/hytale/event/' | grep -v '\$' | head -40
-
     - name: Сигнатуры
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
         for C in \
-          com.hypixel.hytale.event.EventRegistry \
-          com.hypixel.hytale.event.IEvent \
-          com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage \
-          com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage ; do
+          com.hypixel.hytale.server.core.universe.world.storage.EntityStore \
+          com.hypixel.hytale.component.Holder \
+          com.hypixel.hytale.component.Ref \
+          com.hypixel.hytale.component.Store ; do
           echo "════════ $C"
-          javap -cp "$CP" "$C" 2>&1 | head -45
+          javap -cp "$CP" "$C" 2>&1 | head -18
         done
-        echo "════════ World (хранилище сущностей)"
-        javap -cp "$CP" com.hypixel.hytale.server.core.universe.world.World 2>&1 | grep -iE 'store|getEntity' | head -20
+        echo "════════ Entity: мир и store"
+        javap -cp "$CP" com.hypixel.hytale.server.core.entity.Entity 2>&1 | grep -iE 'world|store|Ref\b' | head -15
+        echo "════════ PlayerReadyEvent + PlayerEvent"
+        javap -cp "$CP" com.hypixel.hytale.server.core.event.events.player.PlayerRefEvent 2>&1 | head -12
