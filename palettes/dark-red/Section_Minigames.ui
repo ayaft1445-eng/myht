@@ -1,6 +1,6 @@
 // Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
-// У карточки «Захват флага» рамки нет: полосы по краям оставлены как отступ,
-// чтобы карточка совпадала по размеру с остальными.
+// У карточки «Захват флага» рамка светлее — она выделена.
+// Текст во всех карточках одинаковый: название белое, описание светлое.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -113,13 +113,13 @@ Group {
             Anchor: (Width: 335, Height: 500);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); }
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); }
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
 
               Group {
                 FlexWeight: 1;
@@ -173,10 +173,10 @@ Group {
                 }
               }
 
-              Group { Anchor: (Width: 2); }
+              Group { Anchor: (Width: 2); Background: #f2f2f2; }
             }
 
-            Group { Anchor: (Height: 2); }
+            Group { Anchor: (Height: 2); Background: #f2f2f2; }
           }
           Group { Anchor: (Width: 16); }
           Group {
@@ -229,17 +229,17 @@ Group {
                 Label {
                   Text: "ВЫЖИВАНИЕ";
                   Anchor: (Height: 36, Bottom: 152);
-                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Волны монстров идут одна за другой.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Продержись дольше всех и забери награду.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
               }
 
@@ -294,22 +294,22 @@ Group {
                 Label {
                   Text: "СКОРО";
                   Anchor: (Height: 22, Bottom: 196);
-                  Style: (FontSize: 14, TextColor: #6e6e74, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 14, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "ПАРКУР";
                   Anchor: (Height: 36, Bottom: 152);
-                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Трасса с препятствиями на время.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Побей рекорд сервера и попади в топ.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
               }
 
@@ -364,22 +364,22 @@ Group {
                 Label {
                   Text: "СКОРО";
                   Anchor: (Height: 22, Bottom: 196);
-                  Style: (FontSize: 14, TextColor: #6e6e74, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 14, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "АРЕНА";
                   Anchor: (Height: 36, Bottom: 152);
-                  Style: (FontSize: 28, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
                   Text: "Бои один на один на закрытой арене.";
                   Anchor: (Height: 26, Bottom: 112);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
                 Label {
                   Text: "Победитель остаётся, проигравший ждёт.";
                   Anchor: (Height: 26, Bottom: 84);
-                  Style: (FontSize: 16, TextColor: #6e6e74, HorizontalAlignment: Center);
+                  Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
                 }
               }
 
