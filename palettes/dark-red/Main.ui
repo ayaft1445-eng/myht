@@ -1,31 +1,35 @@
-// Главное окно HUB в тёмно-фиолетовом стиле: почти чёрный фон с фиолетовым
-// отливом, тонкие фиолетовые рамки, белый капс, яркий
-// фиолетовый акцент. Рамка выделенной карточки — в тон самой карточке.
-// Запасная палитра: скопируй эти файлы в src/main/resources/Common/UI/Custom/HubMenu.
+// Запасная тёмно-красная палитра: скопируй эти файлы
+// в src/main/resources/Common/UI/Custom/HubMenu и пересобери.
+//
+// Главное окно HUB в тёмном стиле: почти чёрный фон, тонкие рамки,
+// белый капс и красный акцент.
+// Рамка выделенной карточки — в тон самой карточке, у остальных темнее.
+// Фон — одна заливка с заданной высотой. Раньше он собирался из полос ради
+// перехода оттенков, но на масштабе клиента между полосами видны щели.
 
 @Card = TextButtonStyle(
-  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #ffffff(0.12), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.30), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
-  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Default: (Background: #ffffff(0.05), LabelStyle: (FontSize: 15, TextColor: #b8b8bd, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #c8102e(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #c8102e(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
   Anchor: (Width: 1440, Height: 660);
   LayoutMode: Top;
 
-  Group { Anchor: (Height: 2); Background: #3a2a55; }
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
 
   Group {
     FlexWeight: 1;
     LayoutMode: Left;
 
-    Group { Anchor: (Width: 2); Background: #3a2a55; }
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
     Group {
       FlexWeight: 1;
@@ -34,7 +38,7 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { Anchor: (Height: 656); Background: #130b21(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.88); }
       }
 
       Group {
@@ -48,7 +52,7 @@ Group {
           Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
         }
 
-        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 2); Background: #c8102e; }
         Group { Anchor: (Height: 14); }
 
         Group {
@@ -62,7 +66,7 @@ Group {
             Label {
               Text: "<";
               Anchor: (Height: 44);
-              Style: (FontSize: 34, TextColor: #6f6189, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Style: (FontSize: 34, TextColor: #6e6e74, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
             }
           }
           Group { Anchor: (Width: 8); }
@@ -70,13 +74,13 @@ Group {
             Anchor: (Width: 520, Height: 470);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #4a3768; }
+            Group { Anchor: (Height: 2); Background: #4a4a52; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #4a3768; }
+              Group { Anchor: (Width: 2); Background: #4a4a52; }
 
               Group {
                 FlexWeight: 1;
@@ -85,7 +89,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #1e1230(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnMinigames {
                   Text: "";
@@ -100,23 +104,23 @@ Group {
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #4a3768; }
+              Group { Anchor: (Width: 2); Background: #4a4a52; }
             }
 
-            Group { Anchor: (Height: 2); Background: #4a3768; }
+            Group { Anchor: (Height: 2); Background: #4a4a52; }
           }
           Group { Anchor: (Width: 14); }
           Group {
             Anchor: (Width: 240, Height: 470);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
               Group {
                 FlexWeight: 1;
@@ -125,7 +129,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #1e1230(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnNews {
                   Text: "";
@@ -136,27 +140,27 @@ Group {
                 Label {
                   Text: "НОВОСТИ";
                   Anchor: (Height: 30, Bottom: 22);
-                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
           }
           Group { Anchor: (Width: 14); }
           Group {
             Anchor: (Width: 240, Height: 470);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
               Group {
                 FlexWeight: 1;
@@ -165,7 +169,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #1e1230(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnRules {
                   Text: "";
@@ -176,27 +180,27 @@ Group {
                 Label {
                   Text: "ПРАВИЛА";
                   Anchor: (Height: 30, Bottom: 22);
-                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
           }
           Group { Anchor: (Width: 14); }
           Group {
             Anchor: (Width: 240, Height: 470);
             LayoutMode: Top;
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
 
             Group {
               FlexWeight: 1;
               LayoutMode: Left;
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
 
               Group {
                 FlexWeight: 1;
@@ -205,7 +209,7 @@ Group {
                   Anchor: (Full: 0);
                   LayoutMode: Top;
 
-                  Group { Anchor: (Height: 466); Background: #1e1230(0.75); }
+                  Group { Anchor: (Height: 466); Background: #161619(0.75); }
                 }
                 TextButton #BtnDiscord {
                   Text: "";
@@ -216,14 +220,14 @@ Group {
                 Label {
                   Text: "ДС СЕРВЕР";
                   Anchor: (Height: 30, Bottom: 22);
-                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                  Style: (FontSize: 22, TextColor: #b8b8bd, HorizontalAlignment: Center, RenderBold: true);
                 }
               }
 
-              Group { Anchor: (Width: 2); Background: #3a2a55; }
+              Group { Anchor: (Width: 2); Background: #3a3a3e; }
             }
 
-            Group { Anchor: (Height: 2); Background: #3a2a55; }
+            Group { Anchor: (Height: 2); Background: #3a3a3e; }
           }
           Group { Anchor: (Width: 8); }
           Group {
@@ -233,7 +237,7 @@ Group {
             Label {
               Text: ">";
               Anchor: (Height: 44);
-              Style: (FontSize: 34, TextColor: #6f6189, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              Style: (FontSize: 34, TextColor: #6e6e74, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
             }
           }
         }
@@ -243,13 +247,13 @@ Group {
         Label {
           Text: "ESC — ЗАКРЫТЬ";
           Anchor: (Height: 20);
-          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+          Style: (FontSize: 15, TextColor: #c8102e, HorizontalAlignment: Center, RenderBold: true);
         }
       }
     }
 
-    Group { Anchor: (Width: 2); Background: #3a2a55; }
+    Group { Anchor: (Width: 2); Background: #3a3a3e; }
   }
 
-  Group { Anchor: (Height: 2); Background: #3a2a55; }
+  Group { Anchor: (Height: 2); Background: #3a3a3e; }
 }

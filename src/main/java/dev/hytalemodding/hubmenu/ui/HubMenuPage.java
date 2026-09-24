@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
 /**
- * Меню HUB в чёрно-белом стиле.
+ * Меню HUB в тёмно-фиолетовом стиле.
  *
  * Одна страница показывает либо главное окно с тремя кнопками-карточками
  * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2).
