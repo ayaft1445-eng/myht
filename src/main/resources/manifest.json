@@ -1,8 +1,8 @@
 {
     "Group": "HytaleModding",
     "Name": "hubmenu",
-    "Version": "3.7.0",
-    "Description": "Dark purple grunge hub menu with four sections",
+    "Version": "4.2.0",
+    "Description": "Dark purple grunge hub menu with a group finder for mini-games",
     "Authors": [
         {
             "Name": "ayaft1445-eng",

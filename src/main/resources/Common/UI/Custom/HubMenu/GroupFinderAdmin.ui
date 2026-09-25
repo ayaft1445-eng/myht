@@ -1,0 +1,506 @@
+// Панель настроек поиска группы — список режимов.
+// Меняющийся текст ставит сервер: #Banner, #SystemValue, #AnnounceValue,
+// #TimeoutValue, #SelfAdminButton, #MName0..5, #MInfo0..5, #MToggle0..5,
+// #MEdit0..5. Он сидит на TextButton нарочно: ID на Label клиент в рабочих
+// окнах не ждёт, а ошибка разбора рвёт игроку соединение.
+//
+// Панель админская, поэтому подписи тут только по-русски.
+// Стиль общий с меню: фон — Assets/Background.png.
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Value = TextButtonStyle(
+  Default: (Background: #a35dff(0.16), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Step = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.08), LabelStyle: (FontSize: 20, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Name = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+);
+
+@Dim = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+);
+
+@Banner = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+Group {
+  Anchor: (Width: 1440, Height: 660);
+
+  Group { Anchor: (Full: 0); Background: #08050e; }
+  Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Background.png"); }
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    // ------------------------------------------------------------ шапка
+    Group {
+      Anchor: (Height: 44);
+      LayoutMode: Left;
+
+      TextButton #BackButton {
+        Text: "НАЗАД";
+        Anchor: (Width: 160);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      Label {
+        Text: "ПОИСК ГРУППЫ · НАСТРОЙКИ";
+        FlexWeight: 1;
+        Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+      }
+
+      Group { Anchor: (Width: 180); }
+    }
+
+    Group { Anchor: (Height: 2); Background: #a35dff; }
+    Group { Anchor: (Height: 8); }
+
+    // Строка-подсказка: путь к файлу настроек или последняя ошибка.
+    TextButton #Banner {
+      Text: "";
+      Anchor: (Height: 26);
+      Style: @Banner;
+    }
+
+    Group { Anchor: (Height: 12); }
+
+    // -------------------------------------------------------- общие настройки
+    Group {
+      Anchor: (Height: 48);
+      LayoutMode: Left;
+
+      Label {
+        Text: "СИСТЕМА";
+        Anchor: (Width: 160);
+        Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+      }
+
+      Group { Anchor: (Width: 10); }
+
+      TextButton #SystemValue {
+        Text: "";
+        Anchor: (Width: 120, Vertical: 6);
+        Style: @Value;
+      }
+
+      Group { Anchor: (Width: 28); }
+
+      Label {
+        Text: "ОПОВЕЩЕНИЯ";
+        Anchor: (Width: 190);
+        Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+      }
+
+      Group { Anchor: (Width: 10); }
+
+      TextButton #AnnounceValue {
+        Text: "";
+        Anchor: (Width: 120, Vertical: 6);
+        Style: @Value;
+      }
+
+      Group { Anchor: (Width: 28); }
+
+      Label {
+        Text: "ТАЙМАУТ ОЧЕРЕДИ";
+        Anchor: (Width: 230);
+        Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+      }
+
+      Group { Anchor: (Width: 10); }
+
+      TextButton #TimeoutMinus {
+        Text: "-";
+        Anchor: (Width: 44, Vertical: 6);
+        Style: @Step;
+      }
+
+      TextButton #TimeoutValue {
+        Text: "";
+        Anchor: (Width: 110, Vertical: 6);
+        Style: @Value;
+      }
+
+      TextButton #TimeoutPlus {
+        Text: "+";
+        Anchor: (Width: 44, Vertical: 6);
+        Style: @Step;
+      }
+
+      Group { FlexWeight: 1; }
+    }
+
+    Group { Anchor: (Height: 12); }
+
+    // ------------------------------------------------------------- кнопки
+    Group {
+      Anchor: (Height: 44);
+      LayoutMode: Left;
+
+      TextButton #AddButton {
+        Text: "ДОБАВИТЬ РЕЖИМ";
+        Anchor: (Width: 240);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 14); }
+
+      TextButton #ReloadButton {
+        Text: "ПЕРЕЧИТАТЬ ФАЙЛ";
+        Anchor: (Width: 240);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 14); }
+
+      TextButton #DiagButton {
+        Text: "ДИАГНОСТИКА";
+        Anchor: (Width: 220);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 14); }
+
+      TextButton #SelfAdminButton {
+        Text: "";
+        Anchor: (Width: 300);
+        Style: @Flat;
+      }
+
+      Group { FlexWeight: 1; }
+    }
+
+    Group { Anchor: (Height: 18); }
+
+    Label {
+      Text: "РЕЖИМЫ";
+      Anchor: (Height: 22);
+      Style: (FontSize: 16, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+    }
+
+    Group { Anchor: (Height: 8); }
+
+    // ------------------------------------------------------- строки режимов
+    Group {
+      Anchor: (Height: 336);
+      LayoutMode: Top;
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName0 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo0 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle0 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit0 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 6); }
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName1 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo1 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle1 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit1 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 6); }
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName2 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo2 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle2 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit2 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 6); }
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName3 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo3 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle3 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit3 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 6); }
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName4 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo4 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle4 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit4 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 6); }
+
+      Group {
+        Anchor: (Height: 51);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 18); }
+
+          TextButton #MName5 {
+            Text: "";
+            Anchor: (Width: 320);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MInfo5 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 12); }
+
+          TextButton #MToggle5 {
+            Text: "";
+            Anchor: (Width: 120, Vertical: 8);
+            Style: @Value;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #MEdit5 {
+            Text: "";
+            Anchor: (Width: 170, Vertical: 8);
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+    }
+
+    Group { Anchor: (Height: 12); }
+
+    Label {
+      Text: "ESC — ЗАКРЫТЬ";
+      Anchor: (Height: 20);
+      Style: (FontSize: 15, TextColor: #6f6189, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+    }
+  }
+}

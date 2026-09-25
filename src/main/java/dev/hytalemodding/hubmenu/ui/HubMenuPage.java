@@ -15,7 +15,11 @@ import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
+import dev.hytalemodding.hubmenu.groupfinder.model.GameModeConfig;
+import dev.hytalemodding.hubmenu.groupfinder.ui.GroupFinderPage;
 import dev.hytalemodding.hubmenu.lang.LanguageStore;
 import dev.hytalemodding.hubmenu.lang.MenuLanguage;
 
@@ -66,7 +70,8 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             "#BtnLanguage"
     };
 
-    private static final int SECTION_MINIGAMES = 0;
+    /** Раздел «Мини-игры»: из него открывается поиск группы. */
+    public static final int SECTION_MINIGAMES = 0;
 
     /** Кнопки режимов во вкладке мини-игр. */
     private static final String[] MODE_BUTTONS = { "#Mode0", "#Mode1", "#Mode2", "#Mode3" };
@@ -85,13 +90,17 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private final LanguageStore languages;
     private final MenuLanguage language;
     private final int section;
+    private final GroupFinderService groupFinder;
+    private final World world;
 
     public HubMenuPage(
             @Nonnull PlayerRef playerRef,
             @Nonnull PageManager pageManager,
             @Nonnull LanguageStore languages,
             @Nonnull MenuLanguage language,
-            int section
+            int section,
+            @Nonnull GroupFinderService groupFinder,
+            @Nonnull World world
     ) {
         super(playerRef, CustomPageLifetime.CanDismiss, HubEventData.CODEC);
         this.playerRef = playerRef;
@@ -99,6 +108,8 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         this.languages = languages;
         this.language = language;
         this.section = isSection(section) ? section : SECTION_MAIN;
+        this.groupFinder = groupFinder;
+        this.world = world;
     }
 
     @Override
@@ -203,7 +214,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         }
 
         if (action.startsWith(ACTION_MODE_PREFIX)) {
-            this.playerRef.sendMessage(Message.raw(modeNotReady(this.language)));
+            openGroupFinder(ref, store, parseIndex(action, ACTION_MODE_PREFIX));
             return;
         }
 
@@ -220,6 +231,29 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         }
     }
 
+    /**
+     * Нажали карточку режима во вкладке «Мини-игры»: открываем поиск группы
+     * со списком всех режимов. В очередь сразу не ставим — игрок выбирает сам,
+     * а режим этой карточки в списке помечен стрелками.
+     */
+    private void openGroupFinder(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            int card
+    ) {
+        GameModeConfig mode = card < 0 ? null : this.groupFinder.config().findByCard(card);
+        this.pageManager.openCustomPage(ref, store, new GroupFinderPage(
+                this.playerRef,
+                this.pageManager,
+                this.groupFinder,
+                this.world,
+                this.languages,
+                this.language,
+                true,
+                mode == null ? null : mode.getId()
+        ));
+    }
+
     /** Открывает игроку это же меню с другим разделом или языком. */
     private void open(
             @Nonnull Ref<EntityStore> ref,
@@ -230,15 +264,9 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         this.pageManager.openCustomPage(
                 ref,
                 store,
-                new HubMenuPage(this.playerRef, this.pageManager, this.languages, newLanguage, newSection)
+                new HubMenuPage(this.playerRef, this.pageManager, this.languages, newLanguage,
+                        newSection, this.groupFinder, this.world)
         );
-    }
-
-    @Nonnull
-    private static String modeNotReady(@Nonnull MenuLanguage language) {
-        return language == MenuLanguage.EN
-                ? "This mode is not ready yet."
-                : "Режим пока в разработке.";
     }
 
     @Nonnull
@@ -253,8 +281,12 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     }
 
     private static int parseSection(@Nonnull String action) {
+        return parseIndex(action, ACTION_OPEN_PREFIX);
+    }
+
+    private static int parseIndex(@Nonnull String action, @Nonnull String prefix) {
         try {
-            return Integer.parseInt(action.substring(ACTION_OPEN_PREFIX.length()));
+            return Integer.parseInt(action.substring(prefix.length()));
         } catch (NumberFormatException exception) {
             return SECTION_MAIN;
         }

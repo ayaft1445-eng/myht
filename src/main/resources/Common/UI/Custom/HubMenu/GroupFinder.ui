@@ -1,0 +1,382 @@
+// Окно «Поиск группы». Весь текст ставит сервер: #Title, #BackButton,
+// #RefreshButton, #LeaveButton, #Hint, #Status, #Name0..#Name5,
+// #Info0..#Info5, #Join0..#Join5 — поэтому разметка одна на оба языка.
+//
+// Меняющийся текст сидит на TextButton нарочно: ID на Label клиент этой
+// версии в рабочих окнах мода не встречает, а ошибка разбора не пускает
+// игрока на сервер. Кнопки без привязки события (заголовок, строка
+// состояния, названия) просто не реагируют на нажатие: у них hover
+// совпадает с обычным состоянием.
+//
+// Стиль общий с меню: фон — Assets/Background.png.
+
+@Head = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 30, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 30, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 30, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Action = TextButtonStyle(
+  Default: (Background: #a35dff(0.16), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Status = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 17, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 17, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 17, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Name = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 21, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+);
+
+@Dim = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 16, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 16, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 16, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+);
+
+@Hint = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+
+  Group { Anchor: (Full: 0); Background: #08050e; }
+  Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Background.png"); }
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    // ------------------------------------------------------------ шапка
+    Group {
+      Anchor: (Height: 44);
+      LayoutMode: Left;
+
+      TextButton #BackButton {
+        Text: "";
+        Anchor: (Width: 160);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      TextButton #Title {
+        Text: "";
+        FlexWeight: 1;
+        Style: @Head;
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      TextButton #RefreshButton {
+        Text: "";
+        Anchor: (Width: 160);
+        Style: @Flat;
+      }
+    }
+
+    Group { Anchor: (Height: 2); Background: #a35dff; }
+    Group { Anchor: (Height: 10); }
+
+    // Строка состояния: в очереди игрок или нет.
+    Group {
+      Anchor: (Height: 36);
+
+      Group { Anchor: (Full: 0); Background: #1a1230(0.55); }
+
+      TextButton #Status {
+        Text: "";
+        Anchor: (Full: 0);
+        Style: @Status;
+      }
+    }
+
+    Group { Anchor: (Height: 12); }
+
+    // ------------------------------------------------------ строки режимов
+    Group {
+      Anchor: (Height: 412);
+      LayoutMode: Top;
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name0 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info0 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join0 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name1 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info1 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join1 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name2 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info2 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join2 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name3 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info3 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join3 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name4 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info4 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join4 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+
+      Group { Anchor: (Height: 8); }
+
+      Group {
+        Anchor: (Height: 62);
+
+        Group { Anchor: (Full: 0); Background: #150e28(0.62); }
+
+        Group {
+          Anchor: (Full: 0);
+          LayoutMode: Left;
+
+          Group { Anchor: (Width: 5); Background: #a35dff(0.65); }
+          Group { Anchor: (Width: 20); }
+
+          TextButton #Name5 {
+            Text: "";
+            Anchor: (Width: 400);
+            Style: @Name;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Info5 {
+            Text: "";
+            FlexWeight: 1;
+            Style: @Dim;
+          }
+
+          Group { Anchor: (Width: 16); }
+
+          TextButton #Join5 {
+            Text: "";
+            Anchor: (Width: 250, Vertical: 11);
+            Style: @Action;
+          }
+
+          Group { Anchor: (Width: 12); }
+        }
+      }
+    }
+
+    Group { Anchor: (Height: 22); }
+
+    // ------------------------------------------------------------- низ
+    Group {
+      Anchor: (Height: 44);
+      LayoutMode: Left;
+
+      Group { FlexWeight: 1; }
+
+      TextButton #LeaveButton {
+        Text: "";
+        Anchor: (Width: 300);
+        Style: @Flat;
+      }
+
+      Group { FlexWeight: 1; }
+    }
+
+    Group { Anchor: (Height: 10); }
+
+    TextButton #Hint {
+      Text: "";
+      Anchor: (Height: 20);
+      Style: @Hint;
+    }
+  }
+}

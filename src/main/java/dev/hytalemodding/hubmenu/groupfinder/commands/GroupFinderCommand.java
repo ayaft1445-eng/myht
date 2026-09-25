@@ -1,4 +1,4 @@
-package dev.hytalemodding.hubmenu.commands;
+package dev.hytalemodding.hubmenu.groupfinder.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -10,22 +10,22 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
+import dev.hytalemodding.hubmenu.groupfinder.ui.GroupFinderPage;
 import dev.hytalemodding.hubmenu.lang.LanguageStore;
 import dev.hytalemodding.hubmenu.lang.MenuLanguage;
-import dev.hytalemodding.hubmenu.ui.HubMenuPage;
 
 import javax.annotation.Nonnull;
 
-/** Команда /hub — открывает меню HUB. */
-public class HubCommand extends AbstractPlayerCommand {
+/** Команда /gf — открывает окно поиска группы. */
+public class GroupFinderCommand extends AbstractPlayerCommand {
 
+    private final GroupFinderService service;
     private final LanguageStore languages;
-    private final GroupFinderService groupFinder;
 
-    public HubCommand(@Nonnull LanguageStore languages, @Nonnull GroupFinderService groupFinder) {
-        super("hub", "Открыть меню сервера");
+    public GroupFinderCommand(GroupFinderService service, LanguageStore languages) {
+        super("gf", "Поиск группы для мини-игры");
+        this.service = service;
         this.languages = languages;
-        this.groupFinder = groupFinder;
     }
 
     @Override
@@ -38,29 +38,23 @@ public class HubCommand extends AbstractPlayerCommand {
     ) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) {
-            context.sendMessage(Message.raw("Не удалось открыть меню: игрок не найден."));
+            context.sendMessage(Message.raw("Не удалось открыть поиск: игрок не найден."));
             return;
         }
-
-        // Язык: выбранный игроком, иначе язык клиента. Окно выбора тут не
-        // показывается — оно открывается при первом заходе на сервер, а сменить
-        // язык можно карточкой «Язык» в самом меню.
-        MenuLanguage language = this.languages.get(
-                playerRef.getUuid(),
-                MenuLanguage.fromCode(playerRef.getLanguage())
-        );
 
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new HubMenuPage(
+                new GroupFinderPage(
                         playerRef,
                         player.getPageManager(),
+                        this.service,
+                        world,
                         this.languages,
-                        language,
-                        HubMenuPage.SECTION_MAIN,
-                        this.groupFinder,
-                        world
+                        this.languages.get(playerRef.getUuid(),
+                                MenuLanguage.fromCode(playerRef.getLanguage())),
+                        false,
+                        null
                 )
         );
     }

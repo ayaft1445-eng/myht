@@ -1,0 +1,396 @@
+// Панель настроек поиска группы — один режим.
+// Меняющийся текст ставит сервер: #Title, #Hint, #EnabledValue, #MinValue,
+// #MaxValue, #CdValue, #SpreadValue, #CardValue, #ArenaValue, #QueueValue.
+// Он сидит на TextButton нарочно: ID на Label клиент в рабочих окнах не ждёт,
+// а ошибка разбора рвёт игроку соединение.
+//
+// Координаты арены руками не набираются: админ встаёт в нужное место и жмёт
+// «ПОСТАВИТЬ ТОЧКУ ЗДЕСЬ».
+//
+// Панель админская, поэтому подписи тут только по-русски.
+// Стиль общий с меню: фон — Assets/Background.png.
+
+@Head = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Value = TextButtonStyle(
+  Default: (Background: #a35dff(0.16), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Step = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.08), LabelStyle: (FontSize: 20, TextColor: #c9a2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 20, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+// Только для чтения: подставленное сервером значение, нажимать нечего.
+@Read = TextButtonStyle(
+  Default: (Background: #1a1230(0.55), LabelStyle: (FontSize: 16, TextColor: #d8d0e8, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #1a1230(0.55), LabelStyle: (FontSize: 16, TextColor: #d8d0e8, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #1a1230(0.55), LabelStyle: (FontSize: 16, TextColor: #d8d0e8, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Accent = TextButtonStyle(
+  Default: (Background: #a35dff(0.30), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Danger = TextButtonStyle(
+  Default: (Background: #b3305c(0.22), LabelStyle: (FontSize: 15, TextColor: #e58ab0, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #b3305c(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #b3305c(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Hint = TextButtonStyle(
+  Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.00), LabelStyle: (FontSize: 15, TextColor: #6f6189, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+
+  Group { Anchor: (Full: 0); Background: #08050e; }
+  Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Background.png"); }
+
+  Group {
+    Anchor: (Full: 0);
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    // ------------------------------------------------------------ шапка
+    Group {
+      Anchor: (Height: 44);
+      LayoutMode: Left;
+
+      TextButton #BackButton {
+        Text: "НАЗАД";
+        Anchor: (Width: 160);
+        Style: @Flat;
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      TextButton #Title {
+        Text: "";
+        FlexWeight: 1;
+        Style: @Head;
+      }
+
+      Group { Anchor: (Width: 180); }
+    }
+
+    Group { Anchor: (Height: 2); Background: #a35dff; }
+    Group { Anchor: (Height: 10); }
+
+    Group {
+      Anchor: (Height: 524);
+      LayoutMode: Left;
+
+      // ------------------------------------------------ левая колонка: числа
+      Group {
+        Anchor: (Width: 820);
+        LayoutMode: Top;
+
+        // Состояние режима: кнопка переключает вкл/выкл.
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "СОСТОЯНИЕ";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #EnabledValue {
+            Text: "";
+            Anchor: (Width: 226, Vertical: 6);
+            Style: @Value;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "МИНИМУМ ИГРОКОВ ДЛЯ СТАРТА";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #MinMinus {
+            Text: "-";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          TextButton #MinValue {
+            Text: "";
+            Anchor: (Width: 130, Vertical: 6);
+            Style: @Value;
+          }
+
+          TextButton #MinPlus {
+            Text: "+";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "МАКСИМУМ ИГРОКОВ В ГРУППЕ";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #MaxMinus {
+            Text: "-";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          TextButton #MaxValue {
+            Text: "";
+            Anchor: (Width: 130, Vertical: 6);
+            Style: @Value;
+          }
+
+          TextButton #MaxPlus {
+            Text: "+";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "ОТСЧЁТ ПЕРЕД ТЕЛЕПОРТОМ, СЕК";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #CdMinus {
+            Text: "-";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          TextButton #CdValue {
+            Text: "";
+            Anchor: (Width: 130, Vertical: 6);
+            Style: @Value;
+          }
+
+          TextButton #CdPlus {
+            Text: "+";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "РАЗБРОС ВОКРУГ ТОЧКИ, БЛОКОВ";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #SpreadMinus {
+            Text: "-";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          TextButton #SpreadValue {
+            Text: "";
+            Anchor: (Width: 130, Vertical: 6);
+            Style: @Value;
+          }
+
+          TextButton #SpreadPlus {
+            Text: "+";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        // Какая карточка в окне «Мини-игры» ведёт в этот режим.
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+          Label {
+            Text: "КНОПКА В ОКНЕ «МИНИ-ИГРЫ»";
+            Anchor: (Width: 420);
+            Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: End, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Group { Anchor: (Width: 14); }
+
+          TextButton #CardPrev {
+            Text: "-";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          TextButton #CardValue {
+            Text: "";
+            Anchor: (Width: 130, Vertical: 6);
+            Style: @Read;
+          }
+
+          TextButton #CardNext {
+            Text: "+";
+            Anchor: (Width: 48, Vertical: 6);
+            Style: @Step;
+          }
+
+          Group { FlexWeight: 1; }
+        }
+
+        Group { FlexWeight: 1; }
+      }
+
+      Group { Anchor: (Width: 24); }
+
+      // -------------------------------------- правая колонка: арена и очередь
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Top;
+
+        Label {
+          Text: "ТОЧКА ТЕЛЕПОРТА";
+          Anchor: (Height: 22);
+          Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+        }
+
+        TextButton #ArenaValue {
+          Text: "";
+          Anchor: (Height: 42);
+          Style: @Read;
+        }
+
+        Group { Anchor: (Height: 10); }
+
+        TextButton #SetHereButton {
+          Text: "ПОСТАВИТЬ ТОЧКУ ЗДЕСЬ";
+          Anchor: (Height: 44);
+          Style: @Accent;
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group {
+          Anchor: (Height: 44);
+          LayoutMode: Left;
+
+          TextButton #ClearArenaButton {
+            Text: "СБРОСИТЬ";
+            FlexWeight: 1;
+            Style: @Flat;
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #TestButton {
+            Text: "ПРОВЕРИТЬ";
+            FlexWeight: 1;
+            Style: @Flat;
+          }
+        }
+
+        Group { Anchor: (Height: 20); }
+
+        Label {
+          Text: "ОЧЕРЕДЬ";
+          Anchor: (Height: 22);
+          Style: (FontSize: 15, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+        }
+
+        TextButton #QueueValue {
+          Text: "";
+          Anchor: (Height: 42);
+          Style: @Read;
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        TextButton #ClearQueueButton {
+          Text: "ОЧИСТИТЬ ОЧЕРЕДЬ";
+          Anchor: (Height: 44);
+          Style: @Flat;
+        }
+
+        Group { FlexWeight: 1; }
+
+        TextButton #DeleteButton {
+          Text: "УДАЛИТЬ РЕЖИМ";
+          Anchor: (Height: 44);
+          Style: @Danger;
+        }
+      }
+    }
+
+    Group { Anchor: (Height: 12); }
+
+    TextButton #Hint {
+      Text: "";
+      Anchor: (Height: 20);
+      Style: @Hint;
+    }
+  }
+}
