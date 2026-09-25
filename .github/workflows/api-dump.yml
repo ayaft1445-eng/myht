@@ -26,25 +26,24 @@ jobs:
       continue-on-error: true
       run: ./gradlew build
 
-    - name: Классы про шрифты и стили текста
+    - name: Ищем следы шрифтов в jar
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        echo "JAR=$JAR"
-        echo "──────── классы со словом Font"
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'font' | head -40
-        echo "──────── классы стилей текста"
-        unzip -l "$JAR" | awk '{print $4}' | grep -E 'LabelStyle|TextStyle|TextButtonStyle' | grep -v '\$' | head -20
-        echo "──────── ассеты и их типы"
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'assetstore|AssetType' | grep -v '\$' | head -30
+        mkdir -p /tmp/srv && unzip -oq "$JAR" -d /tmp/srv
+        echo "──────── строки .ttf / .otf / Fonts/ внутри классов"
+        grep -ria --include='*.class' -o -E '[A-Za-z0-9_/.-]*\.(ttf|otf)' /tmp/srv | sort -u | head -20
+        grep -ria --include='*.class' -o -E 'Fonts?/[A-Za-z0-9_/.-]*' /tmp/srv | sort -u | head -20
+        echo "──────── строки со словом Font в константах классов"
+        grep -ria --include='*.class' -o -E '[A-Za-z]{0,12}Font[A-Za-z]{0,14}' /tmp/srv | sed 's/^.*://' | sort | uniq -c | sort -rn | head -25
+        echo "──────── типы ассетов, которые знает редактор"
+        javap -cp "$JAR" -constants com.hypixel.hytale.protocol.packets.asseteditor.AssetEditorAssetType 2>&1 | head -40
 
-    - name: Сигнатуры стилей
+    - name: Как выглядит разметка UI со стороны сервера
       run: |
         set +e
-        CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
-        for C in $(unzip -l $(find ~/.gradle/caches -name 'Server-*.jar' | head -1) \
-                    | awk '{print $4}' | grep -E 'LabelStyle\.class|FontStyle\.class|Font\.class|FontAsset\.class' \
-                    | sed 's|/|.|g; s|\.class$||' | head -6); do
-          echo "════════ $C"
-          javap -cp "$CP" "$C" 2>&1 | head -40
-        done
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        echo "──────── встроенные .ui в сервере (если есть)"
+        unzip -l "$JAR" | grep -i '\.ui' | head -20
+        echo "──────── классы про CustomUI"
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'CustomUI|interface_/' | grep -v '\$' | head -25
