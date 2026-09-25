@@ -10,3 +10,5 @@ run/
 .project
 .settings/
 .vscode
+# Python: кэш импортов от скрипта картинок
+__pycache__/

@@ -71,6 +71,9 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     /** Кнопки режимов во вкладке мини-игр. */
     private static final String[] MODE_BUTTONS = { "#Mode0", "#Mode1", "#Mode2", "#Mode3" };
 
+    /** Кнопка «Закрыть» в главном окне. */
+    private static final String CLOSE_BUTTON = "#CloseButton";
+
     private static final String ACTION_OPEN_PREFIX = "open";
     private static final String ACTION_MODE_PREFIX = "mode";
     private static final String ACTION_LANG_PREFIX = "lang";
@@ -116,6 +119,25 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
                         false
                 );
             }
+
+            // Чипы языка в строке настроек: те же кнопки, что и в окне выбора
+            // языка, поэтому язык переключается прямо из главного окна.
+            for (MenuLanguage option : MenuLanguage.values()) {
+                evt.addEventBinding(
+                        CustomUIEventBindingType.Activating,
+                        option.getButtonId(),
+                        new EventData().append("Action", ACTION_LANG_PREFIX + option.getCode()),
+                        false
+                );
+            }
+
+            // Большая кнопка «Закрыть» внизу главного окна. ESC тоже закрывает.
+            evt.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    CLOSE_BUTTON,
+                    new EventData().append("Action", ACTION_CLOSE),
+                    false
+            );
             return;
         }
 

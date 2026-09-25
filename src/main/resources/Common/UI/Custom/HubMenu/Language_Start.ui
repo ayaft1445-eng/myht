@@ -25,27 +25,9 @@ Group {
     Group {
       FlexWeight: 1;
 
-      Group {
-        Anchor: (Full: 0);
-        LayoutMode: Top;
-
-        Group { Anchor: (Height: 416); Background: #130c22(0.90); }
-      }
-      Group {
-        Anchor: (Full: 0);
-        LayoutMode: Top;
-
-        Group { Anchor: (Height: 42); Background: #010002(0.5); }
-        Group { Anchor: (Height: 42); Background: #050209(0.5); }
-        Group { Anchor: (Height: 42); Background: #090510(0.5); }
-        Group { Anchor: (Height: 42); Background: #0d0717(0.5); }
-        Group { Anchor: (Height: 42); Background: #110a1e(0.5); }
-        Group { Anchor: (Height: 42); Background: #150c24(0.5); }
-        Group { Anchor: (Height: 41); Background: #190f2b(0.5); }
-        Group { Anchor: (Height: 41); Background: #1d1132(0.5); }
-        Group { Anchor: (Height: 41); Background: #211439(0.5); }
-        Group { Anchor: (Height: 41); Background: #251640(0.5); }
-      }
+      // Фон окна — общая картинка со всеми окнами меню.
+      Group { Anchor: (Full: 0); Background: #08050e; }
+      Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Background.png"); }
 
       Group {
         Anchor: (Full: 0);
