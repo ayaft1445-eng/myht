@@ -80,23 +80,12 @@ Group {
               Group {
                 FlexWeight: 1;
 
-                Group {
-                  Anchor: (Full: 0);
-                  LayoutMode: Top;
+                // Подложка — видна, если текстура не загрузилась.
+                Group { Anchor: (Full: 0); Background: #2e1250; }
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
-                }
+                // Фон карточки. Картинки лежат в подпапке Assets рядом с разметкой.
+                Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Minigames.png"); }
+
 
                 TextButton #BtnMinigames {
                   Text: "";
@@ -132,23 +121,12 @@ Group {
               Group {
                 FlexWeight: 1;
 
-                Group {
-                  Anchor: (Full: 0);
-                  LayoutMode: Top;
+                // Подложка — видна, если текстура не загрузилась.
+                Group { Anchor: (Full: 0); Background: #2e1250; }
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
-                }
+                // Фон карточки. Картинки лежат в подпапке Assets рядом с разметкой.
+                Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_News.png"); }
+
 
                 TextButton #BtnNews {
                   Text: "";
@@ -184,23 +162,12 @@ Group {
               Group {
                 FlexWeight: 1;
 
-                Group {
-                  Anchor: (Full: 0);
-                  LayoutMode: Top;
+                // Подложка — видна, если текстура не загрузилась.
+                Group { Anchor: (Full: 0); Background: #2e1250; }
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
-                }
+                // Фон карточки. Картинки лежат в подпапке Assets рядом с разметкой.
+                Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Rules.png"); }
+
 
                 TextButton #BtnRules {
                   Text: "";
@@ -236,23 +203,12 @@ Group {
               Group {
                 FlexWeight: 1;
 
-                Group {
-                  Anchor: (Full: 0);
-                  LayoutMode: Top;
+                // Подложка — видна, если текстура не загрузилась.
+                Group { Anchor: (Full: 0); Background: #2e1250; }
 
-                  Group { FlexWeight: 1; Background: #2e1250(0.55); }
-                  Group { FlexWeight: 1; Background: #311354(0.55); }
-                  Group { FlexWeight: 1; Background: #331458(0.55); }
-                  Group { FlexWeight: 1; Background: #36155b(0.55); }
-                  Group { FlexWeight: 1; Background: #39165f(0.55); }
-                  Group { FlexWeight: 1; Background: #3b1763(0.55); }
-                  Group { FlexWeight: 1; Background: #3e1867(0.55); }
-                  Group { FlexWeight: 1; Background: #40196b(0.55); }
-                  Group { FlexWeight: 1; Background: #431a6f(0.55); }
-                  Group { FlexWeight: 1; Background: #461b72(0.55); }
-                  Group { FlexWeight: 1; Background: #481c76(0.55); }
-                  Group { FlexWeight: 1; Background: #4b1d7a(0.55); }
-                }
+                // Фон карточки. Картинки лежат в подпапке Assets рядом с разметкой.
+                Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Discord.png"); }
+
 
                 TextButton #BtnDiscord {
                   Text: "";
