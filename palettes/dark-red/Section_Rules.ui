@@ -1,4 +1,4 @@
-// Окно «Новости». Текст — в строках Text.
+// Окно «Правила». Текст — в строках Text.
 
 @Card = TextButtonStyle(
   Default: (Background: #ffffff(0.03), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -31,16 +31,22 @@ Group {
         Anchor: (Full: 0);
         LayoutMode: Top;
 
-        Group { FlexWeight: 1; Background: #0b0b0c(0.88); }
-        Group { FlexWeight: 1; Background: #0c0c0e(0.88); }
-        Group { FlexWeight: 1; Background: #0e0e0f(0.88); }
-        Group { FlexWeight: 1; Background: #0f0f11(0.88); }
-        Group { FlexWeight: 1; Background: #101012(0.88); }
-        Group { FlexWeight: 1; Background: #121214(0.88); }
-        Group { FlexWeight: 1; Background: #131315(0.88); }
-        Group { FlexWeight: 1; Background: #141417(0.88); }
-        Group { FlexWeight: 1; Background: #161618(0.88); }
-        Group { FlexWeight: 1; Background: #17171a(0.88); }
+        Group { Anchor: (Height: 656); Background: #111113(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #050505(0.5); }
+        Group { Anchor: (Height: 66); Background: #080808(0.5); }
+        Group { Anchor: (Height: 66); Background: #0a0a0b(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0d0e(0.5); }
+        Group { Anchor: (Height: 66); Background: #101011(0.5); }
+        Group { Anchor: (Height: 66); Background: #121215(0.5); }
+        Group { Anchor: (Height: 65); Background: #151518(0.5); }
+        Group { Anchor: (Height: 65); Background: #18181b(0.5); }
+        Group { Anchor: (Height: 65); Background: #1a1a1e(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1d21(0.5); }
       }
 
       Group {
@@ -85,7 +91,7 @@ Group {
               LayoutMode: Center;
 
               Label {
-                Text: "НОВОСТИ";
+                Text: "ПРАВИЛА";
                 Anchor: (Height: 48);
                 Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
               }
@@ -97,8 +103,10 @@ Group {
         Group { Anchor: (Height: 2); Background: #c8102e; }
         Group { Anchor: (Height: 16); }
 
+        // Высота задана числом: гибкая высота внутри слоя не растягивается,
+        // из-за этого заливка не доходила до рамки
         Group {
-          FlexWeight: 1;
+          Anchor: (Height: 500);
           LayoutMode: Top;
 
           Group { Anchor: (Height: 2); Background: #3a3a3e; }
@@ -116,16 +124,22 @@ Group {
                 Anchor: (Full: 0);
                 LayoutMode: Top;
 
-                Group { FlexWeight: 1; Background: #101012(0.75); }
-                Group { FlexWeight: 1; Background: #111114(0.75); }
-                Group { FlexWeight: 1; Background: #131315(0.75); }
-                Group { FlexWeight: 1; Background: #141417(0.75); }
-                Group { FlexWeight: 1; Background: #151518(0.75); }
-                Group { FlexWeight: 1; Background: #17171a(0.75); }
-                Group { FlexWeight: 1; Background: #18181b(0.75); }
-                Group { FlexWeight: 1; Background: #19191d(0.75); }
-                Group { FlexWeight: 1; Background: #1b1b1e(0.75); }
-                Group { FlexWeight: 1; Background: #1c1c20(0.75); }
+                Group { Anchor: (Height: 496); Background: #161619(0.78); }
+              }
+              Group {
+                Anchor: (Full: 0);
+                LayoutMode: Top;
+
+                Group { Anchor: (Height: 50); Background: #0a0a0b(0.5); }
+                Group { Anchor: (Height: 50); Background: #0d0d0e(0.5); }
+                Group { Anchor: (Height: 50); Background: #0f0f11(0.5); }
+                Group { Anchor: (Height: 50); Background: #121214(0.5); }
+                Group { Anchor: (Height: 50); Background: #151517(0.5); }
+                Group { Anchor: (Height: 50); Background: #17171b(0.5); }
+                Group { Anchor: (Height: 49); Background: #1a1a1e(0.5); }
+                Group { Anchor: (Height: 49); Background: #1d1d21(0.5); }
+                Group { Anchor: (Height: 49); Background: #1f1f24(0.5); }
+                Group { Anchor: (Height: 49); Background: #222227(0.5); }
               }
               Group {
                 Anchor: (Full: 0);
@@ -133,53 +147,41 @@ Group {
                 Padding: (Full: 24);
 
                   Label {
-                    Text: "ОТКРЫТИЕ СЕРВЕРА";
-                    Anchor: (Height: 32);
-                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                    Text: "1. Уважай других игроков: без оскорблений и токсичности.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
                   }
+                  Group { Anchor: (Height: 10); }
                   Label {
-                    Text: "Мы запустились! Заходите, зовите друзей";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Text: "2. Читы, багоюз и сторонние программы запрещены.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
                   }
+                  Group { Anchor: (Height: 10); }
                   Label {
-                    Text: "и пишите о багах в Discord.";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Text: "3. Не ломай и не забирай чужие постройки и вещи.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
                   }
-                  Group { Anchor: (Height: 18); }
+                  Group { Anchor: (Height: 10); }
                   Label {
-                    Text: "НОВАЯ МИНИ-ИГРА";
-                    Anchor: (Height: 32);
-                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                    Text: "4. Реклама других серверов запрещена.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
                   }
+                  Group { Anchor: (Height: 10); }
                   Label {
-                    Text: "Скоро добавим «Захват флага»:";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Text: "5. Решение администрации окончательное.";
+                    Anchor: (Height: 28);
+                    Style: (FontSize: 17, TextColor: #b8b8bd, HorizontalAlignment: Center);
                   }
+                  Group { Anchor: (Height: 10); }
+                  Group { Anchor: (Height: 14); }
                   Label {
-                    Text: "две команды, один флаг, много шума.";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
+                    Text: "Это текст-заглушка — замени на свои правила.";
+                    Anchor: (Height: 20);
+                    Style: (FontSize: 13, TextColor: #6e6e74, HorizontalAlignment: Center);
                   }
-                  Group { Anchor: (Height: 18); }
-                  Label {
-                    Text: "ОБНОВЛЕНИЕ МИРА";
-                    Anchor: (Height: 32);
-                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-                  }
-                  Label {
-                    Text: "Спавн перестроен, добавлены порталы";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
-                  }
-                  Label {
-                    Text: "к аренам и торговой площади.";
-                    Anchor: (Height: 24);
-                    Style: (FontSize: 16, TextColor: #b8b8bd, HorizontalAlignment: Center);
-                  }
-                  Group { Anchor: (Height: 18); }
               }
             }
 

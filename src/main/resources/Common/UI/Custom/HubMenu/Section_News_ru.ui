@@ -1,4 +1,4 @@
-// Окно «ДС сервер». Ссылку меняй здесь и в HubMenuPage.java (DISCORD_LINK).
+// Окно «Новости». Текст — в строках Text.
 
 @Card = TextButtonStyle(
   Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -91,7 +91,7 @@ Group {
               LayoutMode: Center;
 
               Label {
-                Text: "ДС СЕРВЕР";
+                Text: "НОВОСТИ";
                 Anchor: (Height: 48);
                 Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
               }
@@ -146,59 +146,54 @@ Group {
                 LayoutMode: Top;
                 Padding: (Full: 24);
 
-                Group { FlexWeight: 1; }
-                Label {
-                  Text: "НАШ DISCORD-СЕРВЕР";
-                  Anchor: (Height: 34);
-                  Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-                }
-                Group { Anchor: (Height: 12); }
-                Label {
-                  Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
-                  Anchor: (Height: 32);
-                  Style: (FontSize: 22, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
-                }
-                Group { Anchor: (Height: 20); }
-                Group {
-                  Anchor: (Height: 48);
-                  LayoutMode: Center;
-
-                  Group {
-                    Anchor: (Width: 300, Height: 48);
-                    LayoutMode: Top;
-
-                    Group { Anchor: (Height: 2); Background: #3a2a55; }
-
-                    Group {
-                      FlexWeight: 1;
-                      LayoutMode: Left;
-
-                      Group { Anchor: (Width: 2); Background: #3a2a55; }
-
-                      Group {
-                        FlexWeight: 1;
-
-                        TextButton #DiscordButton {
-                          Text: "ПОЛУЧИТЬ ССЫЛКУ";
-                          Anchor: (Full: 0);
-                          Style: @Flat;
-                        }
-                      }
-
-                      Group { Anchor: (Width: 2); Background: #3a2a55; }
-                    }
-
-                    Group { Anchor: (Height: 2); Background: #3a2a55; }
+                  Label {
+                    Text: "ОТКРЫТИЕ СЕРВЕРА";
+                    Anchor: (Height: 32);
+                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                   }
-                }
-
-                Group { Anchor: (Height: 12); }
-                Label {
-                  Text: "Нажми кнопку — ссылка придёт в чат, оттуда её можно скопировать.";
-                  Anchor: (Height: 22);
-                  Style: (FontSize: 14, TextColor: #6f6189, HorizontalAlignment: Center);
-                }
-                Group { FlexWeight: 1; }
+                  Label {
+                    Text: "Мы запустились! Заходите, зовите друзей";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Label {
+                    Text: "и пишите о багах в Discord.";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 18); }
+                  Label {
+                    Text: "НОВАЯ МИНИ-ИГРА";
+                    Anchor: (Height: 32);
+                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  }
+                  Label {
+                    Text: "Скоро добавим «Захват флага»:";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Label {
+                    Text: "две команды, один флаг, много шума.";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 18); }
+                  Label {
+                    Text: "ОБНОВЛЕНИЕ МИРА";
+                    Anchor: (Height: 32);
+                    Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  }
+                  Label {
+                    Text: "Спавн перестроен, добавлены порталы";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Label {
+                    Text: "к аренам и торговой площади.";
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 18); }
               }
             }
 

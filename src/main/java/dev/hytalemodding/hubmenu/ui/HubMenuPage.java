@@ -16,17 +16,23 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import dev.hytalemodding.hubmenu.lang.LanguageStore;
+import dev.hytalemodding.hubmenu.lang.MenuLanguage;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
 /**
- * Меню HUB в чёрно-белом стиле.
+ * Меню HUB в тёмно-фиолетовом стиле.
  *
- * Одна страница показывает либо главное окно с тремя кнопками-карточками
- * (section = SECTION_MAIN), либо окно одного раздела (section = 0, 1, 2).
- * По нажатию кнопки игроку открывается эта же страница с другим номером
- * раздела, поэтому каждое окно собирается заново и целиком.
+ * Одна страница показывает либо главное окно с четырьмя кнопками-карточками
+ * (section = SECTION_MAIN), либо окно одного раздела. По нажатию кнопки игроку
+ * открывается эта же страница с другим номером раздела, поэтому каждое окно
+ * собирается заново и целиком.
+ *
+ * Язык. Разметка на каждый язык лежит отдельным файлом (Main_ru.ui, Main_en.ui),
+ * страница берёт нужный по MenuLanguage. Окно выбора языка одно на оба языка:
+ * его видят и те, кто ещё ничего не выбрал.
  *
  * Разметка: src/main/resources/Common/UI/Custom/HubMenu/
  */
@@ -34,51 +40,61 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    /** Главное окно с тремя кнопками. */
+    /** Главное окно с карточками. */
     public static final int SECTION_MAIN = -1;
 
-    private static final String MAIN_LAYOUT = "HubMenu/Main.ui";
+    /** Окно выбора языка — оно же четвёртая карточка главного окна. */
+    public static final int SECTION_LANGUAGE = 3;
 
-    /** Окна разделов — порядок совпадает с порядком кнопок в главном окне. */
-    private static final String[] SECTION_LAYOUTS = {
-            "HubMenu/Section_Minigames.ui",
-            "HubMenu/Section_News.ui",
-            "HubMenu/Section_Rules.ui",
-            "HubMenu/Section_Discord.ui"
+    private static final String MAIN_WINDOW = "Main";
+
+    /** Окна разделов — порядок совпадает с порядком карточек в главном окне. */
+    private static final String[] SECTION_WINDOWS = {
+            "Section_Minigames",
+            "Section_News",
+            "Section_Rules"
     };
 
-    /** Кнопки главного окна — порядок совпадает с SECTION_LAYOUTS. */
+    /** Окно выбора языка общее: подписи в нём сразу на двух языках. */
+    private static final String LANGUAGE_LAYOUT = "HubMenu/Section_Language.ui";
+
+    /** Кнопки главного окна — порядок совпадает с номерами разделов. */
     private static final String[] SECTION_BUTTONS = {
             "#BtnMinigames",
             "#BtnNews",
             "#BtnRules",
-            "#BtnDiscord"
+            "#BtnLanguage"
     };
 
-    /** Ссылка на Discord — её же покажи в Section_Discord.ui. */
-    private static final String DISCORD_LINK = "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
-
-    /** Номера разделов: порядок совпадает с SECTION_LAYOUTS. */
     private static final int SECTION_MINIGAMES = 0;
-    private static final int SECTION_DISCORD = 3;
 
     /** Кнопки режимов во вкладке мини-игр. */
     private static final String[] MODE_BUTTONS = { "#Mode0", "#Mode1", "#Mode2", "#Mode3" };
 
     private static final String ACTION_OPEN_PREFIX = "open";
     private static final String ACTION_MODE_PREFIX = "mode";
-    private static final String ACTION_DISCORD = "discord";
+    private static final String ACTION_LANG_PREFIX = "lang";
     private static final String ACTION_BACK = "back";
     private static final String ACTION_CLOSE = "close";
 
     private final PlayerRef playerRef;
     private final PageManager pageManager;
+    private final LanguageStore languages;
+    private final MenuLanguage language;
     private final int section;
 
-    public HubMenuPage(@Nonnull PlayerRef playerRef, @Nonnull PageManager pageManager, int section) {
+    public HubMenuPage(
+            @Nonnull PlayerRef playerRef,
+            @Nonnull PageManager pageManager,
+            @Nonnull LanguageStore languages,
+            @Nonnull MenuLanguage language,
+            int section
+    ) {
         super(playerRef, CustomPageLifetime.CanDismiss, HubEventData.CODEC);
         this.playerRef = playerRef;
         this.pageManager = pageManager;
+        this.languages = languages;
+        this.language = language;
         this.section = isSection(section) ? section : SECTION_MAIN;
     }
 
@@ -90,7 +106,7 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             @Nonnull Store<EntityStore> store
     ) {
         if (this.section == SECTION_MAIN) {
-            cmd.append(MAIN_LAYOUT);
+            cmd.append(this.language.layout(MAIN_WINDOW));
 
             for (int i = 0; i < SECTION_BUTTONS.length; i++) {
                 evt.addEventBinding(
@@ -100,16 +116,22 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
                         false
                 );
             }
-        } else {
-            cmd.append(SECTION_LAYOUTS[this.section]);
+            return;
+        }
 
-            // Кнопка «Назад» вверху слева, кнопки «Закрыть» нет: закрывает ESC
-            evt.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#BackButton",
-                    new EventData().append("Action", ACTION_BACK),
-                    false
-            );
+        if (this.section == SECTION_LANGUAGE) {
+            cmd.append(LANGUAGE_LAYOUT);
+
+            for (MenuLanguage option : MenuLanguage.values()) {
+                evt.addEventBinding(
+                        CustomUIEventBindingType.Activating,
+                        option.getButtonId(),
+                        new EventData().append("Action", ACTION_LANG_PREFIX + option.getCode()),
+                        false
+                );
+            }
+        } else {
+            cmd.append(this.language.layout(SECTION_WINDOWS[this.section]));
 
             if (this.section == SECTION_MINIGAMES) {
                 for (int i = 0; i < MODE_BUTTONS.length; i++) {
@@ -121,16 +143,15 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
                     );
                 }
             }
-
-            if (this.section == SECTION_DISCORD) {
-                evt.addEventBinding(
-                        CustomUIEventBindingType.Activating,
-                        "#DiscordButton",
-                        new EventData().append("Action", ACTION_DISCORD),
-                        false
-                );
-            }
         }
+
+        // Кнопка «Назад» вверху слева, кнопки «Закрыть» нет: закрывает ESC
+        evt.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#BackButton",
+                new EventData().append("Action", ACTION_BACK),
+                false
+        );
     }
 
     @Override
@@ -151,40 +172,62 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             return;
         }
 
-        if (ACTION_DISCORD.equals(action)) {
-            this.playerRef.sendMessage(Message.raw("Discord сервера: " + DISCORD_LINK));
+        if (action.startsWith(ACTION_LANG_PREFIX)) {
+            MenuLanguage chosen = MenuLanguage.fromCode(action.substring(ACTION_LANG_PREFIX.length()));
+            this.languages.set(this.playerRef.getUuid(), chosen);
+            this.playerRef.sendMessage(Message.raw(languageChanged(chosen)));
+            this.open(ref, store, chosen, SECTION_MAIN);
             return;
         }
 
         if (action.startsWith(ACTION_MODE_PREFIX)) {
-            this.playerRef.sendMessage(Message.raw("Режим пока в разработке."));
+            this.playerRef.sendMessage(Message.raw(modeNotReady(this.language)));
             return;
         }
 
         if (ACTION_BACK.equals(action)) {
-            this.openSection(ref, store, SECTION_MAIN);
+            this.open(ref, store, this.language, SECTION_MAIN);
             return;
         }
 
         if (action.startsWith(ACTION_OPEN_PREFIX)) {
             int requested = parseSection(action);
             if (isSection(requested)) {
-                this.openSection(ref, store, requested);
+                this.open(ref, store, this.language, requested);
             }
         }
     }
 
-    /** Открывает игроку это же меню с другим разделом. */
-    private void openSection(
+    /** Открывает игроку это же меню с другим разделом или языком. */
+    private void open(
             @Nonnull Ref<EntityStore> ref,
             @Nonnull Store<EntityStore> store,
+            @Nonnull MenuLanguage newLanguage,
             int newSection
     ) {
-        this.pageManager.openCustomPage(ref, store, new HubMenuPage(this.playerRef, this.pageManager, newSection));
+        this.pageManager.openCustomPage(
+                ref,
+                store,
+                new HubMenuPage(this.playerRef, this.pageManager, this.languages, newLanguage, newSection)
+        );
+    }
+
+    @Nonnull
+    private static String modeNotReady(@Nonnull MenuLanguage language) {
+        return language == MenuLanguage.EN
+                ? "This mode is not ready yet."
+                : "Режим пока в разработке.";
+    }
+
+    @Nonnull
+    private static String languageChanged(@Nonnull MenuLanguage language) {
+        return language == MenuLanguage.EN
+                ? "Menu language: English."
+                : "Язык меню: русский.";
     }
 
     private static boolean isSection(int value) {
-        return value >= 0 && value < SECTION_LAYOUTS.length;
+        return value >= 0 && value <= SECTION_LANGUAGE;
     }
 
     private static int parseSection(@Nonnull String action) {

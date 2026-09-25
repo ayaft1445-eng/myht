@@ -1,0 +1,334 @@
+// Главное окно HUB в тёмно-фиолетовом стиле: почти чёрный фон с фиолетовым
+// отливом, тонкие рамки, белый капс, яркий фиолетовый акцент.
+// Рамка выделенной карточки — в тон самой карточке.
+// Фон в два слоя: снизу сплошная заливка, поверх — полупрозрачные полосы
+// с оттенками, они и дают переход цвета книзу. Одними полосами фон не
+// собрать: на масштабе клиента между ними видны щели с просветом мира,
+// а со сплошной подложкой в щели видно её же.
+// Палитра — в INSTALL-RU.md, тёмно-красный вариант — в palettes/dark-red.
+
+@Card = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 656); Background: #130c22(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #010002(0.5); }
+        Group { Anchor: (Height: 66); Background: #050309(0.5); }
+        Group { Anchor: (Height: 66); Background: #090510(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0817(0.5); }
+        Group { Anchor: (Height: 66); Background: #110a1e(0.5); }
+        Group { Anchor: (Height: 66); Background: #150d25(0.5); }
+        Group { Anchor: (Height: 65); Background: #190f2c(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1233(0.5); }
+        Group { Anchor: (Height: 65); Background: #21143a(0.5); }
+        Group { Anchor: (Height: 65); Background: #251640(0.5); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Label {
+          Text: "HUB";
+          Anchor: (Height: 54);
+          Style: (FontSize: 44, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+        }
+
+        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 14); }
+
+        Group {
+          Anchor: (Height: 470);
+          LayoutMode: Left;
+
+          Group {
+            Anchor: (Width: 40);
+            LayoutMode: Center;
+
+            Label {
+              Text: "<";
+              Anchor: (Height: 44);
+              Style: (FontSize: 34, TextColor: #6f6189, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+          Group { Anchor: (Width: 8); }
+          Group {
+            Anchor: (Width: 520, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #4a3768; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #4a3768; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 466); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 47); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 47); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 47); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 47); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 46); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 46); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 46); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 46); Background: #321e4e(0.5); }
+                }
+                TextButton #BtnMinigames {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "MINIGAMES";
+                  Anchor: (Height: 38, Bottom: 22);
+                  Style: (FontSize: 30, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #4a3768; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #4a3768; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 466); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 47); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 47); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 47); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 47); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 46); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 46); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 46); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 46); Background: #321e4e(0.5); }
+                }
+                TextButton #BtnNews {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "NEWS";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 466); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 47); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 47); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 47); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 47); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 46); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 46); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 46); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 46); Background: #321e4e(0.5); }
+                }
+                TextButton #BtnRules {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "RULES";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+          Group { Anchor: (Width: 14); }
+          Group {
+            Anchor: (Width: 240, Height: 470);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 466); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 47); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 47); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 47); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 47); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 47); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 47); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 46); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 46); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 46); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 46); Background: #321e4e(0.5); }
+                }
+                TextButton #BtnLanguage {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "LANGUAGE";
+                  Anchor: (Height: 30, Bottom: 22);
+                  Style: (FontSize: 22, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+          Group { Anchor: (Width: 8); }
+          Group {
+            Anchor: (Width: 40);
+            LayoutMode: Center;
+
+            Label {
+              Text: ">";
+              Anchor: (Height: 44);
+              Style: (FontSize: 34, TextColor: #6f6189, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+            }
+          }
+        }
+
+        Group { Anchor: (Height: 48); }
+
+        Label {
+          Text: "ESC — CLOSE";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+}

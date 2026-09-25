@@ -1,0 +1,407 @@
+// Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
+// У карточки «Захват флага» рамка светлее — она выделена.
+// Текст во всех карточках одинаковый: название белое, описание светлое.
+
+@Card = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Flat = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+Group {
+  Anchor: (Width: 1440, Height: 660);
+  LayoutMode: Top;
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Left;
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+    Group {
+      FlexWeight: 1;
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 656); Background: #130c22(0.90); }
+      }
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+
+        Group { Anchor: (Height: 66); Background: #010002(0.5); }
+        Group { Anchor: (Height: 66); Background: #050309(0.5); }
+        Group { Anchor: (Height: 66); Background: #090510(0.5); }
+        Group { Anchor: (Height: 66); Background: #0d0817(0.5); }
+        Group { Anchor: (Height: 66); Background: #110a1e(0.5); }
+        Group { Anchor: (Height: 66); Background: #150d25(0.5); }
+        Group { Anchor: (Height: 65); Background: #190f2c(0.5); }
+        Group { Anchor: (Height: 65); Background: #1d1233(0.5); }
+        Group { Anchor: (Height: 65); Background: #21143a(0.5); }
+        Group { Anchor: (Height: 65); Background: #251640(0.5); }
+      }
+
+      Group {
+        Anchor: (Full: 0);
+        LayoutMode: Top;
+        Padding: (Full: 24);
+
+        Group {
+          Anchor: (Height: 56);
+          LayoutMode: Left;
+
+            Group {
+              Anchor: (Width: 160, Height: 44);
+              LayoutMode: Top;
+
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+                LayoutMode: Left;
+
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+                Group {
+                  FlexWeight: 1;
+
+                  TextButton #BackButton {
+                    Text: "BACK";
+                    Anchor: (Full: 0);
+                    Style: @Flat;
+                  }
+                }
+
+                Group { Anchor: (Width: 2); Background: #3a2a55; }
+              }
+
+              Group { Anchor: (Height: 2); Background: #3a2a55; }
+            }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Center;
+
+              Label {
+                Text: "MINIGAMES";
+                Anchor: (Height: 48);
+                Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+              }
+            }
+
+            Group { Anchor: (Width: 160); }
+        }
+
+        Group { Anchor: (Height: 2); Background: #a35dff; }
+        Group { Anchor: (Height: 16); }
+
+        Group {
+          Anchor: (Height: 500);
+          LayoutMode: Left;
+
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #d8c4ff; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #d8c4ff; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                TextButton #Mode0 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "AVAILABLE";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "CAPTURE THE FLAG";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Two teams fight for the enemy";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "flag. Bring it home and you win.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #d8c4ff; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #d8c4ff; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                TextButton #Mode1 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "AVAILABLE";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "SURVIVAL";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "Monster waves, one after another.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Last the longest, take the reward.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                TextButton #Mode2 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "SOON";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "PARKOUR";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "An obstacle course against time.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Beat the record and top the board.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+          Group { Anchor: (Width: 16); }
+          Group {
+            Anchor: (Width: 335, Height: 500);
+            LayoutMode: Top;
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: Left;
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+
+              Group {
+                FlexWeight: 1;
+
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 496); Background: #1e1230(0.78); }
+                }
+                Group {
+                  Anchor: (Full: 0);
+                  LayoutMode: Top;
+
+                  Group { Anchor: (Height: 50); Background: #0a0614(0.5); }
+                  Group { Anchor: (Height: 50); Background: #0e091a(0.5); }
+                  Group { Anchor: (Height: 50); Background: #130b20(0.5); }
+                  Group { Anchor: (Height: 50); Background: #170e27(0.5); }
+                  Group { Anchor: (Height: 50); Background: #1c112d(0.5); }
+                  Group { Anchor: (Height: 50); Background: #201334(0.5); }
+                  Group { Anchor: (Height: 49); Background: #25163a(0.5); }
+                  Group { Anchor: (Height: 49); Background: #291941(0.5); }
+                  Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
+                  Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                TextButton #Mode3 {
+                  Text: "";
+                  Anchor: (Full: 0);
+                  Style: @Card;
+                }
+
+                Label {
+                  Text: "SOON";
+                  Anchor: (Height: 22, Bottom: 196);
+                  Style: (FontSize: 14, TextColor: #bfb2d9, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "ARENA";
+                  Anchor: (Height: 36, Bottom: 152);
+                  Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                }
+                Label {
+                  Text: "One on one in a closed arena.";
+                  Anchor: (Height: 26, Bottom: 112);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+                Label {
+                  Text: "Winner stays, loser waits.";
+                  Anchor: (Height: 26, Bottom: 84);
+                  Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                }
+              }
+
+              Group { Anchor: (Width: 2); Background: #3a2a55; }
+            }
+
+            Group { Anchor: (Height: 2); Background: #3a2a55; }
+          }
+        }
+
+        Group { Anchor: (Height: 14); }
+
+        Label {
+          Text: "ESC — CLOSE";
+          Anchor: (Height: 20);
+          Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
+        }
+      }
+    }
+
+    Group { Anchor: (Width: 2); Background: #3a2a55; }
+  }
+
+  Group { Anchor: (Height: 2); Background: #3a2a55; }
+}

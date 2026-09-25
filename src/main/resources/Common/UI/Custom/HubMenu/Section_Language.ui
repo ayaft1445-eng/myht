@@ -1,4 +1,5 @@
-// Окно «ДС сервер». Ссылку меняй здесь и в HubMenuPage.java (DISCORD_LINK).
+// Окно выбора языка. Оно открывается до того, как язык выбран,
+// поэтому подписи здесь на двух языках сразу.
 
 @Card = TextButtonStyle(
   Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
@@ -10,6 +11,12 @@
   Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@Lang = TextButtonStyle(
+  Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Hovered: (Background: #a35dff(0.45), LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+  Pressed: (Background: #a35dff(0.70), LabelStyle: (FontSize: 22, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
@@ -74,7 +81,7 @@ Group {
                   FlexWeight: 1;
 
                   TextButton #BackButton {
-                    Text: "НАЗАД";
+                    Text: "НАЗАД · BACK";
                     Anchor: (Full: 0);
                     Style: @Flat;
                   }
@@ -91,7 +98,7 @@ Group {
               LayoutMode: Center;
 
               Label {
-                Text: "ДС СЕРВЕР";
+                Text: "ЯЗЫК · LANGUAGE";
                 Anchor: (Height: 48);
                 Style: (FontSize: 36, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
               }
@@ -146,59 +153,85 @@ Group {
                 LayoutMode: Top;
                 Padding: (Full: 24);
 
-                Group { FlexWeight: 1; }
-                Label {
-                  Text: "НАШ DISCORD-СЕРВЕР";
-                  Anchor: (Height: 34);
-                  Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-                }
-                Group { Anchor: (Height: 12); }
-                Label {
-                  Text: "discord.gg/ЗАМЕНИ-НА-СВОЮ-ССЫЛКУ";
-                  Anchor: (Height: 32);
-                  Style: (FontSize: 22, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
-                }
-                Group { Anchor: (Height: 20); }
-                Group {
-                  Anchor: (Height: 48);
-                  LayoutMode: Center;
-
+                  Group { Anchor: (Height: 110); }
+                  Label {
+                    Text: "ВЫБЕРИ ЯЗЫК";
+                    Anchor: (Height: 34);
+                    Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+                  }
+                  Group { Anchor: (Height: 12); }
+                  Label {
+                    Text: "CHOOSE YOUR LANGUAGE";
+                    Anchor: (Height: 22);
+                    Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
+                  }
+                  Group { Anchor: (Height: 24); }
                   Group {
-                    Anchor: (Width: 300, Height: 48);
-                    LayoutMode: Top;
-
-                    Group { Anchor: (Height: 2); Background: #3a2a55; }
+                    Anchor: (Height: 64);
+                    LayoutMode: Center;
 
                     Group {
-                      FlexWeight: 1;
-                      LayoutMode: Left;
+                      Anchor: (Width: 340, Height: 64);
+                      LayoutMode: Top;
 
-                      Group { Anchor: (Width: 2); Background: #3a2a55; }
+                      Group { Anchor: (Height: 2); Background: #4a3768; }
 
                       Group {
                         FlexWeight: 1;
+                        LayoutMode: Left;
 
-                        TextButton #DiscordButton {
-                          Text: "ПОЛУЧИТЬ ССЫЛКУ";
-                          Anchor: (Full: 0);
-                          Style: @Flat;
+                        Group { Anchor: (Width: 2); Background: #4a3768; }
+
+                        Group {
+                          FlexWeight: 1;
+
+                          TextButton #LangRu {
+                            Text: "РУССКИЙ";
+                            Anchor: (Full: 0);
+                            Style: @Lang;
+                          }
                         }
+
+                        Group { Anchor: (Width: 2); Background: #4a3768; }
                       }
 
-                      Group { Anchor: (Width: 2); Background: #3a2a55; }
+                      Group { Anchor: (Height: 2); Background: #4a3768; }
                     }
-
-                    Group { Anchor: (Height: 2); Background: #3a2a55; }
                   }
-                }
+                  Group { Anchor: (Height: 16); }
+                  Group {
+                    Anchor: (Height: 64);
+                    LayoutMode: Center;
 
-                Group { Anchor: (Height: 12); }
-                Label {
-                  Text: "Нажми кнопку — ссылка придёт в чат, оттуда её можно скопировать.";
-                  Anchor: (Height: 22);
-                  Style: (FontSize: 14, TextColor: #6f6189, HorizontalAlignment: Center);
-                }
-                Group { FlexWeight: 1; }
+                    Group {
+                      Anchor: (Width: 340, Height: 64);
+                      LayoutMode: Top;
+
+                      Group { Anchor: (Height: 2); Background: #4a3768; }
+
+                      Group {
+                        FlexWeight: 1;
+                        LayoutMode: Left;
+
+                        Group { Anchor: (Width: 2); Background: #4a3768; }
+
+                        Group {
+                          FlexWeight: 1;
+
+                          TextButton #LangEn {
+                            Text: "ENGLISH";
+                            Anchor: (Full: 0);
+                            Style: @Lang;
+                          }
+                        }
+
+                        Group { Anchor: (Width: 2); Background: #4a3768; }
+                      }
+
+                      Group { Anchor: (Height: 2); Background: #4a3768; }
+                    }
+                  }
+                  Group { Anchor: (Height: 102); }
               }
             }
 
@@ -211,7 +244,7 @@ Group {
         Group { Anchor: (Height: 14); }
 
         Label {
-          Text: "ESC — ЗАКРЫТЬ";
+          Text: "ESC";
           Anchor: (Height: 20);
           Style: (FontSize: 15, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
         }
