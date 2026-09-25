@@ -14,7 +14,6 @@ import dev.hytalemodding.hubmenu.lang.MenuLanguage;
 import dev.hytalemodding.hubmenu.ui.HubMenuPage;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 /** Команда /hub — открывает меню HUB. */
 public class HubCommand extends AbstractPlayerCommand {
@@ -40,18 +39,24 @@ public class HubCommand extends AbstractPlayerCommand {
             return;
         }
 
-        UUID playerId = playerRef.getUuid();
-        MenuLanguage language = this.languages.get(playerId, MenuLanguage.fromCode(playerRef.getLanguage()));
-
-        // Кто ещё ни разу не выбирал язык — сначала попадает в окно выбора.
-        int section = this.languages.hasChosen(playerId)
-                ? HubMenuPage.SECTION_MAIN
-                : HubMenuPage.SECTION_LANGUAGE;
+        // Язык: выбранный игроком, иначе язык клиента. Окно выбора тут не
+        // показывается — оно открывается при первом заходе на сервер, а сменить
+        // язык можно карточкой «Язык» в самом меню.
+        MenuLanguage language = this.languages.get(
+                playerRef.getUuid(),
+                MenuLanguage.fromCode(playerRef.getLanguage())
+        );
 
         player.getPageManager().openCustomPage(
                 ref,
                 store,
-                new HubMenuPage(playerRef, player.getPageManager(), this.languages, language, section)
+                new HubMenuPage(
+                        playerRef,
+                        player.getPageManager(),
+                        this.languages,
+                        language,
+                        HubMenuPage.SECTION_MAIN
+                )
         );
     }
 }

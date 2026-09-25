@@ -9,8 +9,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.hubmenu.commands.HubCommand;
 import dev.hytalemodding.hubmenu.lang.LanguageStore;
-import dev.hytalemodding.hubmenu.lang.MenuLanguage;
-import dev.hytalemodding.hubmenu.ui.HubMenuPage;
+import dev.hytalemodding.hubmenu.ui.LanguagePickerPage;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
@@ -22,8 +21,9 @@ import java.util.logging.Level;
  * «Мини-игры», «Новости», «Правила» и «Язык». Каждая кнопка открывает своё окно
  * с кнопкой «Назад».
  *
- * При первом заходе на сервер игроку сразу показывается окно выбора языка —
- * пока он ничего не выбрал, его нет в languages.properties.
+ * При первом заходе на сервер открывается отдельное окно выбора языка —
+ * пока игрок ничего не выбрал, его нет в languages.properties. К меню HUB
+ * это окно не относится: /hub всегда открывает главное окно.
  */
 public class HubMenuPlugin extends JavaPlugin {
 
@@ -43,7 +43,7 @@ public class HubMenuPlugin extends JavaPlugin {
         this.getLogger().at(Level.INFO).log("[HubMenu] Loaded. Type /hub in chat to open the menu.");
     }
 
-    /** Первый заход: язык ещё не выбран — показываем окно выбора. */
+    /** Первый заход: язык ещё не выбран — показываем отдельное окно выбора. */
     private void onPlayerReady(@Nonnull PlayerReadyEvent event) {
         try {
             Player player = event.getPlayer();
@@ -60,13 +60,7 @@ public class HubMenuPlugin extends JavaPlugin {
             player.getPageManager().openCustomPage(
                     ref,
                     ref.getStore(),
-                    new HubMenuPage(
-                            playerRef,
-                            player.getPageManager(),
-                            this.languages,
-                            MenuLanguage.fromCode(playerRef.getLanguage()),
-                            HubMenuPage.SECTION_LANGUAGE
-                    )
+                    new LanguagePickerPage(playerRef, this.languages)
             );
         } catch (RuntimeException exception) {
             // Меню — не повод ронять вход игрока на сервер.
