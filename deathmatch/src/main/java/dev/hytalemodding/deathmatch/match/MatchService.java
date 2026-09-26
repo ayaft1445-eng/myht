@@ -283,6 +283,13 @@ public class MatchService {
         }
     }
 
+    /** Выдаёт всем бойцам комплект заново — после правки настроек. */
+    public void reequipEveryone() {
+        for (Fighter fighter : this.fighters.values()) {
+            applyLevel(fighter, true);
+        }
+    }
+
     /** Полный сброс матча — команда админа. */
     public void resetMatch() {
         for (Fighter fighter : this.fighters.values()) {

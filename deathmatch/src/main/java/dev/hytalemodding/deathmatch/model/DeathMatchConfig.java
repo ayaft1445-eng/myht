@@ -25,7 +25,7 @@ public class DeathMatchConfig {
     /** Радиус зоны боя в блоках вокруг точки. */
     private int radius = 60;
     /** Сколько убийств заканчивают матч. 0 — матч не кончается. */
-    private int goalKills = 30;
+    private int goalKills = DEFAULT_GOAL;
     /** Писать ли о входах, уровнях и победах в общий чат. */
     private boolean announce = true;
     /** true — после смерти игрок падает на первый уровень. */
@@ -37,26 +37,36 @@ public class DeathMatchConfig {
     /** Уровни по возрастанию числа убийств. Первый — стартовый комплект. */
     private final List<Loadout> levels = new ArrayList<>();
 
+    /** Меч, с которым идёт бой по умолчанию. Имя настоящее, из ассетов игры. */
+    public static final String DEFAULT_WEAPON = "Weapon_Sword_Scrap";
+
+    /** Сколько убийств заканчивают матч по умолчанию. */
+    public static final int DEFAULT_GOAL = 100;
+
     /**
-     * Настройки по умолчанию: четыре уровня по 0 / 10 / 20 / 30 убийств.
+     * Настройки по умолчанию: простой дезматч.
      *
-     * Идентификаторы предметов взяты обычные для Hytale, но на разных
-     * сборках набор ассетов разный — проверьте их командой /dmgive и
-     * поправьте deathmatch.json под свой сервер.
+     * Один комплект на всех — меч из хлама, без брони, — и матч до ста
+     * убийств. Уровни никуда не делись: добавьте в levels ещё строки с
+     * нужным числом убийств, и комплекты снова начнут меняться по ходу боя.
      */
     public static DeathMatchConfig defaults() {
         DeathMatchConfig config = new DeathMatchConfig();
-        config.levels.add(new Loadout(0, "НОВИЧОК", "hytale:wooden_sword",
-                "", "hytale:leather_chestplate", "", ""));
-        config.levels.add(new Loadout(10, "БОЕЦ", "hytale:stone_sword",
-                "hytale:iron_helmet", "hytale:iron_chestplate", "", "hytale:iron_leggings"));
-        config.levels.add(new Loadout(20, "ВЕТЕРАН", "hytale:iron_sword",
-                "hytale:iron_helmet", "hytale:iron_chestplate", "hytale:iron_gauntlets",
-                "hytale:iron_leggings"));
-        config.levels.add(new Loadout(30, "МАСТЕР", "hytale:thorium_sword",
-                "hytale:thorium_helmet", "hytale:thorium_chestplate", "hytale:thorium_gauntlets",
-                "hytale:thorium_leggings"));
+        config.goalKills = DEFAULT_GOAL;
+        config.levels.add(new Loadout(0, "БОЕЦ", DEFAULT_WEAPON, "", "", "", ""));
         return config;
+    }
+
+    /**
+     * Возвращает настройки к простому режиму: один меч и матч до ста убийств.
+     *
+     * Арену, радиус и список админов не трогаем — их настраивали руками.
+     */
+    public void applySimplePreset() {
+        this.levels.clear();
+        this.levels.add(new Loadout(0, "БОЕЦ", DEFAULT_WEAPON, "", "", "", ""));
+        this.goalKills = DEFAULT_GOAL;
+        this.enabled = true;
     }
 
     public static DeathMatchConfig fromJson(Map<String, Object> json) {
@@ -64,7 +74,7 @@ public class DeathMatchConfig {
         config.enabled = Json.bool(json, "enabled", true);
         config.arena = ArenaPoint.fromJson(Json.asObject(json.get("arena")));
         config.radius = Json.integer(json, "radius", 60);
-        config.goalKills = Json.integer(json, "goalKills", 30);
+        config.goalKills = Json.integer(json, "goalKills", DEFAULT_GOAL);
         config.announce = Json.bool(json, "announce", true);
         config.resetLevelOnDeath = Json.bool(json, "resetLevelOnDeath", false);
         config.regiveOnRespawn = Json.bool(json, "regiveOnRespawn", true);
