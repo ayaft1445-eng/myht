@@ -1,5 +1,5 @@
 // Окно «Мини-игры». Метка сверху, название, две строки описания — в строках Text.
-// У карточки «Захват флага» рамка светлее — она выделена.
+// У карточки «Дезматч» рамка светлее — она выделена.
 // Текст во всех карточках одинаковый: название белое, описание светлое.
 
 @Card = TextButtonStyle(
@@ -139,17 +139,17 @@ Group {
                   Style: (FontSize: 14, TextColor: #a35dff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
-                  Text: "ЗАХВАТ ФЛАГА";
+                  Text: "ДЕЗМАТЧ";
                   Anchor: (Height: 36, Bottom: 152);
                   Style: (FontSize: 28, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                 }
                 Label {
-                  Text: "Две команды бьются за флаг";
+                  Text: "Все против всех. За убийства растут";
                   Anchor: (Height: 26, Bottom: 112);
                   Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                 }
                 Label {
-                  Text: "соперника. Кто принёс — тот и выиграл.";
+                  Text: "уровни: оружие и броня становятся лучше.";
                   Anchor: (Height: 26, Bottom: 84);
                   Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                 }

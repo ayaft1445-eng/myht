@@ -38,7 +38,7 @@ public class GroupFinderConfig {
 
     public static GroupFinderConfig defaults() {
         GroupFinderConfig config = new GroupFinderConfig();
-        config.modes.add(new GameModeConfig("ctf", "ЗАХВАТ ФЛАГА", 0));
+        config.modes.add(new GameModeConfig("deathmatch", "ДЕЗМАТЧ", 0));
         config.modes.add(new GameModeConfig("survival", "ВЫЖИВАНИЕ", 1));
         config.modes.add(new GameModeConfig("parkour", "ПАРКУР", 2));
         config.modes.add(new GameModeConfig("arena", "АРЕНА", 3));

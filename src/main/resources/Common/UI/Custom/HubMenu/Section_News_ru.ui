@@ -150,12 +150,12 @@ Group {
                     Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                   }
                   Label {
-                    Text: "Скоро добавим «Захват флага»:";
+                    Text: "Открыт «Дезматч»: все против всех,";
                     Anchor: (Height: 24);
                     Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Label {
-                    Text: "две команды, один флаг, много шума.";
+                    Text: "за убийства выдают оружие получше.";
                     Anchor: (Height: 24);
                     Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }

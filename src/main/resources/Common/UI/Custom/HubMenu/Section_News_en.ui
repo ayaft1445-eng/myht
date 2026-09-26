@@ -150,12 +150,12 @@ Group {
                     Style: (FontSize: 22, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
                   }
                   Label {
-                    Text: "Capture the Flag is coming soon:";
+                    Text: "Deathmatch is live: free for all,";
                     Anchor: (Height: 24);
                     Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
                   Label {
-                    Text: "two teams, one flag, lots of noise.";
+                    Text: "kills earn you better gear.";
                     Anchor: (Height: 24);
                     Style: (FontSize: 16, TextColor: #bfb2d9, HorizontalAlignment: Center);
                   }
