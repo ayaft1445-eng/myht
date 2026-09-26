@@ -22,23 +22,13 @@ jobs:
     - name: Build
       run: ./gradlew build || true
 
-    - name: Как регистрируется ECS-система
+    - name: ComponentRegistryProxy и задачи
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-
-        echo "@@@ JAVAPLUGIN"
-        javap -cp "$CP" com.hypixel.hytale.server.core.plugin.JavaPlugin 2>&1 | head -40
-
-        echo "@@@ PLUGINBASE"
-        javap -cp "$CP" com.hypixel.hytale.server.core.plugin.PluginBase 2>&1 | head -40
-
-        echo "@@@ REGISTRY-CLASSES"
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'Registry\.class' | grep -v '\$' | head -25
-
-        echo "@@@ WHO-HAS-registerSystem"
-        for n in $(unzip -l "$JAR" | awk '{print $4}' | grep -iE 'registry|systems?\.class' | grep -v '\$' | sed 's|/|.|g; s|\.class$||' | head -40); do
-          out=$(javap -cp "$CP" "$n" 2>/dev/null | grep -i 'registerSystem' | head -3)
-          if [ -n "$out" ]; then echo "---- $n"; echo "$out"; fi
-        done
+        echo "@@@ PROXY"
+        javap -cp "$CP" com.hypixel.hytale.component.ComponentRegistryProxy 2>&1 | grep -iE 'class |system|register' | head -20
+        echo "@@@ TASKREGISTRY"
+        javap -cp "$CP" com.hypixel.hytale.server.core.task.TaskRegistry 2>&1 | grep -iE 'class |public' | head -20
+        echo "@@@ WORLD-PLAYERS"
+        javap -cp "$CP" com.hypixel.hytale.server.core.universe.world.World 2>&1 | grep -iE 'getPlayers|forEachPlayer|getStore|execute|schedule' | head -14
