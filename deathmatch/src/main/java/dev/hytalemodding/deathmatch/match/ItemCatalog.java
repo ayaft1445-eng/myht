@@ -7,6 +7,10 @@ import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,7 +21,12 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Откуда брать настоящие идентификаторы предметов.
@@ -81,6 +90,94 @@ public final class ItemCatalog {
             }
         } catch (RuntimeException | LinkageError ignored) {
             // одна непослушная секция не повод бросать остальные
+        }
+    }
+
+    /**
+     * Читает имена предметов прямо из Assets.zip сервера.
+     *
+     * Сервер держит ассеты в этом архиве, а внутри него у каждого предмета
+     * свой файл — имя файла и есть идентификатор. Способ не зависит ни от
+     * рефлексии, ни от того, что лежит у игрока в карманах: нужен только
+     * сам архив, который ищем рядом с сервером и в папке плагинов.
+     */
+    public static List<String> fromAssetsZip(Path start) {
+        Set<String> found = new LinkedHashSet<>();
+        Path archive = findArchive(start);
+        if (archive == null) {
+            return new ArrayList<>(found);
+        }
+        try (ZipFile zip = new ZipFile(archive.toFile())) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                String name = entry.getName().replace('\\', '/');
+                if (!name.toLowerCase(Locale.ROOT).endsWith(".json")) {
+                    continue;
+                }
+                // Берём только то, что лежит в папке предметов.
+                String lower = name.toLowerCase(Locale.ROOT);
+                if (!lower.contains("/item")) {
+                    continue;
+                }
+                String file = name.substring(name.lastIndexOf('/') + 1);
+                found.add(file.substring(0, file.length() - ".json".length()));
+            }
+        } catch (IOException | RuntimeException ignored) {
+            // архив может быть занят или битым — тогда остаются другие способы
+        }
+        return new ArrayList<>(found);
+    }
+
+    /** Где лежит найденный архив — показываем админу в /dmscan. */
+    public static Path archivePath(Path start) {
+        return findArchive(start);
+    }
+
+    /** Ищет Assets.zip вверх по дереву от папки плагина и от рабочей папки. */
+    private static Path findArchive(Path start) {
+        List<Path> roots = new ArrayList<>();
+        if (start != null) {
+            roots.add(start);
+        }
+        roots.add(Paths.get("").toAbsolutePath());
+
+        for (Path root : roots) {
+            Path current = root;
+            for (int up = 0; up < 5 && current != null; up++) {
+                Path candidate = lookIn(current);
+                if (candidate != null) {
+                    return candidate;
+                }
+                current = current.getParent();
+            }
+        }
+        return null;
+    }
+
+    private static Path lookIn(Path directory) {
+        String[] names = { "Assets.zip", "assets.zip" };
+        for (String name : names) {
+            Path direct = directory.resolve(name);
+            if (Files.isRegularFile(direct)) {
+                return direct;
+            }
+        }
+        // Иногда архив лежит в подпапке вроде package/game/latest.
+        try (Stream<Path> children = Files.walk(directory, 3)) {
+            return children
+                    .filter(Files::isRegularFile)
+                    .filter(path -> {
+                        String file = path.getFileName().toString();
+                        return file.equalsIgnoreCase("Assets.zip");
+                    })
+                    .findFirst()
+                    .orElse(null);
+        } catch (IOException | RuntimeException ignored) {
+            return null;
         }
     }
 

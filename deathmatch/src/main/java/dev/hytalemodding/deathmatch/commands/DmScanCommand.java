@@ -50,13 +50,24 @@ public class DmScanCommand extends DmCommandBase {
             return;
         }
 
+        Path dataDirectory = this.service.store().getFile().getParent();
         List<String> inventory = ItemCatalog.fromInventory(playerRef);
         List<String> all = ItemCatalog.fromAssets();
+        if (all.isEmpty()) {
+            // Рефлексия не дотянулась — читаем имена прямо из Assets.zip сервера.
+            all = ItemCatalog.fromAssetsZip(dataDirectory);
+            Path archive = ItemCatalog.archivePath(dataDirectory);
+            if (archive != null) {
+                say(context, "читаю ассеты: " + archive);
+            }
+        }
 
         if (inventory.isEmpty() && all.isEmpty()) {
-            say(context, "ничего не нашлось: инвентарь пуст, а до списка ассетов мод не добрался.");
+            say(context, "ничего не нашлось: инвентарь пуст, ассеты не дались.");
             say(context, "возьмите в руки оружие и броню и наберите команду снова —"
                     + " их настоящие имена появятся здесь.");
+            say(context, "либо положите Assets.zip игры рядом с сервером — мод прочитает имена"
+                    + " прямо из него.");
             return;
         }
 
