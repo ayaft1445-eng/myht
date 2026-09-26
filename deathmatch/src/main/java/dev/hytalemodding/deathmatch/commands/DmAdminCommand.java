@@ -52,7 +52,7 @@ public class DmAdminCommand extends DmCommandBase {
                 + ", до победы " + (config.getGoalKills() == 0 ? "без предела" : config.getGoalKills())
                 + ", бойцов " + this.service.fighterCount());
 
-        say(context, "уровни:");
+        say(context, "ступени (оружие меняется у всех, когда лучший игрок дошёл до порога):");
         boolean missing = false;
         for (Loadout level : config.getLevels()) {
             // Сразу показываем, знает ли сервер оружие уровня: без этого

@@ -37,34 +37,40 @@ public class DeathMatchConfig {
     /** Уровни по возрастанию числа убийств. Первый — стартовый комплект. */
     private final List<Loadout> levels = new ArrayList<>();
 
-    /** Меч, с которым идёт бой по умолчанию. Имя настоящее, из ассетов игры. */
-    public static final String DEFAULT_WEAPON = "Weapon_Sword_Scrap";
-
     /** Сколько убийств заканчивают матч по умолчанию. */
     public static final int DEFAULT_GOAL = 100;
 
     /**
-     * Настройки по умолчанию: простой дезматч.
+     * Лестница мечей по умолчанию — настоящие предметы Hytale.
      *
-     * Один комплект на всех — меч из хлама, без брони, — и матч до ста
-     * убийств. Уровни никуда не делись: добавьте в levels ещё строки с
-     * нужным числом убийств, и комплекты снова начнут меняться по ходу боя.
+     * Ступень в матче одна на всех: как только лучший игрок добирается до
+     * порога, новый меч получают все, кто стоит на арене.
      */
+    private static List<Loadout> defaultLevels() {
+        List<Loadout> levels = new ArrayList<>();
+        levels.add(new Loadout(0, "ПРИМИТИВНЫЙ МЕЧ", "Weapon_Sword_Crude", "", "", "", ""));
+        levels.add(new Loadout(15, "МЕЧ ИЗ ХЛАМА", "Weapon_Sword_Scrap", "", "", "", ""));
+        levels.add(new Loadout(40, "КАМЕННЫЙ МЕЧ ТРОРКОВ", "Weapon_Sword_Stone_Trork", "", "", "", ""));
+        levels.add(new Loadout(70, "ТОРИЕВЫЙ МЕЧ", "Weapon_Sword_Thorium", "", "", "", ""));
+        return levels;
+    }
+
+    /** Настройки по умолчанию: лестница мечей и матч до ста убийств. */
     public static DeathMatchConfig defaults() {
         DeathMatchConfig config = new DeathMatchConfig();
         config.goalKills = DEFAULT_GOAL;
-        config.levels.add(new Loadout(0, "БОЕЦ", DEFAULT_WEAPON, "", "", "", ""));
+        config.levels.addAll(defaultLevels());
         return config;
     }
 
     /**
-     * Возвращает настройки к простому режиму: один меч и матч до ста убийств.
-     *
-     * Арену, радиус и список админов не трогаем — их настраивали руками.
+     * Возвращает настройки к стандартным: четыре меча по порогам 0, 15, 40
+     * и 70 убийств и матч до ста. Арену, радиус и список админов не трогаем —
+     * их настраивали руками.
      */
     public void applySimplePreset() {
         this.levels.clear();
-        this.levels.add(new Loadout(0, "БОЕЦ", DEFAULT_WEAPON, "", "", "", ""));
+        this.levels.addAll(defaultLevels());
         this.goalKills = DEFAULT_GOAL;
         this.enabled = true;
     }

@@ -9,21 +9,23 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.deathmatch.match.Equipment;
 import dev.hytalemodding.deathmatch.match.MatchService;
 import dev.hytalemodding.deathmatch.model.DeathMatchConfig;
+import dev.hytalemodding.deathmatch.model.Loadout;
 
 import javax.annotation.Nonnull;
 
 /**
- * /dmsimple — вернуть простой режим: один меч и матч до ста убийств.
+ * /dmsimple — вернуть стандартные настройки боя.
  *
+ * Лестница из четырёх мечей (0, 15, 40 и 70 убийств) и матч до ста.
  * Нужна, когда файл настроек уже создан: обновление мода чужой
- * deathmatch.json не переписывает, поэтому старые уровни с выдуманными
- * предметами остаются на месте. Команда меняет только уровни и цель матча —
- * арена, радиус и список админов остаются как были.
+ * deathmatch.json не переписывает, поэтому старые ступени остаются на
+ * месте. Команда меняет только ступени и цель матча — арена, радиус и
+ * список админов остаются как были.
  */
 public class DmSimpleCommand extends DmCommandBase {
 
     public DmSimpleCommand(MatchService service) {
-        super("dmsimple", "Простой режим: один меч, сто убийств", service);
+        super("dmsimple", "Стандартные настройки: лестница мечей до ста убийств", service);
     }
 
     @Override
@@ -42,10 +44,23 @@ public class DmSimpleCommand extends DmCommandBase {
         boolean saved = this.service.saveConfig();
         this.service.reequipEveryone();
 
-        say(context, "простой режим включён: у всех " + DeathMatchConfig.DEFAULT_WEAPON
-                + ", матч до " + DeathMatchConfig.DEFAULT_GOAL + " убийств.");
-        if (!Equipment.exists(DeathMatchConfig.DEFAULT_WEAPON)) {
-            say(context, "внимание: сервер не знает такой предмет — проверьте имя через /dmscan.");
+        say(context, "стандартные настройки включены, матч до "
+                + DeathMatchConfig.DEFAULT_GOAL + " убийств. Ступени:");
+
+        StringBuilder missing = new StringBuilder();
+        for (Loadout level : this.service.config().getLevels()) {
+            boolean ok = Equipment.exists(level.getWeapon());
+            say(context, "  с " + level.getKills() + " убийств — " + level.getName()
+                    + " (" + level.getWeapon() + ")" + (ok ? "" : " — сервер не знает!"));
+            if (!ok) {
+                if (missing.length() > 0) {
+                    missing.append(", ");
+                }
+                missing.append(level.getWeapon());
+            }
+        }
+        if (missing.length() > 0) {
+            say(context, "проверьте имена через /dmscan: " + missing);
         }
         if (!saved) {
             say(context, "файл настроек не сохранился: " + this.service.store().getLastError());

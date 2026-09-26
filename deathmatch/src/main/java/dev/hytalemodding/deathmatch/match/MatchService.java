@@ -38,8 +38,6 @@ public class MatchService {
     /** Узлы права, любой из которых пускает к настройкам. */
     private static final String[] ADMIN_PERMISSIONS = { "deathmatch.admin", "*" };
     private static final int TICK_SECONDS = 2;
-    /** Через столько без единой удачной проверки боец считается ушедшим. */
-    private static final long LOST_MILLIS = 15_000L;
 
     private final HytaleLogger logger;
     private final ConfigStore store;
@@ -51,6 +49,13 @@ public class MatchService {
     private final Map<String, PlayerRef> online = new ConcurrentHashMap<>();
     /** Последний известный мир — для объявлений в общий чат. */
     private volatile Object lastWorld;
+    /**
+     * Ступень матча, о которой уже объявили.
+     *
+     * Ступень общая на всех и держится на лучшем счёте: как только кто-то
+     * добрался до порога, новое оружие получают сразу все, кто на арене.
+     */
+    private int announcedTier;
 
     private ScheduledExecutorService ticker;
 
@@ -164,22 +169,22 @@ public class MatchService {
             } else if (inside) {
                 fighter.seen();
                 if (!fighter.isOnArena()) {
-                    // Вернулся после смерти: счёт за ним сохранился, выдаём
-                    // комплект его уровня заново.
+                    // Вернулся на арену: счёт за ним сохранился, выдаём
+                    // оружие текущей ступени матча.
                     fighter.setOnArena(true);
-                    if (this.config.isRegiveOnRespawn()) {
-                        applyLevel(fighter, true);
-                    }
+                    equip(fighter);
                     tell(fighter, "вы снова в бою. " + statusLine(fighter.getPlayerKey()));
+                    announce(fighter.getUsername() + " вернулся в бой.");
                 }
-            } else if (fighter != null && fighter.isOnArena()
-                    && System.currentTimeMillis() - fighter.getLastSeenMillis() > LOST_MILLIS) {
-                // Ушёл с арены — счёт не трогаем: игрок мог умереть и
-                // возродиться на спавне. Вернётся — продолжит с тем же счётом.
+            } else if (fighter != null && fighter.isOnArena()) {
+                // Вышел за круг — режим выключается сразу, оружие забираем.
+                // Счёт остаётся за игроком: вернётся — продолжит с того же
+                // места, а вот драться снаружи выданным мечом не выйдет.
                 fighter.setOnArena(false);
-                tell(fighter, "вы вне арены. Счёт сохранён, вернитесь — и бой продолжится."
-                        + " Совсем выйти — /dmleave.");
-                announce(fighter.getUsername() + " вне арены ("
+                Equipment.clear(fighter.getPlayerRef());
+                tell(fighter, "вы вышли за границу арены: режим выключен, оружие забрано."
+                        + " Счёт (" + fighter.getKills() + ") сохранён — вернитесь, и бой продолжится.");
+                announce(fighter.getUsername() + " вышел с арены ("
                         + fighter.getKills() + " убийств).");
             }
         }
@@ -208,9 +213,9 @@ public class MatchService {
         this.fighters.put(key, fighter);
         this.online.put(key, playerRef);
 
-        applyLevel(fighter, true);
-        tell(fighter, "вы в бою. Убивайте — и на " + nextStepText(fighter) + ".");
-        announce(fighter.getUsername() + " вступил в бой. Бойцов на арене: " + this.fighters.size());
+        equip(fighter);
+        tell(fighter, "вы в бою. " + statusLine(key));
+        announce(fighter.getUsername() + " вступил в бой. Бойцов на арене: " + fighterCount());
         return fighter;
     }
 
@@ -244,27 +249,26 @@ public class MatchService {
 
         Fighter victim = victimRef == null ? null : this.fighters.get(ServerApi.playerKey(victimRef));
         if (victim != null) {
-            // Игрок умер — он уедет на спавн, комплект вернём, когда придёт назад.
-            victim.setOnArena(false);
             victim.addDeath();
             if (this.config.isResetLevelOnDeath()) {
                 victim.resetScore();
-                applyLevel(victim, true);
-                tell(victim, "смерть сбросила ваш уровень — начинайте заново.");
-            } else if (this.config.isRegiveOnRespawn()) {
-                applyLevel(victim, true);
+                tell(victim, "смерть сбросила ваш счёт — начинайте заново.");
             }
         }
 
         int kills = killer.addKill();
-        int newLevel = this.config.levelIndexFor(kills);
-        if (newLevel != killer.getLevelIndex()) {
-            applyLevel(killer, true);
-            Loadout level = this.config.levelFor(kills);
-            announce(killer.getUsername() + " — " + (level == null ? "новый уровень" : level.getName())
-                    + " (" + kills + " убийств).");
+
+        // Ступень одна на всех: её поднимает тот, кто первым дошёл до порога,
+        // а оружие после этого меняется у каждого, кто стоит на арене.
+        int tier = tierIndex();
+        if (tier > this.announcedTier) {
+            this.announcedTier = tier;
+            Loadout level = tierLevel();
+            announce(killer.getUsername() + " дошёл до " + kills + " убийств — всем выдан "
+                    + (level == null ? "новый комплект" : level.getName()) + ".");
+            equipEveryoneOnArena();
         } else {
-            tell(killer, "убийство засчитано: " + kills + ". До " + nextStepText(killer) + ".");
+            tell(killer, "убийство засчитано: " + kills + ". " + nextStepText());
         }
 
         int goal = this.config.getGoalKills();
@@ -273,48 +277,76 @@ public class MatchService {
         }
     }
 
-    /** Матч дошёл до цели: объявляем победителя и начинаем заново. */
-    private void finish(Fighter winner) {
-        announce("матч окончен. Победитель — " + winner.getUsername()
-                + " (" + winner.getKills() + " убийств).");
+    /** Номер ступени матча: считается по лучшему счёту среди бойцов. */
+    private int tierIndex() {
+        return this.config.levelIndexFor(bestKills());
+    }
+
+    /** Комплект текущей ступени — он же у всех на арене. */
+    private Loadout tierLevel() {
+        return this.config.levelFor(bestKills());
+    }
+
+    /** Лучший счёт матча. Бойцы, отошедшие с арены, тоже учитываются. */
+    private int bestKills() {
+        int best = 0;
         for (Fighter fighter : this.fighters.values()) {
-            fighter.resetScore();
-            applyLevel(fighter, true);
+            best = Math.max(best, fighter.getKills());
+        }
+        return best;
+    }
+
+    private void equipEveryoneOnArena() {
+        for (Fighter fighter : this.fighters.values()) {
+            if (fighter.isOnArena()) {
+                equip(fighter);
+            }
         }
     }
 
-    /** Выдаёт всем бойцам комплект заново — после правки настроек. */
+    /** Матч дошёл до цели: объявляем победителя и начинаем заново. */
+    private void finish(Fighter winner) {
+        announce("матч окончен. Победитель — " + winner.getUsername()
+                + " (" + winner.getKills() + " убийств). Счёт сброшен, оружие снова стартовое.");
+        restart();
+    }
+
+    /** Выдаёт оружие текущей ступени всем, кто на арене. */
     public void reequipEveryone() {
-        for (Fighter fighter : this.fighters.values()) {
-            applyLevel(fighter, true);
-        }
+        equipEveryoneOnArena();
     }
 
     /** Полный сброс матча — команда админа. */
     public void resetMatch() {
-        for (Fighter fighter : this.fighters.values()) {
-            fighter.resetScore();
-            applyLevel(fighter, true);
-        }
+        restart();
         announce("счёт сброшен, бой начинается заново.");
     }
 
-    /** Выдаёт бойцу комплект его уровня. */
-    public void applyLevel(Fighter fighter, boolean force) {
-        Loadout level = this.config.levelFor(fighter.getKills());
-        if (level == null) {
-            return;
+    private void restart() {
+        for (Fighter fighter : this.fighters.values()) {
+            fighter.resetScore();
         }
-        int index = this.config.levelIndexFor(fighter.getKills());
-        if (!force && index == fighter.getLevelIndex()) {
+        this.announcedTier = 0;
+        equipEveryoneOnArena();
+    }
+
+    /**
+     * Выдаёт бойцу оружие текущей ступени матча.
+     *
+     * Ступень общая, поэтому смотрим не на личный счёт бойца, а на лучший
+     * счёт в матче: догоняющие дерутся тем же оружием, что и лидер.
+     */
+    public void equip(Fighter fighter) {
+        Loadout level = tierLevel();
+        if (level == null) {
             return;
         }
 
         Equipment.Result result = Equipment.give(fighter.getPlayerRef(), level);
-        fighter.setLevelIndex(index);
+        fighter.setLevelIndex(tierIndex());
         if (!result.isOk()) {
             tell(fighter, "комплект выдался не полностью — " + result.getMessage());
-            log(Level.WARNING, "уровень «" + level.getName() + "»: " + result.getMessage());
+            log(Level.WARNING, "ступень «" + level.getName() + "»: " + result.getMessage());
         }
     }
 
@@ -350,10 +382,11 @@ public class MatchService {
                     + ", радиус " + this.config.getRadius() + ". Придите туда — бой начнётся сам.";
         }
 
-        Loadout level = this.config.levelFor(fighter.getKills());
+        Loadout level = tierLevel();
+        String state = fighter.isOnArena() ? "" : " (вы вне арены, оружие забрано)";
         return "убийств: " + fighter.getKills() + ", смертей: " + fighter.getDeaths()
-                + ", уровень: " + (level == null ? "—" : level.getName())
-                + ". До " + nextStepText(fighter) + ".";
+                + ", оружие матча: " + (level == null ? "—" : level.getName())
+                + ", лучший счёт: " + bestKills() + ". " + nextStepText() + state;
     }
 
     /** Таблица лидеров матча, сверху — лучшие. */
@@ -363,17 +396,23 @@ public class MatchService {
         return list;
     }
 
-    private String nextStepText(Fighter fighter) {
-        Loadout next = this.config.nextLevel(fighter.getKills());
-        if (next == null) {
-            int goal = this.config.getGoalKills();
-            if (goal > 0) {
-                return "победы осталось " + Math.max(0, goal - fighter.getKills());
-            }
-            return "последнего уровня вы уже дошли";
+    /**
+     * Что будет дальше в матче. Считается по лучшему счёту: ступень общая,
+     * и до неё остаётся столько, сколько не хватает лидеру.
+     */
+    private String nextStepText() {
+        int best = bestKills();
+        Loadout next = this.config.nextLevel(best);
+        int goal = this.config.getGoalKills();
+
+        if (next != null) {
+            return "до оружия «" + next.getName() + "» осталось "
+                    + Math.max(0, next.getKills() - best) + " убийств.";
         }
-        return "уровня «" + next.getName() + "» осталось "
-                + Math.max(0, next.getKills() - fighter.getKills());
+        if (goal > 0) {
+            return "до конца матча осталось " + Math.max(0, goal - best) + " убийств.";
+        }
+        return "оружие последней ступени уже выдано.";
     }
 
     /** Что лежит в настройках — для команд админа. */
@@ -392,11 +431,10 @@ public class MatchService {
     /** Перечитывает файл настроек, матч при этом не рвётся. */
     public String reload() {
         this.config = this.store.load();
-        for (Fighter fighter : this.fighters.values()) {
-            applyLevel(fighter, true);
-        }
+        this.announcedTier = tierIndex();
+        equipEveryoneOnArena();
         return this.store.getLastError().isEmpty()
-                ? "настройки перечитаны, уровней: " + this.config.getLevels().size()
+                ? "настройки перечитаны, ступеней: " + this.config.getLevels().size()
                 : this.store.getLastError();
     }
 
