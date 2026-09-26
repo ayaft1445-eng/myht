@@ -16,6 +16,7 @@ import dev.hytalemodding.deathmatch.commands.DmGiveCommand;
 import dev.hytalemodding.deathmatch.commands.DmLeaveCommand;
 import dev.hytalemodding.deathmatch.commands.DmReloadCommand;
 import dev.hytalemodding.deathmatch.commands.DmResetCommand;
+import dev.hytalemodding.deathmatch.commands.DmScanCommand;
 import dev.hytalemodding.deathmatch.commands.DmSetArenaCommand;
 import dev.hytalemodding.deathmatch.commands.DmToggleCommand;
 import dev.hytalemodding.deathmatch.commands.DmTopCommand;
@@ -62,6 +63,7 @@ public class DeathMatchPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new DmAdminCommand(this.match));
         this.getCommandRegistry().registerCommand(new DmSetArenaCommand(this.match));
         this.getCommandRegistry().registerCommand(new DmGiveCommand(this.match));
+        this.getCommandRegistry().registerCommand(new DmScanCommand(this.match));
         this.getCommandRegistry().registerCommand(new DmReloadCommand(this.match));
         this.getCommandRegistry().registerCommand(new DmResetCommand(this.match));
         this.getCommandRegistry().registerCommand(new DmToggleCommand(this.match));

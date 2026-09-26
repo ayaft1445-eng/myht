@@ -1,5 +1,6 @@
 package dev.hytalemodding.deathmatch.match;
 
+import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -137,13 +138,19 @@ public final class Equipment {
         }
     }
 
+    /**
+     * Кладёт предмет в слот. Проверка — getItem(): именно он ищет ассет по
+     * идентификатору и отдаёт null, если такого предмета на сборке нет.
+     * Раньше проверялось isValid(), но оно пропускало выдуманные строки —
+     * и в хотбаре появлялся знак вопроса вместо оружия.
+     */
     private static boolean put(ItemContainer container, short slot, String itemId) {
         if (itemId == null || itemId.isEmpty()) {
             return true;
         }
         try {
             ItemStack stack = new ItemStack(itemId, 1);
-            if (!stack.isValid()) {
+            if (!known(stack)) {
                 return false;
             }
             container.setItemStackForSlot(slot, stack);
@@ -151,6 +158,35 @@ public final class Equipment {
         } catch (RuntimeException | LinkageError problem) {
             return false;
         }
+    }
+
+    /** Знает ли сервер такой предмет. Пустая строка — считаем, что слот пуст. */
+    public static boolean exists(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        try {
+            return known(new ItemStack(itemId, 1));
+        } catch (RuntimeException | LinkageError problem) {
+            return false;
+        }
+    }
+
+    /**
+     * Есть ли такой предмет на сборке.
+     *
+     * Сервер на неизвестный идентификатор отдаёт не null, а заглушку
+     * Item.UNKNOWN — её клиент и рисует знаком вопроса. Поэтому сравниваем
+     * с заглушкой и заодно сверяем идентификатор: так выдуманная строка в
+     * хотбар уже не попадёт.
+     */
+    private static boolean known(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item == null || item == Item.UNKNOWN) {
+            return false;
+        }
+        String resolved = item.getId();
+        return resolved != null && resolved.equalsIgnoreCase(stack.getItemId());
     }
 
     private static void append(StringBuilder text, String itemId) {

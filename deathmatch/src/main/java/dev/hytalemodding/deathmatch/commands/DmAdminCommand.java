@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.deathmatch.bridge.ServerApi;
+import dev.hytalemodding.deathmatch.match.Equipment;
 import dev.hytalemodding.deathmatch.match.MatchService;
 import dev.hytalemodding.deathmatch.model.DeathMatchConfig;
 import dev.hytalemodding.deathmatch.model.Loadout;
@@ -52,8 +53,18 @@ public class DmAdminCommand extends DmCommandBase {
                 + ", бойцов " + this.service.fighterCount());
 
         say(context, "уровни:");
+        boolean missing = false;
         for (Loadout level : config.getLevels()) {
-            say(context, "  " + level.describe() + " — оружие " + shortId(level.getWeapon()));
+            // Сразу показываем, знает ли сервер оружие уровня: без этого
+            // непонятно, почему в руке пусто или висел знак вопроса.
+            boolean ok = Equipment.exists(level.getWeapon());
+            missing = missing || !ok;
+            say(context, "  " + level.describe() + " — оружие " + shortId(level.getWeapon())
+                    + (ok ? " (есть)" : " (сервер такого не знает)"));
+        }
+        if (missing) {
+            say(context, "часть предметов сервер не знает — наберите /dmscan,"
+                    + " он найдёт настоящие имена и сложит их в файл.");
         }
 
         say(context, "команды: /dmsetarena — точка арены здесь, /dmgive — проверить предметы,"
