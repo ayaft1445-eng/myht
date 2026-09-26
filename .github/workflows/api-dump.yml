@@ -22,36 +22,26 @@ jobs:
     - name: Build
       run: ./gradlew build || true
 
-    - name: Где лежат ассеты
-      run: |
-        set +e
-        echo "@@@ ARTIFACTS"
-        find ~/.gradle/caches -name '*.jar' -o -name '*.zip' | grep -iE 'hytale|asset' | sed 's|.*/||' | sort -u | head -25
-
-        echo "@@@ ITEM-FILES-IN-SERVER"
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'item' | head -25
-
-        echo "@@@ JSON-IN-SERVER"
-        unzip -l "$JAR" | awk '{print $4}' | grep -E '\.json$' | head -25
-
-        echo "@@@ OTHER-ARCHIVES"
-        for A in $(find ~/.gradle/caches -name '*.zip' | head -5); do
-          echo "---- $A"
-          unzip -l "$A" | awk '{print $4}' | grep -iE 'item|weapon|sword' | head -15
-        done
-
-    - name: Имена предметов из кода сервера
+    - name: Хранилище ассетов предметов
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
-        echo "@@@ ITEM-CLASSES"
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'asset/type/item' | grep -v '\$' | head -20
 
-        echo "@@@ ITEM-CONFIG"
-        javap -cp "$CP" com.hypixel.hytale.server.core.asset.type.item.config.Item 2>&1 | grep -iE 'class |getKey|getId|getName|identifier' | head -15
+        echo "@@@ ITEM-FULL"
+        javap -cp "$CP" com.hypixel.hytale.server.core.asset.type.item.config.Item 2>&1 | grep -iE 'static|map|getKey|getId' | head -20
 
-        echo "@@@ STRINGS-IN-JAR"
-        mkdir -p /tmp/srv && cd /tmp/srv && unzip -oq "$JAR" 2>/dev/null
-        grep -rhoiE '"[A-Za-z]{2,20}(Sword|Blade|Helmet|Chestplate|Leggings|Boots|Pickaxe)"' . 2>/dev/null | sort -u | head -40
+        echo "@@@ ASSETMAP-CLASSES"
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'assetstore/map/|asset/.*Store' | grep -v '\$' | head -15
+
+        echo "@@@ DEFAULT-ASSET-MAP"
+        javap -cp "$CP" com.hypixel.hytale.assetstore.map.DefaultAssetMap 2>&1 | grep -E 'class|public' | head -20
+
+        echo "@@@ JSONASSETWITHMAP"
+        javap -cp "$CP" com.hypixel.hytale.assetstore.map.JsonAssetWithMap 2>&1 | grep -E 'class|public' | head -12
+
+        echo "@@@ ASSET-LOOKUP"
+        for n in $(unzip -l "$JAR" | awk '{print $4}' | grep -iE 'asset/(Asset|Common)?[A-Za-z]*Store\.class|asset/Assets\.class' | sed 's|/|.|g; s|\.class$||' | head -6); do
+          echo "---- $n"
+          javap -cp "$CP" "$n" 2>&1 | grep -iE 'class |item|get' | head -10
+        done
