@@ -22,41 +22,23 @@ jobs:
     - name: Build
       run: ./gradlew build || true
 
-    - name: Точечные сигнатуры
+    - name: Как регистрируется ECS-система
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
 
-        echo "@@@ KILLFEED-CLASSES"
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'KillFeed|Death' | head -12
+        echo "@@@ JAVAPLUGIN"
+        javap -cp "$CP" com.hypixel.hytale.server.core.plugin.JavaPlugin 2>&1 | head -40
 
-        echo "@@@ KILLFEED"
-        javap -cp "$CP" 'com.hypixel.hytale.server.core.modules.entity.damage.event.KillFeedEvent$KillerMessage' 2>&1 | grep -E 'class|public' | head -12
+        echo "@@@ PLUGINBASE"
+        javap -cp "$CP" com.hypixel.hytale.server.core.plugin.PluginBase 2>&1 | head -40
 
-        echo "@@@ DAMAGE"
-        javap -cp "$CP" com.hypixel.hytale.server.core.modules.entity.damage.Damage 2>&1 | grep -iE 'class |getSource|getAmount|getDeathMessage' | head -10
+        echo "@@@ REGISTRY-CLASSES"
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'Registry\.class' | grep -v '\$' | head -25
 
-        echo "@@@ DAMAGE-SOURCE"
-        javap -cp "$CP" 'com.hypixel.hytale.server.core.modules.entity.damage.Damage$Source' 2>&1 | grep -E 'class|public' | head -20
-
-        echo "@@@ ENTITY-EVENT-SYSTEM"
-        javap -cp "$CP" com.hypixel.hytale.component.system.EntityEventSystem 2>&1 | grep -E 'class|public|protected' | head -12
-
-        echo "@@@ JAVAPLUGIN-REGISTRY"
-        javap -cp "$CP" com.hypixel.hytale.server.core.plugin.JavaPlugin 2>&1 | grep -iE 'registry|system|DataDirectory|Logger' | head -14
-
-        echo "@@@ LIVINGENTITY-INVENTORY"
-        javap -cp "$CP" com.hypixel.hytale.server.core.entity.LivingEntity 2>&1 | grep -iE 'getInventory|setInventory|health' | head -12
-
-        echo "@@@ ARCHETYPE"
-        javap -cp "$CP" com.hypixel.hytale.component.Archetype 2>&1 | grep -E 'empty|class' | head -6
-
-        echo "@@@ ENTITYSTOREREGISTRY"
-        CLS=$(unzip -l "$JAR" | awk '{print $4}' | grep -iE 'EntityStoreRegistry|StoreRegistry' | grep -v '\$' | head -3)
-        echo "$CLS"
-        for c in $CLS; do
-          n=$(echo "$c" | sed 's|/|.|g; s|\.class$||')
-          echo "---- $n"
-          javap -cp "$CP" "$n" 2>&1 | grep -iE 'registerSystem|class ' | head -8
+        echo "@@@ WHO-HAS-registerSystem"
+        for n in $(unzip -l "$JAR" | awk '{print $4}' | grep -iE 'registry|systems?\.class' | grep -v '\$' | sed 's|/|.|g; s|\.class$||' | head -40); do
+          out=$(javap -cp "$CP" "$n" 2>/dev/null | grep -i 'registerSystem' | head -3)
+          if [ -n "$out" ]; then echo "---- $n"; echo "$out"; fi
         done
