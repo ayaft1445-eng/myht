@@ -22,26 +22,13 @@ jobs:
     - name: Build
       run: ./gradlew build || true
 
-    - name: Хранилище ассетов предметов
+    - name: Как добраться до списка предметов
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-
-        echo "@@@ ITEM-FULL"
-        javap -cp "$CP" com.hypixel.hytale.server.core.asset.type.item.config.Item 2>&1 | grep -iE 'static|map|getKey|getId' | head -20
-
-        echo "@@@ ASSETMAP-CLASSES"
-        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'assetstore/map/|asset/.*Store' | grep -v '\$' | head -15
-
-        echo "@@@ DEFAULT-ASSET-MAP"
-        javap -cp "$CP" com.hypixel.hytale.assetstore.map.DefaultAssetMap 2>&1 | grep -E 'class|public' | head -20
-
-        echo "@@@ JSONASSETWITHMAP"
-        javap -cp "$CP" com.hypixel.hytale.assetstore.map.JsonAssetWithMap 2>&1 | grep -E 'class|public' | head -12
-
-        echo "@@@ ASSET-LOOKUP"
-        for n in $(unzip -l "$JAR" | awk '{print $4}' | grep -iE 'asset/(Asset|Common)?[A-Za-z]*Store\.class|asset/Assets\.class' | sed 's|/|.|g; s|\.class$||' | head -6); do
-          echo "---- $n"
-          javap -cp "$CP" "$n" 2>&1 | grep -iE 'class |item|get' | head -10
-        done
+        echo "@@@ ITEM-ALL"
+        javap -cp "$CP" com.hypixel.hytale.server.core.asset.type.item.config.Item 2>&1 | head -45
+        echo "@@@ JSONASSET"
+        javap -cp "$CP" com.hypixel.hytale.assetstore.JsonAsset 2>&1 | head -15
+        echo "@@@ ASSETSTORE"
+        javap -cp "$CP" com.hypixel.hytale.assetstore.AssetStore 2>&1 | grep -E 'class|public|static' | head -25
