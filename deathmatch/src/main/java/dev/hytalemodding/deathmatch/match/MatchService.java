@@ -35,6 +35,8 @@ import java.util.logging.Level;
 public class MatchService {
 
     private static final String PREFIX = "[Дезматч] ";
+    /** Узлы права, любой из которых пускает к настройкам. */
+    private static final String[] ADMIN_PERMISSIONS = { "deathmatch.admin", "*" };
     private static final int TICK_SECONDS = 2;
     /** Через столько без единой удачной проверки боец считается ушедшим. */
     private static final long LOST_MILLIS = 15_000L;
@@ -391,18 +393,26 @@ public class MatchService {
                 : this.store.getLastError();
     }
 
-    /** Может ли игрок пользоваться командами настройки. */
+    /**
+     * Может ли игрок пользоваться командами настройки.
+     *
+     * Право спрашиваем у PlayerRef: PermissionHolder у сервера именно он.
+     * Узлов проверяем несколько — на серверах право называется по-разному,
+     * а у оператора обычно стоит звёздочка.
+     */
     public boolean isAdmin(PlayerRef playerRef) {
         if (this.config.isSetupMode()) {
             return true;
         }
-        String username = ServerApi.username(playerRef);
-        if (this.config.isAdmin(username)) {
+        if (this.config.isAdmin(ServerApi.username(playerRef))) {
             return true;
         }
-        Boolean permission = ServerApi.hasPermission(
-                playerRef == null ? null : playerRef, "deathmatch.admin");
-        return permission != null && permission;
+        for (String node : ADMIN_PERMISSIONS) {
+            if (Boolean.TRUE.equals(ServerApi.hasPermission(playerRef, node))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // ---------------------------------------------------------------- мелочи

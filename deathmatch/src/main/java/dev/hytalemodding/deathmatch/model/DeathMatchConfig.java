@@ -70,8 +70,8 @@ public class DeathMatchConfig {
         config.regiveOnRespawn = Json.bool(json, "regiveOnRespawn", true);
 
         for (Object entry : Json.asArray(json.get("admins"))) {
-            if (entry instanceof String && !((String) entry).isEmpty()) {
-                config.admins.add(((String) entry).toLowerCase());
+            if (entry instanceof String) {
+                config.addAdmin((String) entry);
             }
         }
         for (Object entry : Json.asArray(json.get("levels"))) {
@@ -150,9 +150,19 @@ public class DeathMatchConfig {
         return username != null && this.admins.contains(username.toLowerCase());
     }
 
+    /**
+     * «?» сюда не попадает специально: так ServerApi отвечает, когда имя
+     * игрока прочитать не вышло. Попади такой ответ в файл — список перестал
+     * бы быть пустым, режим первой настройки выключился бы, и админом не смог
+     * бы стать уже никто.
+     */
     public void addAdmin(String username) {
-        if (username != null && !username.isEmpty()) {
-            this.admins.add(username.toLowerCase());
+        if (username == null) {
+            return;
+        }
+        String name = username.trim();
+        if (!name.isEmpty() && !"?".equals(name)) {
+            this.admins.add(name.toLowerCase());
         }
     }
 

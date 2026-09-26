@@ -166,14 +166,23 @@ public class GroupFinderConfig {
         return this.admins;
     }
 
+    /**
+     * Добавляет ника в список админов.
+     *
+     * «?» сюда не попадает специально: так ServerApi отвечает, когда имя
+     * игрока прочитать не вышло. Раньше такой ответ записывался в файл,
+     * список переставал быть пустым, режим первой настройки выключался — и
+     * в панель не мог войти уже никто.
+     */
     public void addAdmin(String username) {
         if (username == null) {
             return;
         }
         String name = username.trim();
-        if (!name.isEmpty() && !isListedAdmin(name)) {
-            this.admins.add(name);
+        if (name.isEmpty() || "?".equals(name) || isListedAdmin(name)) {
+            return;
         }
+        this.admins.add(name);
     }
 
     public void removeAdmin(String username) {

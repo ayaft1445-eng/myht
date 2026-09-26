@@ -57,12 +57,19 @@ public abstract class DmCommandBase extends AbstractPlayerCommand {
             @Nonnull World world
     );
 
-    /** Пускает дальше только админа; остальным — короткий отказ. */
+    /**
+     * Пускает дальше только админа. Отказ сразу объясняет, что делать:
+     * иначе владелец сервера с опкой упирается в «нет прав» и не знает,
+     * куда смотреть.
+     */
     protected boolean requireAdmin(CommandContext context, PlayerRef playerRef) {
         if (this.service.isAdmin(playerRef)) {
             return true;
         }
-        say(context, "нужны права администратора.");
+        String username = ServerApi.username(playerRef);
+        say(context, "нужны права администратора. Ваш ник для мода: «" + username + "».");
+        say(context, "впишите его в список admins в файле " + this.service.store().getFile()
+                + " и наберите /dmreload — или выдайте право deathmatch.admin.");
         return false;
     }
 

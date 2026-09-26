@@ -481,7 +481,7 @@ public class AdminPage extends InteractiveCustomUIPage<AdminPage.AdminEventData>
 
     private boolean ensureAdmin(Ref<EntityStore> ref, Store<EntityStore> store) {
         Player player = store.getComponent(ref, Player.getComponentType());
-        if (this.service.isAdmin(player, ServerApi.username(this.playerRef))) {
+        if (this.service.isAdmin(player, this.playerRef, ServerApi.username(this.playerRef))) {
             return true;
         }
         say("нужны права администратора.");

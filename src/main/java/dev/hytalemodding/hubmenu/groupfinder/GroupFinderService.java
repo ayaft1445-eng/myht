@@ -41,6 +41,13 @@ public class GroupFinderService {
     /** Право, которое пускает в панель настроек. */
     public static final String ADMIN_PERMISSION = "hubmenu.groupfinder.admin";
 
+    /** Узлы права, любой из которых пускает в панель. «*» — обычно у оператора. */
+    private static final String[] ADMIN_PERMISSIONS = {
+            ADMIN_PERMISSION,
+            "hubmenu.admin",
+            "*"
+    };
+
     private static final String PREFIX = "[Поиск] ";
     private static final long TICK_SECONDS = 1L;
     /** На сколько блоков от точки считаем, что игрок доехал. */
@@ -133,18 +140,43 @@ public class GroupFinderService {
     /**
      * Пускать ли игрока в панель настроек.
      *
-     * Сначала смотрим список админов, потом право сервера, и только если
+     * Сначала смотрим список админов, потом права сервера, и только если
      * список пуст — пускаем всех: иначе владелец сервера не смог бы добавить
      * сам себя. Об этом режиме мод громко пишет в консоль и в саму панель.
+     *
+     * Права спрашиваем у PlayerRef, а не у компонента Player: PermissionHolder
+     * у сервера именно PlayerRef, у Player метода hasPermission нет. Раньше
+     * проверка шла по Player, всегда отвечала «нет» — и оператор сервера в
+     * панель не попадал. Узлов проверяем несколько: на серверах право может
+     * называться по-разному, а у оператора обычно стоит звёздочка.
      */
-    public synchronized boolean isAdmin(Object player, String username) {
+    public synchronized boolean isAdmin(Object player, Object playerRef, String username) {
         if (this.config.isListedAdmin(username)) {
             return true;
         }
-        if (Boolean.TRUE.equals(ServerApi.hasPermission(player, ADMIN_PERMISSION))) {
-            return true;
+        for (Object holder : new Object[] {playerRef, player}) {
+            for (String node : ADMIN_PERMISSIONS) {
+                if (Boolean.TRUE.equals(ServerApi.hasPermission(holder, node))) {
+                    return true;
+                }
+            }
         }
         return this.config.isSetupMode();
+    }
+
+    /**
+     * Пишет в консоль, кому и почему отказали. Владелец сервера читает
+     * консоль — и сразу видит, совпадает ли его ник со списком.
+     */
+    public synchronized void noteDeniedAdmin(String username) {
+        log(Level.WARNING, "в панель не пустило игрока «" + username + "». В списке админов: "
+                + (this.config.getAdmins().isEmpty() ? "пусто" : String.join(", ", this.config.getAdmins()))
+                + ". Файл: " + this.store.getFile());
+    }
+
+    /** Старая подпись — оставлена, чтобы не ломать чужие вызовы. */
+    public synchronized boolean isAdmin(Object player, String username) {
+        return isAdmin(player, null, username);
     }
 
     // ------------------------------------------------------------------ очередь

@@ -39,9 +39,17 @@ public class GroupFinderAdminCommand extends AbstractPlayerCommand {
             return;
         }
 
-        if (!this.service.isAdmin(player, ServerApi.username(playerRef))) {
+        String username = ServerApi.username(playerRef);
+        if (!this.service.isAdmin(player, playerRef, username)) {
+            // Отказ должен сам объяснять, что делать: иначе владелец сервера
+            // с опкой упирается в «нет прав» и не знает, куда смотреть.
+            this.service.noteDeniedAdmin(username);
             context.sendMessage(Message.raw(
-                    "Панель настроек только для админов (право " + GroupFinderService.ADMIN_PERMISSION + ")."));
+                    "Панель настроек только для админов. Ваш ник для мода: «" + username + "»."));
+            context.sendMessage(Message.raw(
+                    "Впишите его в список admins в файле " + this.service.store().getFile()
+                            + " и перезапустите сервер — или выдайте право "
+                            + GroupFinderService.ADMIN_PERMISSION + "."));
             return;
         }
 
