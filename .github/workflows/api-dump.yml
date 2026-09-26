@@ -22,13 +22,13 @@ jobs:
     - name: Build
       run: ./gradlew build || true
 
-    - name: Как добраться до списка предметов
+    - name: Байт-код getItem — откуда берётся предмет
       run: |
         set +e
         CP=$(find ~/.gradle/caches -name '*.jar' | grep -iv sources | grep -i hytale | tr '\n' ':')
-        echo "@@@ ITEM-ALL"
-        javap -cp "$CP" com.hypixel.hytale.server.core.asset.type.item.config.Item 2>&1 | head -45
-        echo "@@@ JSONASSET"
-        javap -cp "$CP" com.hypixel.hytale.assetstore.JsonAsset 2>&1 | head -15
-        echo "@@@ ASSETSTORE"
-        javap -cp "$CP" com.hypixel.hytale.assetstore.AssetStore 2>&1 | grep -E 'class|public|static' | head -25
+        echo "@@@ GETITEM-BYTECODE"
+        javap -c -p -cp "$CP" com.hypixel.hytale.server.core.inventory.ItemStack 2>/dev/null \
+          | awk '/public com.hypixel.hytale.server.core.asset.type.item.config.Item getItem/,/^$/' | head -30
+        echo "@@@ ASSET-HOLDERS"
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        unzip -l "$JAR" | awk '{print $4}' | grep -iE 'asset/(Assets|AssetMaps|CommonAsset|ServerAsset)[A-Za-z]*\.class' | head -10
