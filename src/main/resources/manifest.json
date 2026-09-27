@@ -2,7 +2,7 @@
     "Group": "HytaleModding",
     "Name": "hubmenu",
     "Version": "3.0.0",
-    "Description": "Black and white hub menu with three sections",
+    "Description": "Hub menu and mounted combat (attack with a weapon from horseback)",
     "Authors": [
         {
             "Name": "ayaft1445-eng",
