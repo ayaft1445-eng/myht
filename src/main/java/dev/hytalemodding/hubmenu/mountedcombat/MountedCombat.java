@@ -31,10 +31,15 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Roo
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
+import com.hypixel.hytale.builtin.mounts.MountPlugin;
 import com.hypixel.hytale.builtin.mounts.MountedComponent;
+import com.hypixel.hytale.builtin.mounts.NPCMountComponent;
+import com.hypixel.hytale.server.npc.NPCPlugin;
+import com.hypixel.hytale.server.npc.entities.NPCEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,13 +118,19 @@ public final class MountedCombat {
             return;
         }
 
+        List<String> mountIdentifiers = collectMountIdentifiers(store, mountRef);
         if (settings.isDebug()) {
             this.plugin.getLogger().at(Level.INFO).log(
-                    "[MountedCombat] %s: %s в седле, предмет: %s",
+                    "[MountedCombat] %s: %s в седле, предмет: %s, маунт: %s",
                     event.getPlayerRefComponent().getUsername(),
                     event.getMouseButton().mouseButtonType.name(),
-                    event.getItemInHand() == null ? "нет" : event.getItemInHand().getId()
+                    event.getItemInHand() == null ? "нет" : event.getItemInHand().getId(),
+                    mountIdentifiers.isEmpty() ? "неизвестен" : String.join(", ", mountIdentifiers)
             );
+        }
+
+        if (!matchesConfiguredMount(mountIdentifiers, settings.getMountIds())) {
+            return;
         }
 
         if (!this.consumeCooldown(event.getPlayerRefComponent().getUuid(), settings.getCooldownMs())) {
@@ -149,6 +160,10 @@ public final class MountedCombat {
             }
         }
 
+        if (MountPlugin.getInstance() == null) {
+            return null;
+        }
+
         MountedComponent mounted = store.getComponent(ref, MountedComponent.getComponentType());
         if (mounted != null) {
             Ref<EntityStore> mountedTo = mounted.getMountedToEntity();
@@ -158,6 +173,75 @@ public final class MountedCombat {
         }
 
         return null;
+    }
+
+    /**
+     * Собирает всё, чем можно опознать маунт: текущую роль NPC, роль до посадки (её подменяют
+     * на Empty_Role, когда игрок садится), роль при спавне и модель. Кастомный маунт вроде
+     * Npc_Tyrel опознаётся любым из этих значений — какое именно подойдёт, видно в логе при
+     * включённом Debug.
+     */
+    @Nonnull
+    private static List<String> collectMountIdentifiers(@Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> mountRef) {
+        List<String> identifiers = new ArrayList<>(4);
+
+        NPCEntity npcEntity = store.getComponent(mountRef, NPCEntity.getComponentType());
+        if (npcEntity != null) {
+            addIdentifier(identifiers, npcEntity.getRoleName());
+            addIdentifier(identifiers, roleName(npcEntity.getSpawnRoleIndex()));
+        }
+
+        if (MountPlugin.getInstance() != null) {
+            NPCMountComponent npcMount = store.getComponent(mountRef, NPCMountComponent.getComponentType());
+            if (npcMount != null) {
+                addIdentifier(identifiers, roleName(npcMount.getOriginalRoleIndex()));
+            }
+        }
+
+        ModelComponent modelComponent = store.getComponent(mountRef, ModelComponent.getComponentType());
+        if (modelComponent != null) {
+            addIdentifier(identifiers, modelComponent.getModel().getModelAssetId());
+            addIdentifier(identifiers, modelComponent.getModel().getModel());
+        }
+
+        return identifiers;
+    }
+
+    @Nullable
+    private static String roleName(int roleIndex) {
+        if (roleIndex < 0 || NPCPlugin.get() == null) {
+            return null;
+        }
+
+        return NPCPlugin.get().getName(roleIndex);
+    }
+
+    private static void addIdentifier(@Nonnull List<String> identifiers, @Nullable String value) {
+        if (value != null && !value.isEmpty() && !identifiers.contains(value)) {
+            identifiers.add(value);
+        }
+    }
+
+    /** Пустой список в конфиге — любой маунт; иначе сравнение по вхождению подстроки. */
+    private static boolean matchesConfiguredMount(@Nonnull List<String> identifiers, @Nonnull String[] mountIds) {
+        if (mountIds.length == 0) {
+            return true;
+        }
+
+        for (String mountId : mountIds) {
+            if (mountId == null || mountId.isEmpty()) {
+                continue;
+            }
+
+            String needle = mountId.toLowerCase(java.util.Locale.ROOT);
+            for (String identifier : identifiers) {
+                if (identifier.toLowerCase(java.util.Locale.ROOT).contains(needle)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /** Запускает родную цепочку взаимодействий предмета в руке (режим Interaction). */

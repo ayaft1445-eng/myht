@@ -5,6 +5,8 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.EnumCodec;
 
+import javax.annotation.Nonnull;
+
 /**
  * Настройки боя из седла (файл конфигурации {@code mounted_combat.json} в папке плагина).
  *
@@ -28,6 +30,8 @@ public class MountedCombatConfig {
         Damage
     }
 
+    private static final String[] EMPTY_MOUNT_IDS = new String[0];
+
     public static final BuilderCodec<MountedCombatConfig> CODEC = BuilderCodec.builder(
                     MountedCombatConfig.class, MountedCombatConfig::new)
             .append(
@@ -36,6 +40,15 @@ public class MountedCombatConfig {
                     config -> config.enabled
             )
             .documentation("Включить бой из седла.")
+            .add()
+            .append(
+                    new KeyedCodec<>("MountIds", Codec.STRING_ARRAY),
+                    (config, value) -> config.mountIds = value,
+                    config -> config.mountIds
+            )
+            .documentation("Идентификаторы маунтов, с которых разрешён удар: роль NPC, роль при "
+                    + "спавне или модель. Сравнение без учёта регистра по вхождению подстроки. "
+                    + "Пустой список — любой маунт.")
             .add()
             .<Mode>append(
                     new KeyedCodec<>("Mode", new EnumCodec<>(Mode.class)),
@@ -110,6 +123,7 @@ public class MountedCombatConfig {
             .build();
 
     private boolean enabled = true;
+    private String[] mountIds = {"Npc_Tyrel"};
     private Mode mode = Mode.Interaction;
     private boolean allowSecondary = false;
     private int cooldownMs = 400;
@@ -126,6 +140,11 @@ public class MountedCombatConfig {
 
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Nonnull
+    public String[] getMountIds() {
+        return this.mountIds == null ? EMPTY_MOUNT_IDS : this.mountIds;
     }
 
     public Mode getMode() {
