@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "id": "beepbeep_suv",
+  "displayName": "BeepBeep SUV",
+  "modelAsset": "BeepBeep_GreenLandCruiser_AssetModel",
+  "movementConfig": "BeepBeep_SUV_Movement",
+  "massKg": 1450,
+  "centerOfMass": {
+    "x": 0.0,
+    "y": 0.65,
+    "z": 0.0
+  },
+  "chassis": {
+    "halfExtents": {
+      "x": 0.55,
+      "y": 0.46,
+      "z": 0.86
+    },
+    "maxSlopeDegrees": 52,
+    "airControl": 0.08,
+    "center": {
+      "x": 0,
+      "y": 0.73,
+      "z": -0.04
+    }
+  },
+  "wheels": [
+    {
+      "id": "front_left",
+      "position": {
+        "x": -0.5859375,
+        "y": 0.6174367245961538,
+        "z": 0.4894634375
+      },
+      "radius": 0.24562015625,
+      "width": 0.1875,
+      "steer": true,
+      "drive": true,
+      "brakeBias": 0.58,
+      "suspension": {
+        "restLength": 0.48,
+        "travel": 0.3,
+        "springNPerM": 42000,
+        "compressionNsPerM": 4800,
+        "reboundNsPerM": 6200,
+        "antiRollGroup": "front"
+      },
+      "tire": {
+        "longitudinalGrip": 1.15,
+        "lateralGrip": 1.05,
+        "rollingResistance": 0.015
+      }
+    },
+    {
+      "id": "front_right",
+      "position": {
+        "x": 0.5859375,
+        "y": 0.6174367245961538,
+        "z": 0.4894634375
+      },
+      "radius": 0.24562015625,
+      "width": 0.1875,
+      "steer": true,
+      "drive": true,
+      "brakeBias": 0.58,
+      "suspension": {
+        "restLength": 0.48,
+        "travel": 0.3,
+        "springNPerM": 42000,
+        "compressionNsPerM": 4800,
+        "reboundNsPerM": 6200,
+        "antiRollGroup": "front"
+      },
+      "tire": {
+        "longitudinalGrip": 1.15,
+        "lateralGrip": 1.05,
+        "rollingResistance": 0.015
+      }
+    },
+    {
+      "id": "rear_left",
+      "position": {
+        "x": -0.5859375,
+        "y": 0.627265108055944,
+        "z": -0.5261615625
+      },
+      "radius": 0.24562015625,
+      "width": 0.1875,
+      "steer": false,
+      "drive": true,
+      "brakeBias": 0.42,
+      "suspension": {
+        "restLength": 0.48,
+        "travel": 0.3,
+        "springNPerM": 44000,
+        "compressionNsPerM": 5000,
+        "reboundNsPerM": 6400,
+        "antiRollGroup": "rear"
+      },
+      "tire": {
+        "longitudinalGrip": 1.12,
+        "lateralGrip": 1.02,
+        "rollingResistance": 0.015
+      }
+    },
+    {
+      "id": "rear_right",
+      "position": {
+        "x": 0.5859375,
+        "y": 0.627265108055944,
+        "z": -0.5261615625
+      },
+      "radius": 0.24562015625,
+      "width": 0.1875,
+      "steer": false,
+      "drive": true,
+      "brakeBias": 0.42,
+      "suspension": {
+        "restLength": 0.48,
+        "travel": 0.3,
+        "springNPerM": 44000,
+        "compressionNsPerM": 5000,
+        "reboundNsPerM": 6400,
+        "antiRollGroup": "rear"
+      },
+      "tire": {
+        "longitudinalGrip": 1.12,
+        "lateralGrip": 1.02,
+        "rollingResistance": 0.015
+      }
+    }
+  ],
+  "stabilizers": {
+    "frontNPerM": 9000,
+    "rearNPerM": 7000
+  },
+  "engine": {
+    "idleRpm": 850,
+    "redlineRpm": 6500,
+    "peakTorqueNm": 320,
+    "reverseRatio": 3.2,
+    "gearRatios": [
+      3.4,
+      2.1,
+      1.45,
+      1.0,
+      0.78
+    ],
+    "finalDrive": 3.7,
+    "shiftUpRpm": 6100,
+    "shiftDownRpm": 1800
+  },
+  "brakes": {
+    "maxForceN": 12000,
+    "handbrakeForceN": 9000
+  },
+  "seats": [
+    {
+      "id": "driver",
+      "position": {
+        "x": -0.45,
+        "y": 1.05,
+        "z": 0.55
+      },
+      "yaw": 0,
+      "driver": true
+    },
+    {
+      "id": "passenger_front",
+      "position": {
+        "x": 0.45,
+        "y": 1.05,
+        "z": 0.55
+      },
+      "yaw": 0,
+      "driver": false
+    },
+    {
+      "id": "passenger_rear_left",
+      "position": {
+        "x": -0.45,
+        "y": 1.05,
+        "z": -0.65
+      },
+      "yaw": 0,
+      "driver": false
+    },
+    {
+      "id": "passenger_rear_right",
+      "position": {
+        "x": 0.45,
+        "y": 1.05,
+        "z": -0.65
+      },
+      "yaw": 0,
+      "driver": false
+    }
+  ]
+}

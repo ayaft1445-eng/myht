@@ -1,0 +1,13 @@
+$C = "../Common.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 44);
+  Label #FieldLabel {
+    Anchor: (Width: 330);
+    Style: (FontSize: 15, TextColor: #b7c8d9, VerticalAlignment: Center);
+  }
+  $C.@TextField #FieldInput {
+    FlexWeight: 1;
+  }
+}

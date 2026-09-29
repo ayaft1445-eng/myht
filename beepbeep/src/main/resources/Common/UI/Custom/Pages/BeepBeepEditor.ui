@@ -1,0 +1,93 @@
+$C = "../Common.ui";
+
+Group {
+  Anchor: (Width: 830, Height: 620);
+  Background: #182331;
+  LayoutMode: Top;
+  Padding: (Full: 24);
+  Label {
+    Text: "BeepBeep / Редактор машины";
+    Anchor: (Height: 38);
+    Style: (FontSize: 26, TextColor: #ffffff, RenderBold: true);
+  }
+  Label {
+    Text: "Настройки применяются к машине, открывшей этот редактор.";
+    Anchor: (Height: 30);
+    Style: (FontSize: 15, TextColor: #a8bdcf);
+  }
+  Group {
+    LayoutMode: Left;
+    Anchor: (Height: 50);
+    $C.@SecondaryTextButton #body {
+      Text: "Кузов";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #wheels {
+      Text: "Колёса";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #engine {
+      Text: "Мотор";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #seats {
+      Text: "Места";
+      FlexWeight: 1;
+    }
+  }
+  Label #Location {
+    Anchor: (Height: 28);
+    Style: (FontSize: 16, TextColor: #7fe0b8);
+  }
+  Label #Target {
+    Anchor: (Height: 25);
+    Style: (FontSize: 14, TextColor: #7fe0b8);
+  }
+  Label {
+    Text: "Координаты локальные: X вправо, Y вверх, Z вперёд. Дроби: точка или запятая.";
+    Anchor: (Height: 26);
+    Style: (FontSize: 14, TextColor: #a8bdcf);
+  }
+  Group #Fields {
+    FlexWeight: 1;
+    LayoutMode: TopScrolling;
+    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+  }
+  Group {
+    LayoutMode: Left;
+    Anchor: (Height: 50, Top: 12);
+    $C.@SecondaryTextButton #prev {
+      Text: "Назад";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #next {
+      Text: "Далее";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #add {
+      Text: "+ Элемент";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@SecondaryTextButton #remove {
+      Text: "Удалить";
+      FlexWeight: 1;
+    }
+    Group { Anchor: (Width: 6); }
+    $C.@TextButton #save { FlexWeight: 1; Text: "Сохранить"; }
+  }
+  Label #Status {
+    Anchor: (Height: 36);
+    Style: (FontSize: 14, TextColor: #e3c88e, Wrap: true);
+  }
+  Label {
+    Text: "Esc — закрыть без сохранения. Добавление и удаление работают во вкладках колёс и мест.";
+    Anchor: (Height: 22);
+    Style: (FontSize: 13, TextColor: #a8bdcf);
+  }
+}

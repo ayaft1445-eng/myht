@@ -1,0 +1,27 @@
+Group {
+  Anchor: (Width: 600, Height: 260);
+  Background: #182331;
+  LayoutMode: Top;
+  Padding: (Full: 24);
+  Label {
+    Text: "BeepBeep Vehicle Core / M0";
+    Anchor: (Height: 42);
+    Style: (FontSize: 23, TextColor: #ffffff, RenderBold: true);
+  }
+  Label {
+    Text: "API test page. The vehicle editor is not implemented yet.";
+    Anchor: (Height: 48);
+    Style: (FontSize: 16, TextColor: #b8cadb, Wrap: true);
+  }
+  Label {
+    Text: "Commands: /vehicle probe start, status, surface, spawn, clear";
+    Anchor: (Height: 65);
+    Style: (FontSize: 16, TextColor: #b8cadb, Wrap: true);
+  }
+  Label {
+    Text: "Press Esc to close";
+    Anchor: (Height: 32);
+    Style: (FontSize: 15, TextColor: #88d6af);
+  }
+}
+
