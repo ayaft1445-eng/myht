@@ -9,86 +9,6 @@ on:
     paths: ['.github/workflows/beepbeep-api-dump.yml']
 
 jobs:
-  protocol:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-java@v5
-      with:
-        java-version: '25'
-        distribution: 'temurin'
-    - uses: gradle/actions/setup-gradle@v5
-    - name: Build (подтягивает сервер)
-      continue-on-error: true
-      run: ./gradlew build
-    - name: Протокол и API (javap)
-      run: |
-        set +e
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' ! -name '*sources*' ! -name '*javadoc*' | head -1)
-        echo "JAR=$JAR"
-        unzip -p "$JAR" META-INF/MANIFEST.MF | head -20
-        echo "######## классы про транспорт/посадку"
-        unzip -l "$JAR" | awk '{print $4}' | grep '^com/hypixel' | grep -i -E 'vehicle|seat|mount|boat|steer|ride|rider|camera' | grep -v '\$[0-9]' | head -120
-        P=com.hypixel.hytale.protocol
-        for c in MountController MountedUpdate ComponentUpdate ComponentUpdateType BlockMount BlockMountType \
-                 ServerCameraSettings MovementSettings FlyMode MovementStates Direction Position ModelTransform TransformUpdate \
-                 ClientCameraView AttachedToType PositionType RotationType ApplyLookType ApplyMovementType CanMoveType \
-                 MovementForceRotationType MouseInputTargetType MouseInputType PositionDistanceOffsetType \
-                 InteractionType AnimationSlot MouseButtonType MouseButtonState MouseButtonEvent MouseMotionEvent \
-                 packets.player.ClientMovement packets.player.ClientTeleport packets.player.UpdateMovementSettings \
-                 packets.player.MouseInteraction packets.player.SetMovementStates packets.camera.SetServerCamera \
-                 packets.entities.MountMovement packets.entities.EntityUpdates packets.interaction.MountNPC \
-                 packets.interaction.DismountNPC packets.interaction.SyncInteractionChains packets.interaction.SyncInteractionChain \
-                 EntityUpdate; do
-          echo "######## $P.$c"
-          javap -cp "$JAR" -p "$P.$c" 2>&1 | grep -v -E 'serialize|deserialize|computeSize|computeBytesConsumed|validateStructure|NULLABLE_BIT|FIXED_BLOCK|VARIABLE_|MAX_SIZE|hashCode|equals\(|toString\(\)|clone\(\)' | head -90
-        done
-        echo "######## enum-значения"
-        for c in MountController ComponentUpdateType FlyMode InteractionType AnimationSlot; do
-          echo "== $c"; javap -cp "$JAR" -p -c "$P.$c" 2>&1 | grep -o 'String [A-Za-z0-9_]*' | head -60 | tr '\n' ' '; echo
-        done
-
-  server:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-java@v5
-      with:
-        java-version: '25'
-        distribution: 'temurin'
-    - uses: gradle/actions/setup-gradle@v5
-    - name: Build (подтягивает сервер)
-      continue-on-error: true
-      run: ./gradlew build
-    - name: Серверные классы (javap)
-      run: |
-        set +e
-        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' ! -name '*sources*' ! -name '*javadoc*' | head -1)
-        for c in com.hypixel.hytale.builtin.mounts.MountedComponent com.hypixel.hytale.builtin.mounts.MountedByComponent \
-                 com.hypixel.hytale.builtin.mounts.NPCMountComponent com.hypixel.hytale.builtin.mounts.MountPlugin \
-                 'S.modules.entity.player.PlayerInput' 'S.modules.entity.player.PlayerInput$WishMovement' \
-                 'S.modules.entity.player.PlayerInput$SetMovementStates' 'S.modules.entity.player.PlayerInput$SetRiderMovementStates' \
-                 'S.modules.entity.player.PlayerSystems' \
-                 'S.io.adapter.PacketAdapters' 'S.io.adapter.PlayerPacketFilter' 'S.io.adapter.PlayerPacketWatcher' \
-                 'S.io.PacketHandler' 'S.io.handlers.GenericPacketHandler' 'S.universe.PlayerRef' \
-                 'S.modules.entity.tracker.EntityTrackerSystems' 'S.modules.entity.tracker.EntityTrackerSystems$Visible' \
-                 'S.modules.entity.tracker.EntityTrackerSystems$EntityViewer' 'S.modules.entity.system.TransformSystems' \
-                 'S.modules.entity.teleport.Teleport' 'S.modules.entity.teleport.PendingTeleport' \
-                 'S.entity.entities.player.movement.MovementManager' 'S.entity.movement.MovementStatesComponent' \
-                 'S.modules.entity.component.HeadRotation' 'S.entity.entities.player.CameraManager' \
-                 'S.entity.entities.player.HiddenPlayersManager' 'S.modules.entity.player.PlayerSkinComponent' \
-                 'S.cosmetics.CosmeticsModule' 'S.modules.interaction.Interactions' 'S.modules.entity.component.Interactable' \
-                 'S.event.events.player.PlayerMouseButtonEvent' 'S.event.events.player.PlayerInteractEvent' \
-                 'S.asset.type.model.config.Model' 'S.modules.entity.component.ModelComponent' 'S.entity.AnimationUtils'; do
-          c="${c/#S./com.hypixel.hytale.server.core.}"
-          echo "######## $c"
-          javap -cp "$JAR" -p "$c" 2>&1 | head -80
-        done
-        echo "######## Player (посадка/камера)"
-        javap -cp "$JAR" -p com.hypixel.hytale.server.core.entity.entities.Player 2>&1 | grep -i -E 'mount|camera|class |getPlayerRef|moveTo|PageManager|getGameMode'
-        echo "######## где лежат MovementStatesComponent / CosmeticsModule / Interactions"
-        unzip -l "$JAR" | awk '{print $4}' | grep -E '/(MovementStatesComponent|CosmeticsModule|Interactions|PlayerMouseButtonEvent|PlayerInteractEvent|AnimationUtils)\.class$'
-
   decompiled:
     runs-on: ubuntu-latest
     steps:
@@ -101,81 +21,45 @@ jobs:
     - name: Build (подтягивает сервер)
       continue-on-error: true
       run: ./gradlew build
-    - name: Декомпиляция систем посадки и ввода
+    - name: Декомпиляция (раунд 2)
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' ! -name '*sources*' ! -name '*javadoc*' | head -1)
         curl -sSL -o /tmp/vf.jar https://repo1.maven.org/maven2/org/vineflower/vineflower/1.11.1/vineflower-1.11.1.jar
         mkdir -p /tmp/cls /tmp/src && cd /tmp/cls
-        unzip -q -o "$JAR" 'com/hypixel/hytale/builtin/mounts/*' \
-          'com/hypixel/hytale/server/core/io/handlers/game/GamePacketHandler*' \
-          'com/hypixel/hytale/server/core/io/adapter/*' \
-          'com/hypixel/hytale/server/core/io/netty/PlayerChannelHandler*'
+        unzip -q -o "$JAR" 'com/hypixel/hytale/server/core/modules/entity/teleport/*' \
+          'com/hypixel/hytale/server/core/modules/entity/player/PlayerSystems*' \
+          'com/hypixel/hytale/server/core/entity/entities/player/movement/MovementManager*'
         java -jar /tmp/vf.jar -dgs=1 -rsy=1 /tmp/cls /tmp/src > /dev/null 2>&1
         cd /tmp/src
-        find . -name '*.java' | sort
-        py() { python3 - "$@"; }
-        cat > /tmp/cut.py <<'EOF'
-        import sys, re
-        path, names = sys.argv[1], sys.argv[2:]
-        src = open(path).read().split('\n')
-        for name in names:
-            for i, line in enumerate(src):
-                if re.search(r'\b(void|class|boolean|static)\b.*\b' + re.escape(name) + r'\b', line) and '(' in line or ('class ' + name) in line:
-                    depth, started = 0, False
-                    for j in range(i, min(len(src), i + 260)):
-                        print(src[j])
-                        depth += src[j].count('{') - src[j].count('}')
-                        if '{' in src[j]: started = True
-                        if started and depth <= 0: break
-                    print('-----')
-                    break
-        EOF
-        M=com/hypixel/hytale/builtin/mounts
-        echo "######## MountedComponent";     cat $M/MountedComponent.java | grep -v '^import'
-        echo "######## MountGamePacketHandler"; cat $M/MountGamePacketHandler.java | grep -v '^import'
-        echo "######## MountPlugin";          cat $M/MountPlugin.java | grep -v '^import'
-        echo "######## MountInteraction";     cat $M/interactions/MountInteraction.java | grep -v '^import'
-        echo "######## MountSystems (выборка)"
-        python3 /tmp/cut.py $M/MountSystems.java HandleMountInput PlayerMount TrackerUpdate TrackerRemove TeleportMountedEntity
-        G=com/hypixel/hytale/server/core/io/handlers/game/GamePacketHandler.java
-        echo "######## GamePacketHandler (выборка)"
-        python3 /tmp/cut.py $G registerHandlers "handle(@Nonnull ClientMovement" handleMountMovement handleMouseInteraction
-        grep -n 'ClientMovement' $G | head
-        echo "######## PacketAdapters"; cat com/hypixel/hytale/server/core/io/adapter/PacketAdapters.java | grep -v '^import'
-        echo "######## PlayerChannelHandler"; cat com/hypixel/hytale/server/core/io/netty/PlayerChannelHandler.java | grep -v '^import' | head -80
-        echo "######## прочие файлы пакета mounts"
-        ls -R $M
-
-  assets:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-java@v5
-      with:
-        java-version: '25'
-        distribution: 'temurin'
-    - uses: gradle/actions/setup-gradle@v5
-    - name: Задачи плагина hytale-tools
-      continue-on-error: true
-      run: ./gradlew tasks --all | grep -i -E 'hytale|asset|setup|server|decompil' | head -60
-    - name: Скачать ассеты
-      continue-on-error: true
-      timeout-minutes: 15
-      run: ./gradlew setupHytaleDev --no-daemon 2>&1 | tail -30
-    - name: Как ванильные ассеты используют посадку
+        for f in $(find . -name '*.java' | sort); do echo "######## $f"; grep -v '^import' "$f"; done
+    - name: Сигнатуры (javap)
       run: |
         set +e
-        ZIP=$(find ~ "$GITHUB_WORKSPACE" /tmp -name 'Assets*.zip' -size +10M 2>/dev/null | head -1)
-        echo "ZIP=$ZIP"
-        [ -z "$ZIP" ] && exit 0
-        mkdir -p /tmp/a && cd /tmp/a
-        unzip -q -o "$ZIP" 'Server/*' 2>/dev/null
-        echo "######## файлы с Type Mount / Controller"
-        grep -rl -E '"Type"\s*:\s*"Mount"|"Controller"\s*:' Server | head -40
-        echo "######## фрагменты"
-        grep -rn -B3 -A6 -E '"Controller"\s*:' Server | head -200
-        echo "######## Seating / SpawnMinecart"
-        grep -rl -E '"Type"\s*:\s*"(Seating|SpawnMinecart)"' Server | head -20
-        echo "######## роли с IsMountable"
-        grep -rl '"IsMountable"' Server | head -20
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' ! -name '*sources*' ! -name '*javadoc*' | head -1)
+        for c in com.hypixel.hytale.server.core.entity.InteractionContext \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.config.SimpleInstantInteraction \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.config.SimpleInteraction \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.config.RootInteraction \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.util.InteractionValidation \
+                 com.hypixel.hytale.server.core.modules.interaction.interaction.CooldownHandler \
+                 com.hypixel.hytale.assetstore.AssetRegistry com.hypixel.hytale.assetstore.AssetStore \
+                 com.hypixel.hytale.server.core.plugin.PluginBase com.hypixel.hytale.server.core.plugin.JavaPlugin \
+                 com.hypixel.hytale.server.core.modules.entity.component.Intangible \
+                 com.hypixel.hytale.server.core.modules.entity.component.Invulnerable \
+                 com.hypixel.hytale.server.core.modules.entity.component.BoundingBox \
+                 com.hypixel.hytale.server.core.modules.entity.component.TransformComponent \
+                 com.hypixel.hytale.server.core.universe.world.storage.EntityStore \
+                 com.hypixel.hytale.server.core.event.EventRegistry \
+                 com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems\$OnDeathSystem \
+                 com.hypixel.hytale.server.core.modules.entity.component.Spectating \
+                 com.hypixel.hytale.server.core.modules.entity.player.PlayerSystems\$ProcessPlayerInput \
+                 com.hypixel.hytale.server.core.modules.entity.system.TransformSystems\$EntityTrackerUpdate \
+                 com.hypixel.hytale.math.vector.Rotation3f com.hypixel.hytale.math.shape.Box \
+                 com.hypixel.hytale.component.system.tick.EntityTickingSystem \
+                 com.hypixel.hytale.component.dependency.SystemGroupDependency \
+                 com.hypixel.hytale.component.CommandBuffer com.hypixel.hytale.component.Store; do
+          echo "######## $c"
+          javap -cp "$JAR" -p "$c" 2>&1 | grep -v -E 'lambda\$|^Compiled from' | head -120
+        done
