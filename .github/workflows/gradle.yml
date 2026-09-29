@@ -3,6 +3,11 @@ name: Build plugin jar
 on:
   push:
     branches: [ "**" ]
+    # Мод машин собирается своим workflow (beepbeep.yml) и не должен
+    # перезаписывать релиз HubMenu.
+    paths-ignore:
+      - 'beepbeep/**'
+      - '.github/workflows/beepbeep*.yml'
   pull_request:
   workflow_dispatch:
 
