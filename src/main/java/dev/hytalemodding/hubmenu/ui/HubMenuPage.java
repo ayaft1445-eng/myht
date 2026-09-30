@@ -18,16 +18,12 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import dev.hytalemodding.hubmenu.groupfinder.GroupFinderService;
-import dev.hytalemodding.hubmenu.groupfinder.bridge.ServerApi;
 import dev.hytalemodding.hubmenu.groupfinder.model.GameModeConfig;
 import dev.hytalemodding.hubmenu.groupfinder.ui.GroupFinderPage;
 import dev.hytalemodding.hubmenu.lang.LanguageStore;
 import dev.hytalemodding.hubmenu.lang.MenuLanguage;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -41,12 +37,6 @@ import java.util.logging.Level;
  * Язык. Разметка на каждый язык лежит отдельным файлом (Main_ru.ui, Main_en.ui),
  * страница берёт нужный по MenuLanguage. Окно выбора языка одно на оба языка:
  * его видят и те, кто ещё ничего не выбрал.
- *
- * Анимация нажатия. Плавных переходов в разметке Hytale нет, поэтому кнопку
- * «проигрывает» сервер: под каждой анимированной кнопкой лежат два скрытых
- * кадра (#Fx<кнопка>A — нажатие, #Fx<кнопка>B — вспышка). По нажатию сервер
- * включает их по очереди (A → B → A) и только потом открывает новое окно.
- * Тайминги — в PRESS_FRAMES и PRESS_FINISH_MS.
  *
  * Разметка: src/main/resources/Common/UI/Custom/HubMenu/
  */
@@ -95,24 +85,6 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private static final String ACTION_BACK = "back";
     private static final String ACTION_CLOSE = "close";
 
-    /** Кнопка «Назад» в окнах разделов. */
-    private static final String BACK_BUTTON = "#BackButton";
-
-    /** Кадры анимации нажатия: какой слой включить и через сколько мс. */
-    private static final String[] PRESS_FRAMES = { "A", "B", "A" };
-    private static final long[] PRESS_FRAME_MS = { 0L, 70L, 140L };
-
-    /** Через сколько мс после нажатия открывается следующее окно. */
-    private static final long PRESS_FINISH_MS = 220L;
-
-    /** Общий таймер кадров для всех игроков: задачи короткие, потока хватит одного. */
-    private static final ScheduledExecutorService ANIMATION_TIMER =
-            Executors.newSingleThreadScheduledExecutor(runnable -> {
-                Thread thread = new Thread(runnable, "HubMenu-Animation");
-                thread.setDaemon(true);
-                return thread;
-            });
-
     private final PlayerRef playerRef;
     private final PageManager pageManager;
     private final LanguageStore languages;
@@ -120,9 +92,6 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
     private final int section;
     private final GroupFinderService groupFinder;
     private final World world;
-
-    /** Идёт анимация нажатия — повторные нажатия в это время игнорируются. */
-    private volatile boolean animating;
 
     public HubMenuPage(
             @Nonnull PlayerRef playerRef,
@@ -227,25 +196,10 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
         String action = data.getAction();
         LOGGER.at(Level.INFO).log("[HubMenu] menu event: " + action);
 
-        if (action == null || this.animating) {
+        if (action == null) {
             return;
         }
 
-        String pressed = pressedButton(action);
-        if (pressed != null) {
-            playPress(pressed, () -> handleAction(ref, store, action));
-            return;
-        }
-
-        handleAction(ref, store, action);
-    }
-
-    /** Выполняет действие кнопки: открыть раздел, сменить язык, закрыть. */
-    private void handleAction(
-            @Nonnull Ref<EntityStore> ref,
-            @Nonnull Store<EntityStore> store,
-            @Nonnull String action
-    ) {
         if (ACTION_CLOSE.equals(action)) {
             this.close();
             return;
@@ -274,80 +228,6 @@ public class HubMenuPage extends InteractiveCustomUIPage<HubMenuPage.HubEventDat
             if (isSection(requested)) {
                 this.open(ref, store, this.language, requested);
             }
-        }
-    }
-
-    /**
-     * Какую кнопку анимировать для этого действия. null — у кнопки нет кадров
-     * анимации (чипы языка в главном окне, «Закрыть»), действие выполняется сразу.
-     */
-    private String pressedButton(@Nonnull String action) {
-        if (ACTION_BACK.equals(action)) {
-            return this.section == SECTION_MAIN ? null : BACK_BUTTON;
-        }
-        if (action.startsWith(ACTION_OPEN_PREFIX) && this.section == SECTION_MAIN) {
-            int index = parseIndex(action, ACTION_OPEN_PREFIX);
-            return index >= 0 && index < SECTION_BUTTONS.length ? SECTION_BUTTONS[index] : null;
-        }
-        if (action.startsWith(ACTION_MODE_PREFIX) && this.section == SECTION_MINIGAMES) {
-            int index = parseIndex(action, ACTION_MODE_PREFIX);
-            return index >= 0 && index < MODE_BUTTONS.length ? MODE_BUTTONS[index] : null;
-        }
-        if (action.startsWith(ACTION_LANG_PREFIX) && this.section == SECTION_LANGUAGE) {
-            return MenuLanguage.fromCode(action.substring(ACTION_LANG_PREFIX.length())).getButtonId();
-        }
-        return null;
-    }
-
-    /**
-     * Проигрывает анимацию нажатия кнопки и затем выполняет finish.
-     * Кадры включаются через sendUpdate, всё — в потоке мира.
-     */
-    private void playPress(@Nonnull String button, @Nonnull Runnable finish) {
-        this.animating = true;
-        String fx = "#Fx" + button.substring(1);
-
-        for (int i = 0; i < PRESS_FRAMES.length; i++) {
-            String frame = PRESS_FRAMES[i];
-            later(PRESS_FRAME_MS[i], () -> showFrame(fx, frame));
-        }
-
-        later(PRESS_FINISH_MS, () -> {
-            try {
-                finish.run();
-            } finally {
-                this.animating = false;
-            }
-        });
-    }
-
-    /** Включает один кадр (A или B) и гасит остальные. */
-    private void showFrame(@Nonnull String fx, @Nonnull String frame) {
-        UICommandBuilder cmd = new UICommandBuilder();
-        cmd.set(fx + "A.Visible", "A".equals(frame));
-        cmd.set(fx + "B.Visible", "B".equals(frame));
-        this.sendUpdate(cmd, false);
-    }
-
-    /** Запускает задачу в потоке мира через delayMs миллисекунд. */
-    private void later(long delayMs, @Nonnull Runnable task) {
-        Runnable safe = () -> {
-            try {
-                task.run();
-            } catch (Throwable throwable) {
-                this.animating = false;
-                LOGGER.at(Level.WARNING).log("[HubMenu] press animation failed: " + throwable);
-            }
-        };
-        Runnable onWorld = () -> {
-            if (!ServerApi.runOnWorldThread(this.world, safe)) {
-                safe.run();
-            }
-        };
-        if (delayMs <= 0) {
-            safe.run();
-        } else {
-            ANIMATION_TIMER.schedule(onWorld, delayMs, TimeUnit.MILLISECONDS);
         }
     }
 

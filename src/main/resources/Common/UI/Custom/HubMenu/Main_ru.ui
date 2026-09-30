@@ -15,27 +15,27 @@
 @Card = TextButtonStyle(
   Default: (Background: #c9b3ff(0.02), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.34), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.34), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 // Чип выбранного языка и чип второго языка в строке настроек.
 @ChipOn = TextButtonStyle(
   Default: (Background: #a35dff(0.10), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.22), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.34), LabelStyle: (FontSize: 13, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.34), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
 );
 
 @ChipOff = TextButtonStyle(
   Default: (Background: #c9b3ff(0.03), LabelStyle: (FontSize: 15, TextColor: #8a7aa8, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.18), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.30), LabelStyle: (FontSize: 13, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.30), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Start, VerticalAlignment: Center))
 );
 
 // Большая кнопка внизу окна.
 @Close = TextButtonStyle(
   Default: (Background: #a35dff(0.00), LabelStyle: (FontSize: 30, TextColor: #a35dff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.14), LabelStyle: (FontSize: 30, TextColor: #d9c2ff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.26), LabelStyle: (FontSize: 28, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.26), LabelStyle: (FontSize: 30, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
@@ -71,25 +71,6 @@ Group {
         Group { Anchor: (Full: 0); Background: #120c22; }
         Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Minigames.png"); }
 
-        // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
-        Group #FxBtnMinigamesA {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #a35dff(0.26);
-          Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
-          Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
-        }
-        Group #FxBtnMinigamesB {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #d9c2ff(0.34);
-          Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
-          Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
-        }
         TextButton #BtnMinigames {
           Text: "";
           Anchor: (Full: 0);
@@ -128,25 +109,6 @@ Group {
         Group { Anchor: (Full: 0); Background: #120c22; }
         Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_News.png"); }
 
-        // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
-        Group #FxBtnNewsA {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #a35dff(0.26);
-          Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
-          Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
-        }
-        Group #FxBtnNewsB {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #d9c2ff(0.34);
-          Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
-          Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
-        }
         TextButton #BtnNews {
           Text: "";
           Anchor: (Full: 0);
@@ -175,25 +137,6 @@ Group {
         Group { Anchor: (Full: 0); Background: #120c22; }
         Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Rules.png"); }
 
-        // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
-        Group #FxBtnRulesA {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #a35dff(0.26);
-          Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
-          Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
-          Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
-        }
-        Group #FxBtnRulesB {
-          Anchor: (Full: 0);
-          Visible: false;
-          Background: #d9c2ff(0.34);
-          Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
-          Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
-          Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
-        }
         TextButton #BtnRules {
           Text: "";
           Anchor: (Full: 0);
@@ -227,25 +170,6 @@ Group {
           Group { Anchor: (Full: 0); Background: #120c22; }
           Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Row_Active.png"); }
 
-          // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
-          Group #FxBtnLanguageA {
-            Anchor: (Full: 0);
-            Visible: false;
-            Background: #a35dff(0.26);
-            Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
-            Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
-            Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
-            Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
-          }
-          Group #FxBtnLanguageB {
-            Anchor: (Full: 0);
-            Visible: false;
-            Background: #d9c2ff(0.34);
-            Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
-            Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
-            Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
-            Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
-          }
           TextButton #BtnLanguage {
             Text: "";
             Anchor: (Full: 0);
