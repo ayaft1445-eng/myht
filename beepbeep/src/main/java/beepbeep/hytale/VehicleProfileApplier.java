@@ -30,6 +30,7 @@ public final class VehicleProfileApplier {
             } else {
                VehicleRuntimeComponent var6 = VehicleCalibration.runtime(var3);
                copyConfiguration(var4, var6);
+               VehicleSeats.onLayoutChanged(var0, var1, var4);
                Box var7 = VehicleBody.shape(var4, 0.0, 0.0, 0.0).bounds();
                Model var8 = Model.createScaledModel(var5, 2.5F, Map.of(), var7);
                var0.putComponent(var1, ModelComponent.getComponentType(), new ModelComponent(var8));
@@ -77,6 +78,7 @@ public final class VehicleProfileApplier {
       var0.seatX = var1.seatX;
       var0.seatY = var1.seatY;
       var0.seatZ = var1.seatZ;
+      var0.seatLayout = var1.seatLayout;
       var0.engineRpm = Math.max(var0.idleRpm, Math.min(var0.redlineRpm, var0.engineRpm));
    }
 }

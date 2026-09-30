@@ -44,7 +44,6 @@ public final class VehicleSelfTestCommand extends AbstractAsyncCommand {
                   this.runTest(var3.getEntityStore().getStore(), new Vector3d(0.0, 200.0, 0.0), var1);
                   if (Boolean.getBoolean("beepbeep.isolatedTerrainTest")) {
                      VehicleTerrainSelfTest.run(var3.getEntityStore().getStore());
-                     VehicleProxySelfTest.run(var3.getEntityStore().getStore());
                   }
                } finally {
                   var3x.removeKeepLoaded();

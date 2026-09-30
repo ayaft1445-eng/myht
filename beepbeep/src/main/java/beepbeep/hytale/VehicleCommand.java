@@ -30,253 +30,271 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import org.joml.Vector3d;
 
 public final class VehicleCommand extends CommandBase {
    private static final float MODEL_SCALE = 2.5F;
-   private final ComponentType<EntityStore, VehicleRuntimeComponent> runtimeType;
+   private static final double NEAR = 12.0;
 
    public VehicleCommand(
-      ComponentType<EntityStore, VehiclePhysicsComponent> var1, ComponentType<EntityStore, VehicleRuntimeComponent> var2, VehicleProfiles var3, Path var4
+      ComponentType<EntityStore, VehiclePhysicsComponent> probeType, ComponentType<EntityStore, VehicleRuntimeComponent> type, VehicleProfiles profiles, Path debugFolder
    ) {
-      super("vehicle", "BeepBeep profile editor and diagnostics");
-      this.runtimeType = var2;
+      super("vehicle", "BeepBeep vehicles: seats, profile editor and diagnostics");
       this.requirePermission("beepbeep.vehicle.admin");
-      this.addSubCommand(new VehicleCommand.ProbeCommand(var1, var2, var3));
-      this.addSubCommand(new VehicleSelfTestCommand(var1));
-      this.addSubCommand(new VehicleCommand.EditCommand(var2, var3));
-      this.addSubCommand(new VehicleCommand.SpawnVehicleCommand(var2, var3));
-      this.addSubCommand(new VehicleCommand.ClearVehicleCommand(var2));
-      this.addSubCommand(new VehicleCommand.StatusVehicleCommand(var2));
-      this.addSubCommand(new VehicleCommand.DriveVehicleCommand(var2));
-      this.addSubCommand(new VehicleCommand.MountVehicleCommand(var2, var4));
-      this.addSubCommand(new VehicleCommand.DismountVehicleCommand(var2));
-      this.addSubCommand(new VehicleCommand.StopVehicleCommand(var2));
-      this.addSubCommand(new VehicleDebugCommand(var2, var4));
+      this.addSubCommand(new VehicleCommand.ProbeCommand(probeType, type, profiles));
+      this.addSubCommand(new VehicleSelfTestCommand(probeType));
+      this.addSubCommand(new VehicleCommand.EditCommand(type, profiles));
+      this.addSubCommand(new VehicleCommand.SpawnVehicleCommand(type, profiles));
+      this.addSubCommand(new VehicleCommand.ClearVehicleCommand(type));
+      this.addSubCommand(new VehicleCommand.StatusVehicleCommand(type));
+      this.addSubCommand(new VehicleCommand.DriveVehicleCommand(type));
+      this.addSubCommand(new VehicleCommand.MountVehicleCommand());
+      this.addSubCommand(new VehicleCommand.SeatVehicleCommand());
+      this.addSubCommand(new VehicleCommand.DismountVehicleCommand());
+      this.addSubCommand(new VehicleCommand.ViewVehicleCommand());
+      this.addSubCommand(new VehicleCommand.SeatsVehicleCommand());
+      this.addSubCommand(new VehicleCommand.SeatConfigCommand());
+      this.addSubCommand(new VehicleCommand.StopVehicleCommand(type));
+      this.addSubCommand(new VehicleDebugCommand(type, debugFolder));
    }
 
-   protected void executeSync(CommandContext var1) {
-      var1.sendMessage(Message.raw("BeepBeep: /vehicle spawn — тестовое шасси с подвеской; /vehicle edit — профиль; /vehicle probe ..."));
+   @Override
+   protected void executeSync(CommandContext context) {
+      context.sendMessage(
+         Message.raw(
+            "BeepBeep: /vehicle spawn — машина; F по машине или /vehicle mount — сесть; /vehicle seat <номер>; /vehicle dismount; /vehicle view first|third|chase;"
+               + " /vehicle seats; /vehicle status; /vehicle seatcfg; /vehicle edit; /vehicle debug start"
+         )
+      );
    }
 
-   private static void releaseDriver(Store<EntityStore> var0, ComponentType<EntityStore, VehicleRuntimeComponent> var1, Ref<EntityStore> var2) {
-      ArrayList var3 = new ArrayList();
-      var0.forEachChunk(var1, (var3x, var4) -> {
-         for (int var5x = 0; var5x < var3x.size(); var5x++) {
-            if (((VehicleRuntimeComponent)var3x.getComponent(var5x, var1)).driver == var2) {
-               var3.add(var3x.getReferenceTo(var5x));
+   /** Снимает управление «снаружи» (/vehicle drive) со всех машин этого игрока. */
+   private static void releaseWalkDriver(Store<EntityStore> store, ComponentType<EntityStore, VehicleRuntimeComponent> type, Ref<EntityStore> player) {
+      List<VehicleRuntimeComponent> driven = new ArrayList<>();
+      store.forEachChunk(type, (chunk, buffer) -> {
+         for (int i = 0; i < chunk.size(); i++) {
+            VehicleRuntimeComponent runtime = chunk.getComponent(i, type);
+            if (runtime != null && runtime.driver == player) {
+               driven.add(runtime);
             }
          }
       });
 
-      for (Ref var5 : var3) {
-         VehicleRuntimeComponent var6 = (VehicleRuntimeComponent)var0.getComponent(var5, var1);
-         VehicleMount.release(var0, var6, new Vector3d(((TransformComponent)var0.getComponent(var5, TransformComponent.getComponentType())).getPosition()));
-      }
-   }
-
-   private static Ref<EntityStore> nearestVehicle(
-      Store<EntityStore> var0, Ref<EntityStore> var1, ComponentType<EntityStore, VehicleRuntimeComponent> var2, double var3
-   ) {
-      TransformComponent var5 = (TransformComponent)var0.getComponent(var1, TransformComponent.getComponentType());
-      if (var5 == null) {
-         return null;
-      } else {
-         AtomicReference var6 = new AtomicReference();
-         double[] var7 = new double[]{var3};
-         var0.forEachChunk(var2, (var3x, var4) -> {
-            for (int var5x = 0; var5x < var3x.size(); var5x++) {
-               TransformComponent var6x = (TransformComponent)var3x.getComponent(var5x, TransformComponent.getComponentType());
-               if (var6x != null) {
-                  double var7x = var6x.getPosition().distance(var5.getPosition());
-                  if (var7x <= var7[0]) {
-                     var7[0] = var7x;
-                     var6.set(var3x.getReferenceTo(var5x));
-                  }
-               }
-            }
-         });
-         return (Ref<EntityStore>)var6.get();
+      for (VehicleRuntimeComponent runtime : driven) {
+         VehicleControl.reset(runtime);
+         runtime.velocityForward = 0.0;
       }
    }
 
    private static void openEditor(
-      CommandContext var0,
-      Store<EntityStore> var1,
-      Ref<EntityStore> var2,
-      PlayerRef var3,
-      ComponentType<EntityStore, VehicleRuntimeComponent> var4,
-      VehicleProfiles var5
+      CommandContext context,
+      Store<EntityStore> store,
+      Ref<EntityStore> player,
+      PlayerRef playerRef,
+      ComponentType<EntityStore, VehicleRuntimeComponent> type,
+      VehicleProfiles profiles
    ) {
       try {
-         Ref var6 = nearestVehicle(var1, var2, var4, 12.0);
-         if (var6 == null) {
-            var0.sendMessage(Message.raw("Нет машины в радиусе 12 блоков. Подойдите к ней или используйте /vehicle spawn."));
+         Ref<EntityStore> vehicle = VehicleSeats.nearestVehicle(store, player, NEAR);
+         if (vehicle == null) {
+            context.sendMessage(Message.raw("Нет машины в радиусе 12 блоков. Подойдите к ней или используйте /vehicle spawn."));
             return;
          }
 
-         Player var7 = (Player)var1.getComponent(var2, Player.getComponentType());
-         if (var7 != null) {
-            var7.getPageManager().openCustomPage(var2, var1, new VehicleEditorPage(var3, var5, var6, var4));
+         Player playerComponent = store.getComponent(player, Player.getComponentType());
+         if (playerComponent != null) {
+            playerComponent.getPageManager().openCustomPage(player, store, new VehicleEditorPage(playerRef, profiles, vehicle, type));
          }
-      } catch (IllegalArgumentException | IOException var8) {
-         var0.sendMessage(Message.raw("Не удалось открыть редактор: " + var8.getMessage() + ". Профиль: " + var5.path()));
+      } catch (IllegalArgumentException | IOException error) {
+         context.sendMessage(Message.raw("Не удалось открыть редактор: " + error.getMessage() + ". Профиль: " + profiles.path()));
       }
+   }
+
+   /** Машина, в которой сидит игрок, иначе ближайшая. */
+   private static Ref<EntityStore> ownOrNearest(Store<EntityStore> store, Ref<EntityStore> player, double radius) {
+      Ref<EntityStore> own = VehicleSeats.vehicleOf(store, player);
+      return own != null ? own : VehicleSeats.nearestVehicle(store, player, radius);
    }
 
    private static final class ClearVehicleCommand extends AbstractPlayerCommand {
       private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
 
-      ClearVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
+      ClearVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
          super("clear", "Remove spawned BeepBeep chassis");
-         this.type = var1;
+         this.type = type;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         int[] var6 = new int[]{0};
-         var2.forEachChunk(this.type, (var1x, var2x) -> {
-            for (int var3x = 0; var3x < var1x.size(); var3x++) {
-               var2x.removeEntity(var1x.getReferenceTo(var3x), RemoveReason.REMOVE);
-               var6[0]++;
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         int[] removed = new int[]{0};
+         store.forEachChunk(this.type, (chunk, buffer) -> {
+            for (int i = 0; i < chunk.size(); i++) {
+               buffer.removeEntity(chunk.getReferenceTo(i), RemoveReason.REMOVE);
+               removed[0]++;
             }
          });
-         var1.sendMessage(Message.raw("BeepBeep chassis removed: " + var6[0]));
+         context.sendMessage(Message.raw("Удалено машин: " + removed[0]));
+      }
+   }
+
+   private static final class MountVehicleCommand extends AbstractPlayerCommand {
+      MountVehicleCommand() {
+         super("mount", "Sit in the nearest free seat of the nearest vehicle");
+         this.requirePermission("beepbeep.vehicle.admin");
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         String error = VehicleSeats.enterNearest(store, player, NEAR, -1);
+         if (error != null) {
+            context.sendMessage(Message.raw(error));
+         }
+      }
+   }
+
+   private static final class SeatVehicleCommand extends AbstractPlayerCommand {
+      private final RequiredArg<Integer> seat;
+
+      SeatVehicleCommand() {
+         super("seat", "Sit in (or move to) seat number N of the nearest vehicle");
+         this.requirePermission("beepbeep.vehicle.admin");
+         this.seat = this.withRequiredArg("number", "seat number, from 1", ArgTypes.INTEGER);
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         int index = this.seat.get(context) - 1;
+         String result = VehicleSeats.vehicleOf(store, player) != null
+            ? VehicleSeats.switchSeat(store, player, index)
+            : VehicleSeats.enterNearest(store, player, NEAR, index);
+         if (result != null) {
+            context.sendMessage(Message.raw(result));
+         }
       }
    }
 
    private static final class DismountVehicleCommand extends AbstractPlayerCommand {
-      private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
-
-      DismountVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
+      DismountVehicleCommand() {
          super("dismount", "Leave the vehicle");
-         this.type = var1;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         VehicleCommand.releaseDriver(var2, this.type, var3);
-         var1.sendMessage(Message.raw("Вы вышли из транспорта."));
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         if (!VehicleSeats.release(store, player, "команда", true)) {
+            context.sendMessage(Message.raw("Вы не сидите в машине."));
+         }
+      }
+   }
+
+   private static final class ViewVehicleCommand extends AbstractPlayerCommand {
+      private final RequiredArg<String> mode;
+
+      ViewVehicleCommand() {
+         super("view", "Seat camera: first, third (mouse orbit) or chase");
+         this.requirePermission("beepbeep.vehicle.admin");
+         this.mode = this.withRequiredArg("mode", "first/third/chase", ArgTypes.STRING);
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         SeatCamera.View view = SeatCamera.View.parse(this.mode.get(context), null);
+         context.sendMessage(Message.raw(view == null ? "Виды: first, third, chase." : VehicleSeats.setView(store, player, view)));
+      }
+   }
+
+   private static final class SeatsVehicleCommand extends AbstractPlayerCommand {
+      SeatsVehicleCommand() {
+         super("seats", "List the seats of the nearest vehicle");
+         this.requirePermission("beepbeep.vehicle.admin");
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         Ref<EntityStore> vehicle = ownOrNearest(store, player, NEAR);
+         VehicleRuntimeComponent runtime = vehicle == null ? null : store.getComponent(vehicle, VehicleSeats.vehicleType);
+         context.sendMessage(Message.raw(runtime == null ? "Рядом нет машины." : VehicleSeats.describeSeats(store, runtime)));
+      }
+   }
+
+   private static final class SeatConfigCommand extends AbstractPlayerCommand {
+      SeatConfigCommand() {
+         super("seatcfg", "Reload seating.json (camera, controls, riders)");
+         this.requirePermission("beepbeep.vehicle.admin");
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         context.sendMessage(Message.raw(VehicleSeats.reloadConfig()));
       }
    }
 
    private static final class DriveVehicleCommand extends AbstractPlayerCommand {
       private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
 
-      DriveVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
-         super("drive", "Assign the nearest chassis to this player");
-         this.type = var1;
+      DriveVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
+         super("drive", "Control the nearest chassis by walking next to it");
+         this.type = type;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         TransformComponent var6 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-         AtomicReference var7 = new AtomicReference();
-         double[] var8 = new double[]{Double.POSITIVE_INFINITY};
-         var2.forEachChunk(this.type, (var3x, var4x) -> {
-            for (int var5x = 0; var5x < var3x.size(); var5x++) {
-               TransformComponent var6x = (TransformComponent)var3x.getComponent(var5x, TransformComponent.getComponentType());
-               double var7x = var6x.getPosition().distance(var6.getPosition());
-               if (var7x < var8[0]) {
-                  var8[0] = var7x;
-                  var7.set(var3x.getReferenceTo(var5x));
-               }
-            }
-         });
-         if (var7.get() != null && !(var8[0] > 12.0)) {
-            VehicleRuntimeComponent var9 = (VehicleRuntimeComponent)var2.getComponent((Ref)var7.get(), this.type);
-            if (var9.driver != null && var9.driver.isValid() && var9.driver != var3) {
-               var1.sendMessage(Message.raw("Шасси уже управляется другим игроком."));
-            } else {
-               VehicleCommand.releaseDriver(var2, this.type, var3);
-               var9.driver = var3;
-               var9.driven = true;
-               var9.throttle = 0.0;
-               var9.steer = 0.0;
-               var9.brake = 1.0;
-               var9.inputAge = 1.0;
-               var1.sendMessage(
-                  Message.raw("Управление снаружи включено. Идите W/S, A/D задают руль относительно взгляда. /vehicle stop — отключить. Посадки пока нет.")
-               );
-            }
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         Ref<EntityStore> vehicle = VehicleSeats.nearestVehicle(store, player, NEAR);
+         VehicleRuntimeComponent runtime = vehicle == null ? null : store.getComponent(vehicle, this.type);
+         if (runtime == null) {
+            context.sendMessage(Message.raw("Нет машины в радиусе 12 блоков. Сначала /vehicle spawn."));
+         } else if (runtime.occupant(runtime.seatLayout.driverIndex()) != null) {
+            context.sendMessage(Message.raw("На месте водителя кто-то сидит."));
+         } else if (runtime.driver != null && runtime.driver.isValid() && runtime.driver != player) {
+            context.sendMessage(Message.raw("Машиной уже управляет другой игрок."));
          } else {
-            var1.sendMessage(Message.raw("Нет шасси в радиусе 12 блоков. Сначала /vehicle spawn."));
+            VehicleCommand.releaseWalkDriver(store, this.type, player);
+            runtime.driver = player;
+            runtime.driven = true;
+            runtime.throttle = 0.0;
+            runtime.steer = 0.0;
+            runtime.brake = 1.0;
+            runtime.inputAge = 1.0;
+            context.sendMessage(Message.raw("Управление снаружи: идите W/S, A/D задают руль относительно взгляда. /vehicle stop — отключить."));
          }
+      }
+   }
+
+   private static final class StopVehicleCommand extends AbstractPlayerCommand {
+      private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
+
+      StopVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
+         super("stop", "Release outside control and stop your chassis");
+         this.type = type;
+         this.requirePermission("beepbeep.vehicle.admin");
+      }
+
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         VehicleCommand.releaseWalkDriver(store, this.type, player);
+         context.sendMessage(Message.raw("Управление снаружи отключено, машина остановлена."));
       }
    }
 
    private static final class EditCommand extends AbstractPlayerCommand {
-      private final ComponentType<EntityStore, VehicleRuntimeComponent> runtimeType;
+      private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
       private final VehicleProfiles profiles;
 
-      EditCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1, VehicleProfiles var2) {
+      EditCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type, VehicleProfiles profiles) {
          super("edit", "Open the nearest vehicle editor");
-         this.runtimeType = var1;
-         this.profiles = var2;
+         this.type = type;
+         this.profiles = profiles;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         VehicleCommand.openEditor(var1, var2, var3, var4, this.runtimeType, this.profiles);
-      }
-   }
-
-   private static final class MountVehicleCommand extends AbstractPlayerCommand {
-      private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
-      private final Path debugFolder;
-
-      MountVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1, Path var2) {
-         super("mount", "Enter the nearest BeepBeep driver seat");
-         this.debugFolder = var2;
-         this.type = var1;
-         this.requirePermission("beepbeep.vehicle.admin");
-      }
-
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         TransformComponent var6 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-         AtomicReference var7 = new AtomicReference();
-         double[] var8 = new double[]{Double.POSITIVE_INFINITY};
-         var2.forEachChunk(this.type, (var3x, var4x) -> {
-            for (int var5x = 0; var5x < var3x.size(); var5x++) {
-               TransformComponent var6x = (TransformComponent)var3x.getComponent(var5x, TransformComponent.getComponentType());
-               double var7x = var6x.getPosition().distance(var6.getPosition());
-               if (var7x < var8[0]) {
-                  var8[0] = var7x;
-                  var7.set(var3x.getReferenceTo(var5x));
-               }
-            }
-         });
-         if (var7.get() != null && !(var8[0] > 12.0)) {
-            VehicleRuntimeComponent var9 = (VehicleRuntimeComponent)var2.getComponent((Ref)var7.get(), this.type);
-            if (var9.driver != null && var9.driver.isValid() && var9.driver != var3) {
-               var1.sendMessage(Message.raw("Место водителя занято."));
-            } else if (var9.driver == var3 && var9.seated) {
-               var1.sendMessage(Message.raw("Сиденье уже подключено. /vehicle status — состояние."));
-            } else {
-               VehicleCommand.releaseDriver(var2, this.type, var3);
-
-               try {
-                  if (var9.debug == null || !var9.debug.trace.active()) {
-                     var9.debug = new VehicleDebug(this.debugFolder, var3);
-                  }
-
-                  VehicleMount.mount(var2, var9, var3, var4, (Ref<EntityStore>)var7.get());
-                  var1.sendMessage(Message.raw("Диагностика включена на 90 секунд: " + var9.debug.trace.path));
-                  var1.sendMessage(
-                     Message.raw(
-                        "Подключаю сиденье. A/D — руль, W — вперёд, S — назад; камера фиксирована, /vehicle dismount — выйти. /vehicle status — диагностика."
-                     )
-                  );
-               } catch (RuntimeException var11) {
-                  var1.sendMessage(Message.raw("Посадка не выполнена: " + var11.getMessage()));
-               }
-            }
-         } else {
-            var1.sendMessage(Message.raw("Нет шасси в радиусе 12 блоков. Сначала /vehicle spawn."));
-         }
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         VehicleCommand.openEditor(context, store, player, playerRef, this.type, this.profiles);
       }
    }
 
@@ -286,105 +304,109 @@ public final class VehicleCommand extends CommandBase {
       private final VehicleProfiles profiles;
       private final RequiredArg<String> action;
 
-      ProbeCommand(ComponentType<EntityStore, VehiclePhysicsComponent> var1, ComponentType<EntityStore, VehicleRuntimeComponent> var2, VehicleProfiles var3) {
+      ProbeCommand(ComponentType<EntityStore, VehiclePhysicsComponent> type, ComponentType<EntityStore, VehicleRuntimeComponent> runtimeType, VehicleProfiles profiles) {
          super("probe", "Test ECS, input, block collisions and transforms");
-         this.type = var1;
-         this.runtimeType = var2;
-         this.profiles = var3;
+         this.type = type;
+         this.runtimeType = runtimeType;
+         this.profiles = profiles;
          this.requirePermission("beepbeep.vehicle.admin");
          this.action = this.withRequiredArg("action", "start/status/surface/spawn/clear/ui/stop", ArgTypes.STRING);
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         String var6 = (String)this.action.get(var1);
-         switch (var6) {
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         String action = this.action.get(context);
+         switch (action) {
             case "start":
-               var2.ensureAndGetComponent(var3, this.type);
-               var1.sendMessage(Message.raw("Input probe enabled. Walk, mount a vehicle, then run /vehicle probe status."));
+               store.ensureAndGetComponent(player, this.type);
+               context.sendMessage(Message.raw("Input probe enabled. Walk, mount a vehicle, then run /vehicle probe status."));
                break;
             case "status":
-               VehiclePhysicsComponent var16 = (VehiclePhysicsComponent)var2.getComponent(var3, this.type);
-               MountedComponent var17 = (MountedComponent)var2.getComponent(var3, MountedComponent.getComponentType());
-               Player var18 = (Player)var2.getComponent(var3, Player.getComponentType());
-               var1.sendMessage(
+               VehiclePhysicsComponent probe = store.getComponent(player, this.type);
+               MountedComponent mounted = store.getComponent(player, MountedComponent.getComponentType());
+               Player playerComponent = store.getComponent(player, Player.getComponentType());
+               context.sendMessage(
                   Message.raw(
-                     var16 == null
+                     probe == null
                         ? "Probe is off. Run /vehicle probe start."
                         : "ticks="
-                           + var16.ticks
+                           + probe.ticks
                            + " inputEvents="
-                           + var16.inputEvents
+                           + probe.inputEvents
                            + " wishEvents="
-                           + var16.wishEvents
+                           + probe.wishEvents
                            + " last="
-                           + var16.lastInput
+                           + probe.lastInput
                            + " age="
-                           + (var16.lastInputTime < 0.0 ? "never" : String.format(Locale.ROOT, "%.2fs", var16.elapsed - var16.lastInputTime))
+                           + (probe.lastInputTime < 0.0 ? "never" : String.format(Locale.ROOT, "%.2fs", probe.elapsed - probe.lastInputTime))
                            + " wish="
-                           + var16.wishX
+                           + probe.wishX
                            + ","
-                           + var16.wishZ
+                           + probe.wishZ
                   )
                );
-               var1.sendMessage(Message.raw("MountedComponent=" + (var17 != null) + " playerMountId=" + (var18 == null ? "n/a" : var18.getMountEntityId())));
+               context.sendMessage(
+                  Message.raw("MountedComponent=" + (mounted != null) + " playerMountId=" + (playerComponent == null ? "n/a" : playerComponent.getMountEntityId()))
+               );
                break;
             case "surface":
-               TransformComponent var15 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-               var1.sendMessage(Message.raw(SurfaceProbe.below(var2, new Vector3d(var15.getPosition()).add(0.0, 0.5, 0.0))));
+               TransformComponent transform = store.getComponent(player, TransformComponent.getComponentType());
+               context.sendMessage(Message.raw(SurfaceProbe.below(store, new Vector3d(transform.getPosition()).add(0.0, 0.5, 0.0))));
                break;
             case "spawn":
-               this.clear(var2);
-               ModelAsset var8 = (ModelAsset)ModelAsset.getAssetMap().getAsset("BeepBeep_GreenLandCruiser_AssetModel");
-               if (var8 == null) {
-                  var1.sendMessage(Message.raw("Enable the original BeepBeep_Vehicle_Pack asset pack first."));
+               this.clear(store);
+               ModelAsset asset = ModelAsset.getAssetMap().getAsset("BeepBeep_GreenLandCruiser_AssetModel");
+               if (asset == null) {
+                  context.sendMessage(Message.raw("Enable the original BeepBeep_Vehicle_Pack asset pack first."));
                   return;
                }
 
-               TransformComponent var9 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-               Model var10 = Model.createScaledModel(var8, 1.0F);
-               Holder var11 = EntityStore.REGISTRY.newHolder();
-               Vector3d var12 = new Vector3d(var9.getPosition()).add(3.0, 1.0, 0.0);
-               var11.addComponent(TransformComponent.getComponentType(), new TransformComponent(var12, new Rotation3f()));
-               var11.addComponent(ModelComponent.getComponentType(), new ModelComponent(var10));
-               var11.addComponent(BoundingBox.getComponentType(), new BoundingBox(var10.getBoundingBox()));
-               var11.addComponent(NetworkId.getComponentType(), new NetworkId(((EntityStore)var2.getExternalData()).takeNextNetworkId()));
-               var11.addComponent(UUIDComponent.getComponentType(), UUIDComponent.randomUUID());
-               var11.ensureComponent(EntityStore.REGISTRY.getNonSerializedComponentType());
-               VehiclePhysicsComponent var13 = new VehiclePhysicsComponent();
-               var13.animatedProbe = true;
-               var13.baseY = var12.y;
-               var11.addComponent(this.type, var13);
-               Ref var14 = var2.addEntity(var11, AddReason.SPAWN);
-               if (var14 == null || !var14.isValid()) {
-                  var1.sendMessage(Message.raw("Probe spawn failed: target chunk unavailable."));
+               TransformComponent playerTransform = store.getComponent(player, TransformComponent.getComponentType());
+               Model model = Model.createScaledModel(asset, 1.0F);
+               Holder<EntityStore> holder = EntityStore.REGISTRY.newHolder();
+               Vector3d position = new Vector3d(playerTransform.getPosition()).add(3.0, 1.0, 0.0);
+               holder.addComponent(TransformComponent.getComponentType(), new TransformComponent(position, new Rotation3f()));
+               holder.addComponent(ModelComponent.getComponentType(), new ModelComponent(model));
+               holder.addComponent(BoundingBox.getComponentType(), new BoundingBox(model.getBoundingBox()));
+               holder.addComponent(NetworkId.getComponentType(), new NetworkId(store.getExternalData().takeNextNetworkId()));
+               holder.addComponent(UUIDComponent.getComponentType(), UUIDComponent.randomUUID());
+               holder.ensureComponent(EntityStore.REGISTRY.getNonSerializedComponentType());
+               VehiclePhysicsComponent animated = new VehiclePhysicsComponent();
+               animated.animatedProbe = true;
+               animated.baseY = position.y;
+               holder.addComponent(this.type, animated);
+               Ref<EntityStore> spawned = store.addEntity(holder, AddReason.SPAWN);
+               if (spawned == null || !spawned.isValid()) {
+                  context.sendMessage(Message.raw("Probe spawn failed: target chunk unavailable."));
                   return;
                }
 
-               var1.sendMessage(
+               context.sendMessage(
                   Message.raw("Transform probe spawned 3 blocks east. It bobs and rotates; this is NOT driving physics. /vehicle probe clear removes it.")
                );
                break;
             case "clear":
-               this.clear(var2);
-               var1.sendMessage(Message.raw("Animated probes removed from this world."));
+               this.clear(store);
+               context.sendMessage(Message.raw("Animated probes removed from this world."));
                break;
             case "stop":
-               var2.tryRemoveComponent(var3, this.type);
-               var1.sendMessage(Message.raw("Input probe disabled."));
+               store.tryRemoveComponent(player, this.type);
+               context.sendMessage(Message.raw("Input probe disabled."));
                break;
             case "ui":
-               VehicleCommand.openEditor(var1, var2, var3, var4, this.runtimeType, this.profiles);
+               VehicleCommand.openEditor(context, store, player, playerRef, this.runtimeType, this.profiles);
                break;
             default:
-               var1.sendMessage(Message.raw("Use start, status, surface, spawn, clear, ui or stop."));
+               context.sendMessage(Message.raw("Use start, status, surface, spawn, clear, ui or stop."));
          }
       }
 
-      private void clear(Store<EntityStore> var1) {
-         var1.forEachChunk(this.type, (var1x, var2) -> {
-            for (int var3 = 0; var3 < var1x.size(); var3++) {
-               if (((VehiclePhysicsComponent)var1x.getComponent(var3, this.type)).animatedProbe) {
-                  var2.removeEntity(var1x.getReferenceTo(var3), RemoveReason.REMOVE);
+      private void clear(Store<EntityStore> store) {
+         store.forEachChunk(this.type, (chunk, buffer) -> {
+            for (int i = 0; i < chunk.size(); i++) {
+               VehiclePhysicsComponent probe = chunk.getComponent(i, this.type);
+               if (probe != null && probe.animatedProbe) {
+                  buffer.removeEntity(chunk.getReferenceTo(i), RemoveReason.REMOVE);
                }
             }
          });
@@ -395,49 +417,55 @@ public final class VehicleCommand extends CommandBase {
       private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
       private final VehicleProfiles profiles;
 
-      SpawnVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1, VehicleProfiles var2) {
+      SpawnVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type, VehicleProfiles profiles) {
          super("spawn", "Spawn the profile-driven suspension chassis");
-         this.type = var1;
-         this.profiles = var2;
+         this.type = type;
+         this.profiles = profiles;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
          try {
-            JsonObject var6 = this.profiles.load().value();
-            ModelAsset var7 = (ModelAsset)ModelAsset.getAssetMap().getAsset(var6.get("modelAsset").getAsString());
-            if (var7 == null) {
-               var1.sendMessage(Message.raw("Model asset not loaded: " + var6.get("modelAsset").getAsString()));
+            JsonObject profile = this.profiles.load().value();
+            ModelAsset asset = ModelAsset.getAssetMap().getAsset(profile.get("modelAsset").getAsString());
+            if (asset == null) {
+               context.sendMessage(Message.raw("Model asset not loaded: " + profile.get("modelAsset").getAsString()));
                return;
             }
 
-            TransformComponent var8 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-            Vector3d var9 = new Vector3d(var8.getPosition()).add(3.0, 2.0, 0.0);
-            Model var10 = Model.createScaledModel(var7, 2.5F);
-            Holder var11 = EntityStore.REGISTRY.newHolder();
-            var11.addComponent(TransformComponent.getComponentType(), new TransformComponent(var9, new Rotation3f(0.0F, var8.getRotation().yaw(), 0.0F)));
-            var11.addComponent(NetworkId.getComponentType(), new NetworkId(((EntityStore)var2.getExternalData()).takeNextNetworkId()));
-            var11.addComponent(UUIDComponent.getComponentType(), UUIDComponent.randomUUID());
-            var11.ensureComponent(EntityStore.REGISTRY.getNonSerializedComponentType());
-            VehicleRuntimeComponent var12 = VehicleCalibration.runtime(var6);
-            var12.yaw = (double)var8.getRotation().yaw();
-            Box var13 = VehicleBody.shape(var12, 0.0, 0.0, 0.0).bounds();
-            var10 = Model.createScaledModel(var7, 2.5F, Map.of(), var13);
-            var11.addComponent(ModelComponent.getComponentType(), new ModelComponent(var10));
-            BoundingBox var14 = new BoundingBox(var13);
-            var14.setBaseModelBox(var13);
-            var14.applyRotation(0.0F, (float)var12.yaw, 0.0F);
-            var11.addComponent(BoundingBox.getComponentType(), var14);
-            var11.addComponent(this.type, var12);
-            Ref var15 = var2.addEntity(var11, AddReason.SPAWN);
-            if (var15 == null || !var15.isValid()) {
-               var1.sendMessage(Message.raw("Vehicle spawn failed: chunk unavailable."));
+            TransformComponent playerTransform = store.getComponent(player, TransformComponent.getComponentType());
+            Vector3d position = new Vector3d(playerTransform.getPosition()).add(3.0, 2.0, 0.0);
+            Holder<EntityStore> holder = EntityStore.REGISTRY.newHolder();
+            holder.addComponent(
+               TransformComponent.getComponentType(), new TransformComponent(position, new Rotation3f(0.0F, playerTransform.getRotation().yaw(), 0.0F))
+            );
+            holder.addComponent(NetworkId.getComponentType(), new NetworkId(store.getExternalData().takeNextNetworkId()));
+            holder.addComponent(UUIDComponent.getComponentType(), UUIDComponent.randomUUID());
+            holder.ensureComponent(EntityStore.REGISTRY.getNonSerializedComponentType());
+            VehicleRuntimeComponent runtime = VehicleCalibration.runtime(profile);
+            runtime.yaw = playerTransform.getRotation().yaw();
+            Box bounds = VehicleBody.shape(runtime, 0.0, 0.0, 0.0).bounds();
+            Model model = Model.createScaledModel(asset, MODEL_SCALE, Map.of(), bounds);
+            holder.addComponent(ModelComponent.getComponentType(), new ModelComponent(model));
+            BoundingBox boundingBox = new BoundingBox(bounds);
+            boundingBox.setBaseModelBox(bounds);
+            boundingBox.applyRotation(0.0F, (float)runtime.yaw, 0.0F);
+            holder.addComponent(BoundingBox.getComponentType(), boundingBox);
+            holder.addComponent(this.type, runtime);
+            Ref<EntityStore> vehicle = store.addEntity(holder, AddReason.SPAWN);
+            if (vehicle == null || !vehicle.isValid()) {
+               context.sendMessage(Message.raw("Vehicle spawn failed: chunk unavailable."));
                return;
             }
 
-            var1.sendMessage(Message.raw("Шасси создано. /vehicle mount — занять сиденье; /vehicle dismount — выйти."));
-         } catch (Exception var16) {
-            var1.sendMessage(Message.raw("Vehicle spawn error: " + var16.getMessage()));
+            context.sendMessage(
+               Message.raw(
+                  "Машина создана, мест: " + runtime.seatCount() + ". Подойдите и нажмите F (или /vehicle mount), выйти — зажать «присесть» или F."
+               )
+            );
+         } catch (Exception error) {
+            context.sendMessage(Message.raw("Vehicle spawn error: " + error.getMessage()));
          }
       }
    }
@@ -445,126 +473,61 @@ public final class VehicleCommand extends CommandBase {
    private static final class StatusVehicleCommand extends AbstractPlayerCommand {
       private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
 
-      StatusVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
-         super("status", "Show prototype chassis input and speed");
-         this.type = var1;
+      StatusVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
+         super("status", "Show seat input, camera and chassis state");
+         this.type = type;
          this.requirePermission("beepbeep.vehicle.admin");
       }
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         TransformComponent var6 = (TransformComponent)var2.getComponent(var3, TransformComponent.getComponentType());
-         double[] var7 = new double[]{Double.POSITIVE_INFINITY};
-         VehicleRuntimeComponent[] var8 = new VehicleRuntimeComponent[]{null};
-         var2.forEachChunk(this.type, (var4x, var5x) -> {
-            for (int var6x = 0; var6x < var4x.size(); var6x++) {
-               TransformComponent var7x = (TransformComponent)var4x.getComponent(var6x, TransformComponent.getComponentType());
-               double var8x = var7x.getPosition().x - var6.getPosition().x;
-               double var10x = var7x.getPosition().z - var6.getPosition().z;
-               double var12 = Math.sqrt(var8x * var8x + var10x * var10x);
-               if (var12 < var7[0]) {
-                  var7[0] = var12;
-                  var8[0] = (VehicleRuntimeComponent)var4x.getComponent(var6x, this.type);
-               }
-            }
-         });
-         if (var8[0] == null) {
-            var1.sendMessage(Message.raw("No BeepBeep chassis. Run /vehicle spawn."));
-         } else {
-            VehicleMountInput.Session var9 = var8[0].mountInput;
-            if (var9 != null) {
-               VehicleMountInput.Sample var10 = var9.lastActive;
-               var1.sendMessage(Message.raw("mousePackets=" + var9.mousePackets + " mouseSteer=" + var9.mouseSteer + " controls=fixed-WASD"));
-               var1.sendMessage(
-                  Message.raw(
-                     String.format(
-                        Locale.ROOT,
-                        "inputHook=%s velocityPackets=%d lastActive=%s right=%.2f forward=%.2f age=%.1fs mountIdle=%s",
-                        var9.hookReady,
-                        var9.velocityPackets,
-                        var10.source(),
-                        var10.right(),
-                        var10.forward(),
-                        var10.at() == 0L ? -1.0 : (double)(System.nanoTime() - var10.at()) / 1.0E9,
-                        var9.mountIdle
-                     )
-                  )
-               );
-               var1.sendMessage(
-                  Message.raw(
-                     String.format(
-                        Locale.ROOT,
-                        "inputRaw packets=%d wishPackets=%d fixed=%s wish=(%.2f,%.2f) velocity=(%.2f,%.2f) source=%s",
-                        var9.movementPackets,
-                        var9.wishPackets,
-                        var9.fixedControls,
-                        var9.lastWish.right(),
-                        var9.lastWish.forward(),
-                        var9.lastVelocity.right(),
-                        var9.lastVelocity.forward(),
-                        var9.sample.source()
-                     )
-                  )
-               );
-            }
-
-            int var15 = 0;
-
-            for (boolean var14 : var8[0].contact) {
-               if (var14) {
-                  var15++;
-               }
-            }
-
-            var1.sendMessage(
-               Message.raw(
-                  "terrain="
-                     + var8[0].terrainState
-                     + " contacts="
-                     + var15
-                     + " pitch="
-                     + Math.round(Math.toDegrees(var8[0].pitch))
-                     + " roll="
-                     + Math.round(Math.toDegrees(var8[0].roll))
-               )
-            );
-            var1.sendMessage(
-               Message.raw(
-                  String.format(
-                     Locale.ROOT,
-                     "distance=%.2f yours=%s source=%s events=%d positions=%d wishes=%d age=%.2f throttle=%.2f steer=%.2f speed=%.2f gear=%d rpm=%.0f force=%.0f ticks=%d",
-                     var7[0],
-                     var8[0].driver == var3,
-                     var8[0].inputSource,
-                     var8[0].inputEvents,
-                     var8[0].positionEvents,
-                     var8[0].wishEvents,
-                     var8[0].inputAge,
-                     var8[0].throttle,
-                     var8[0].steer,
-                     var8[0].velocityForward,
-                     var8[0].gear,
-                     var8[0].engineRpm,
-                     var8[0].engineForce,
-                     var8[0].ticks
-                  )
-               )
-            );
+      @Override
+      protected void execute(CommandContext context, Store<EntityStore> store, Ref<EntityStore> player, PlayerRef playerRef, World world) {
+         long now = System.nanoTime();
+         String rider = VehicleSeats.describeRider(store, player, now);
+         if (rider != null) {
+            context.sendMessage(Message.raw(rider));
          }
-      }
-   }
 
-   private static final class StopVehicleCommand extends AbstractPlayerCommand {
-      private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
+         Ref<EntityStore> vehicle = ownOrNearest(store, player, 64.0);
+         VehicleRuntimeComponent runtime = vehicle == null ? null : store.getComponent(vehicle, this.type);
+         if (runtime == null) {
+            context.sendMessage(Message.raw("Рядом нет машины. /vehicle spawn."));
+            return;
+         }
 
-      StopVehicleCommand(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
-         super("stop", "Release control and stop your chassis");
-         this.type = var1;
-         this.requirePermission("beepbeep.vehicle.admin");
-      }
+         int contacts = 0;
 
-      protected void execute(CommandContext var1, Store<EntityStore> var2, Ref<EntityStore> var3, PlayerRef var4, World var5) {
-         VehicleCommand.releaseDriver(var2, this.type, var3);
-         var1.sendMessage(Message.raw("Управление отключено, ваше шасси остановлено."));
+         for (boolean contact : runtime.contact) {
+            if (contact) {
+               contacts++;
+            }
+         }
+
+         TransformComponent vehicleTransform = store.getComponent(vehicle, TransformComponent.getComponentType());
+         TransformComponent playerTransform = store.getComponent(player, TransformComponent.getComponentType());
+         double distance = vehicleTransform != null && playerTransform != null ? vehicleTransform.getPosition().distance(playerTransform.getPosition()) : -1.0;
+         context.sendMessage(Message.raw(VehicleSeats.describeSeats(store, runtime)));
+         context.sendMessage(
+            Message.raw(
+               String.format(
+                  Locale.ROOT,
+                  "машина: расстояние=%.1f земля=%s колёс на земле=%d тангаж=%d° крен=%d° | управление=%s газ=%.2f руль=%.2f тормоз=%.2f скорость=%.2f передача=%d обороты=%.0f тяга=%.0f тиков=%d",
+                  distance,
+                  runtime.terrainState,
+                  contacts,
+                  Math.round(Math.toDegrees(runtime.pitch)),
+                  Math.round(Math.toDegrees(runtime.roll)),
+                  runtime.inputSource,
+                  runtime.throttle,
+                  runtime.steer,
+                  runtime.brake,
+                  runtime.velocityForward,
+                  runtime.gear,
+                  runtime.engineRpm,
+                  runtime.engineForce,
+                  runtime.ticks
+               )
+            )
+         );
       }
    }
 }

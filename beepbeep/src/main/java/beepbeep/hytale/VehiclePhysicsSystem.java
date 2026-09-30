@@ -11,19 +11,10 @@ import com.hypixel.hytale.component.dependency.SystemDependency;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.vector.Rotation3f;
-import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput.AbsoluteMovement;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput.RelativeMovement;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput.SetBody;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput.SetClientVelocity;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerSystems.ProcessPlayerInput;
-import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
-import com.hypixel.hytale.server.core.modules.entity.tracker.NetworkId;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.Set;
 import org.joml.Vector3d;
@@ -58,65 +49,8 @@ public final class VehiclePhysicsSystem extends EntityTickingSystem<EntityStore>
          }
 
          var6.driverDistance = Double.POSITIVE_INFINITY;
-         if (var6.seated) {
-            boolean var9 = var6.driver != null
-               && var6.driver.isValid()
-               && var6.driver.getStore() == var4
-               && var6.proxy != null
-               && var6.proxy.isValid()
-               && var6.mountInput != null
-               && !var6.mountInput.exitRequested;
-            Player var10 = var9 ? (Player)var4.getComponent(var6.driver, Player.getComponentType()) : null;
-            if (var9) {
-               var9 = var10 != null
-                  && (var6.mountPending || var10.getMountEntityId() == ((NetworkId)var4.getComponent(var6.proxy, NetworkId.getComponentType())).getId())
-                  && var4.getComponent(var6.driver, Teleport.getComponentType()) == null;
-            }
-
-            if (!var9) {
-               if (var6.mountInput != null
-                  && var6.mountInput.hookError != null
-                  && var6.driver != null
-                  && var6.driver.isValid()
-                  && var6.driver.getStore() == var4) {
-                  PlayerRef var11 = (PlayerRef)var4.getComponent(var6.driver, PlayerRef.getComponentType());
-                  if (var11 != null) {
-                     var11.sendMessage(Message.raw("Seat input failed: " + var6.mountInput.hookError));
-                  }
-               }
-
-               var6.throttle = 0.0;
-               var6.steer = 0.0;
-               var6.brake = 1.0;
-               Vector3d var15 = new Vector3d(var8);
-               var5.run(var2x -> VehicleMount.release(var2x, var6, var15));
-            } else if (var6.mountPending) {
-               var6.mountWait += (double)var1;
-               var6.throttle = 0.0;
-               var6.steer = 0.0;
-               var6.brake = 1.0;
-               if (var6.mountWait > 5.0) {
-                  PlayerRef var16 = (PlayerRef)var4.getComponent(var6.driver, PlayerRef.getComponentType());
-                  if (var16 != null) {
-                     var16.sendMessage(Message.raw("Seat activation timed out: seat or chassis was not replicated."));
-                  }
-
-                  var5.run(var1x -> VehicleMount.release(var1x, var6, null));
-               }
-            } else {
-               VehicleMountInput.apply(var6, var6.mountInput, System.nanoTime());
-               PlayerInput var17 = (PlayerInput)var4.getComponent(var6.driver, PlayerInput.getComponentType());
-               if (var17 != null) {
-                  var17.getMovementUpdateQueue()
-                     .removeIf(
-                        var0 -> var0 instanceof RelativeMovement
-                              || var0 instanceof AbsoluteMovement
-                              || var0 instanceof SetBody
-                              || var0 instanceof SetClientVelocity
-                     );
-               }
-            }
-         } else if (var6.driver != null) {
+         boolean var9 = VehicleSeats.applyDriverInput(var4, var6, System.nanoTime());
+         if (!var9 && var6.driver != null) {
             if (var6.driver.isValid() && var6.driver.getStore() == var4) {
                TransformComponent var12 = (TransformComponent)var4.getComponent(var6.driver, TransformComponent.getComponentType());
                PlayerInput var14 = (PlayerInput)var4.getComponent(var6.driver, PlayerInput.getComponentType());
@@ -131,7 +65,8 @@ public final class VehiclePhysicsSystem extends EntityTickingSystem<EntityStore>
             }
          }
 
-         if (var6.driver == null) {
+         if (!var9 && var6.driver == null) {
+            var6.driven = false;
             var6.throttle = 0.0;
             var6.steer = 0.0;
             var6.brake = 1.0;

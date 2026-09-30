@@ -1,7 +1,6 @@
 package beepbeep.hytale;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public final class VehicleCalibration {
@@ -137,17 +136,12 @@ public final class VehicleCalibration {
          var1.rebound[var9] = var12.get("reboundNsPerM").getAsDouble();
       }
 
-      for (JsonElement var16 : var0.getAsJsonArray("seats")) {
-         JsonObject var17 = var16.getAsJsonObject();
-         if (var17.get("driver").getAsBoolean()) {
-            JsonObject var18 = var17.getAsJsonObject("position");
-            var1.seatX = var18.get("x").getAsDouble();
-            var1.seatY = var18.get("y").getAsDouble();
-            var1.seatZ = var18.get("z").getAsDouble();
-            break;
-         }
-      }
-
+      var1.seatLayout = SeatLayout.fromProfile(var0);
+      SeatLayout.Seat var16 = var1.seatLayout.get(var1.seatLayout.driverIndex());
+      var1.seatX = var16.x;
+      var1.seatY = var16.y;
+      var1.seatZ = var16.z;
+      var1.fitOccupants();
       return var1;
    }
 

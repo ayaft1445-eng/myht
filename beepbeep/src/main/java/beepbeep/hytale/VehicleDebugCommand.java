@@ -36,7 +36,7 @@ final class VehicleDebugCommand extends AbstractPlayerCommand {
          for (int var7x = 0; var7x < var5x.size(); var7x++) {
             VehicleRuntimeComponent var8x = (VehicleRuntimeComponent)var5x.getComponent(var7x, this.type);
             double var9x = ((TransformComponent)var5x.getComponent(var7x, TransformComponent.getComponentType())).getPosition().distance(var6);
-            if (var8x.driver == var3) {
+            if (var8x.seatOf(var3) >= 0 || var8x.driver == var3) {
                var9x = -2.0;
             } else if (var8x.debug != null && var8x.debug.observer == var3 && var8x.debug.trace.active()) {
                var9x = -1.0;
@@ -51,8 +51,8 @@ final class VehicleDebugCommand extends AbstractPlayerCommand {
       VehicleRuntimeComponent var9 = var7[0];
       if (var9 == null || var8[0] > 24.0) {
          var1.sendMessage(Message.raw("Для диагностики подойдите к машине или займите сиденье."));
-      } else if (var9.driver != null && var9.driver.isValid() && var9.driver != var3) {
-         var1.sendMessage(Message.raw("Диагностика доступна водителю этой машины."));
+      } else if (var9.driver != null && var9.driver.isValid() && var9.driver != var3 && var9.seatOf(var3) < 0) {
+         var1.sendMessage(Message.raw("Диагностика доступна тому, кто управляет этой машиной или сидит в ней."));
       } else {
          String var10 = (String)this.action.get(var1);
          switch (var10) {
@@ -63,9 +63,7 @@ final class VehicleDebugCommand extends AbstractPlayerCommand {
                }
 
                var9.debug = new VehicleDebug(this.folder, var3);
-               if (var9.mountInput != null) {
-                  var9.mountInput.debug = var9.debug;
-               }
+               VehicleSeats.attachDebug(var9, var2);
 
                var1.sendMessage(
                   Message.raw("Запись диагностики: 90 секунд, без изменения управления. /vehicle debug stop — сохранить. Файл: " + var9.debug.trace.path)

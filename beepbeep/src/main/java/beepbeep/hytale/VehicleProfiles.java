@@ -118,7 +118,7 @@ public final class VehicleProfiles {
    }
 
    public static JsonElement get(JsonObject var0, String var1) {
-      Object var2 = var0;
+      JsonElement var2 = var0;
 
       for (String var6 : var1.split("\\.")) {
          if (var2 == null || var2.isJsonNull()) {
@@ -133,7 +133,7 @@ public final class VehicleProfiles {
       }
 
       if (var2 != null && !var2.isJsonNull()) {
-         return (JsonElement)var2;
+         return var2;
       } else {
          throw bad(var1, "поле отсутствует");
       }
@@ -141,7 +141,7 @@ public final class VehicleProfiles {
 
    public static void set(JsonObject var0, String var1, JsonElement var2) {
       int var3 = var1.lastIndexOf(46);
-      Object var4 = var3 < 0 ? var0 : get(var0, var1.substring(0, var3));
+      JsonElement var4 = var3 < 0 ? var0 : get(var0, var1.substring(0, var3));
       String var5 = var1.substring(var3 + 1);
       if (var4.isJsonArray()) {
          var4.getAsJsonArray().set(Integer.parseInt(var5), var2);

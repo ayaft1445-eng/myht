@@ -22,60 +22,85 @@ import com.hypixel.hytale.server.core.modules.entity.damage.DeathSystems.OnDeath
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.Set;
 
+/** Седок умер, стал наблюдателем или ушёл с сервера — место освобождается. */
 public final class VehicleRiderLifecycle {
+   private VehicleRiderLifecycle() {
+   }
+
+   private static void releaseLater(Ref<EntityStore> ref, Store<EntityStore> store, CommandBuffer<EntityStore> buffer, String reason) {
+      VehicleRiderComponent rider = store.getComponent(ref, VehicleSeats.riderType);
+      if (rider != null && !rider.releasing) {
+         rider.releasing = true;
+         buffer.run(s -> VehicleSeats.release(s, ref, reason, false));
+      }
+   }
+
    public static final class Death extends OnDeathSystem {
+      @Override
       public Query<EntityStore> getQuery() {
          return Player.getComponentType();
       }
 
+      @Override
       public Set<Dependency<EntityStore>> getDependencies() {
          return Set.of(new SystemDependency(Order.BEFORE, DismountOnPlayerDeath.class));
       }
 
-      public void onComponentAdded(Ref<EntityStore> var1, DeathComponent var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
-         VehicleMount.lifecycleRelease(var1, var4);
+      @Override
+      public void onComponentAdded(Ref<EntityStore> ref, DeathComponent death, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+         releaseLater(ref, store, buffer, "смерть");
       }
    }
 
    public static final class Remove extends RefSystem<EntityStore> {
+      @Override
       public Query<EntityStore> getQuery() {
          return Player.getComponentType();
       }
 
+      @Override
       public Set<Dependency<EntityStore>> getDependencies() {
          return Set.of(new SystemDependency(Order.BEFORE, OnPlayerRemove.class));
       }
 
-      public void onEntityAdded(Ref<EntityStore> var1, AddReason var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
+      @Override
+      public void onEntityAdded(Ref<EntityStore> ref, AddReason reason, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
       }
 
-      public void onEntityRemove(Ref<EntityStore> var1, RemoveReason var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
-         VehicleMount.lifecycleRelease(var1, var4);
+      @Override
+      public void onEntityRemove(Ref<EntityStore> ref, RemoveReason reason, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+         VehicleSeats.onRiderRemoved(ref, store, buffer);
       }
    }
 
    public static final class Spectate extends RefChangeSystem<EntityStore, Spectating> {
+      @Override
       public Query<EntityStore> getQuery() {
          return Player.getComponentType();
       }
 
+      @Override
       public ComponentType<EntityStore, Spectating> componentType() {
          return Spectating.getComponentType();
       }
 
+      @Override
       public Set<Dependency<EntityStore>> getDependencies() {
          return Set.of(new SystemDependency(Order.BEFORE, DismountOnPlayerSpectating.class));
       }
 
-      public void onComponentAdded(Ref<EntityStore> var1, Spectating var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
-         VehicleMount.lifecycleRelease(var1, var4);
+      @Override
+      public void onComponentAdded(Ref<EntityStore> ref, Spectating spectating, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+         releaseLater(ref, store, buffer, "режим наблюдателя");
       }
 
-      public void onComponentSet(Ref<EntityStore> var1, Spectating var2, Spectating var3, Store<EntityStore> var4, CommandBuffer<EntityStore> var5) {
-         VehicleMount.lifecycleRelease(var1, var5);
+      @Override
+      public void onComponentSet(Ref<EntityStore> ref, Spectating previous, Spectating spectating, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+         releaseLater(ref, store, buffer, "режим наблюдателя");
       }
 
-      public void onComponentRemoved(Ref<EntityStore> var1, Spectating var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
+      @Override
+      public void onComponentRemoved(Ref<EntityStore> ref, Spectating spectating, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
       }
    }
 }

@@ -51,13 +51,13 @@ final class VehicleDebugTrace {
       ACTIVE.add(this);
       JsonObject var3 = new JsonObject();
       var3.addProperty("schema", 1);
-      var3.addProperty("build", "0.3.24");
+      var3.addProperty("build", "0.4.0");
       var3.addProperty("startedUtc", Instant.now().toString());
       var3.addProperty("sampleHz", 10);
       var3.addProperty("durationLimitSeconds", 90);
       var3.addProperty("maxEvents", var2);
       var3.addProperty("rawKeyboardAvailable", false);
-      var3.addProperty("scope", "mounted client packets, decoded input, server ECS phases and outgoing mod commands; no OS keys or rendered client pose");
+      var3.addProperty("scope", "seat rider packets, decoded input, server ECS phases; no OS keys or rendered client pose");
       this.event("header", var3);
    }
 
@@ -107,7 +107,7 @@ final class VehicleDebugTrace {
          this.active = false;
          ACTIVE.remove(this);
          this.status = "saving";
-         ArrayList var3 = new ArrayList<>(this.events);
+         ArrayList<JsonObject> var3 = new ArrayList<>(this.events);
          this.saved = CompletableFuture.runAsync(() -> {
             try {
                Files.createDirectories(this.path.getParent());

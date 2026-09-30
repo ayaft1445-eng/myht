@@ -12,30 +12,33 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.joml.Vector3d;
 
+/** Машина исчезает из мира — все седоки выходят там, где она стояла. */
 public final class VehicleMountCleanupSystem extends RefSystem<EntityStore> {
    private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
 
-   public VehicleMountCleanupSystem(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
-      this.type = var1;
+   public VehicleMountCleanupSystem(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
+      this.type = type;
    }
 
+   @Override
    public Query<EntityStore> getQuery() {
       return this.type;
    }
 
-   public void onEntityAdded(Ref<EntityStore> var1, AddReason var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
+   @Override
+   public void onEntityAdded(Ref<EntityStore> ref, AddReason reason, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
    }
 
-   public void onEntityRemove(Ref<EntityStore> var1, RemoveReason var2, Store<EntityStore> var3, CommandBuffer<EntityStore> var4) {
-      VehicleRuntimeComponent var5 = (VehicleRuntimeComponent)var3.getComponent(var1, this.type);
-      if (var5.debug != null) {
-         var5.debug.trace.stop("chassis-removed");
-      }
+   @Override
+   public void onEntityRemove(Ref<EntityStore> ref, RemoveReason reason, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+      VehicleRuntimeComponent runtime = store.getComponent(ref, this.type);
+      if (runtime != null) {
+         if (runtime.debug != null) {
+            runtime.debug.trace.stop("chassis-removed");
+         }
 
-      TransformComponent var6 = (TransformComponent)var3.getComponent(var1, TransformComponent.getComponentType());
-      Vector3d var7 = var6 == null ? null : new Vector3d(var6.getPosition());
-      if (var5.proxy != null || var5.driver != null) {
-         var4.run(var2x -> VehicleMount.release(var2x, var5, var7));
+         TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
+         VehicleSeats.onVehicleRemoved(ref, runtime, transform == null ? null : new Vector3d(transform.getPosition()), store, buffer);
       }
    }
 }

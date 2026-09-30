@@ -37,6 +37,23 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    // Тесты посадки не зависят от сервера Hytale: только Gson и JOML, которые сервер
+    // приносит сам, поэтому для тестов они подключаются отдельно.
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("com.google.code.gson:gson:2.11.0")
+    testImplementation("org.joml:joml:1.10.8")
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("failed")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }

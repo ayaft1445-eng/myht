@@ -3,7 +3,8 @@ package beepbeep.hytale;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class VehicleRuntimeComponent implements Component<EntityStore> {
    public double mass = 1450.0;
@@ -41,22 +42,18 @@ public final class VehicleRuntimeComponent implements Component<EntityStore> {
    public double engineForce;
    public boolean driven;
    public boolean bodySupported;
-   public boolean seated;
    public double seatX = -0.66;
    public double seatY = 1.4;
    public double seatZ = 0.3;
+   /** Места из профиля. Водительское управляет машиной, остальные — пассажирские. */
+   public SeatLayout seatLayout = SeatLayout.single(-0.66, 1.4, 0.3);
+   private Ref<EntityStore>[] occupants = newOccupants(1);
    public double driverDistance = Double.POSITIVE_INFINITY;
+   /** Игрок, управляющий машиной снаружи (/vehicle drive), не путать с водителем на сиденье. */
    public Ref<EntityStore> driver;
-   public Ref<EntityStore> proxy;
-   public Ref<EntityStore> seatFloor;
-   public UUID driverUuid;
-   public VehicleMountInput.Session mountInput;
    public VehicleDebug debug;
    public double[] debugCompression = new double[4];
    public double[] debugLoad = new double[4];
-   public boolean mountPending;
-   public double mountWait;
-   public int proxyNetworkId;
    public long inputEvents;
    public long wishEvents;
    public long positionEvents;
@@ -80,16 +77,114 @@ public final class VehicleRuntimeComponent implements Component<EntityStore> {
    public double[] contactY = new double[]{Double.NaN, Double.NaN, Double.NaN, Double.NaN};
    public boolean[] contact = new boolean[]{false, false, false, false};
 
+   @SuppressWarnings("unchecked")
+   private static Ref<EntityStore>[] newOccupants(int size) {
+      return (Ref<EntityStore>[])new Ref[size];
+   }
+
+   /** Подгоняет массив седоков под раскладку мест. Седоки на пропавших местах возвращаются. */
+   public List<Ref<EntityStore>> fitOccupants() {
+      List<Ref<EntityStore>> dropped = new ArrayList<>();
+      int size = this.seatLayout.size();
+      if (this.occupants.length != size) {
+         Ref<EntityStore>[] resized = newOccupants(size);
+
+         for (int i = 0; i < this.occupants.length; i++) {
+            if (i < size) {
+               resized[i] = this.occupants[i];
+            } else if (this.occupants[i] != null) {
+               dropped.add(this.occupants[i]);
+            }
+         }
+
+         this.occupants = resized;
+      }
+
+      return dropped;
+   }
+
+   public int seatCount() {
+      return this.seatLayout.size();
+   }
+
+   public Ref<EntityStore> occupant(int seat) {
+      this.fitOccupants();
+      return seat >= 0 && seat < this.occupants.length ? this.occupants[seat] : null;
+   }
+
+   public void setOccupant(int seat, Ref<EntityStore> rider) {
+      this.fitOccupants();
+      if (seat >= 0 && seat < this.occupants.length) {
+         this.occupants[seat] = rider;
+      }
+   }
+
+   /** Освобождает место, если на нём сидит именно этот игрок. */
+   public void clearOccupant(int seat, Ref<EntityStore> rider) {
+      if (seat >= 0 && seat < this.occupants.length && this.occupants[seat] == rider) {
+         this.occupants[seat] = null;
+      }
+   }
+
+   public int seatOf(Ref<EntityStore> rider) {
+      if (rider != null) {
+         for (int i = 0; i < this.occupants.length; i++) {
+            if (this.occupants[i] == rider) {
+               return i;
+            }
+         }
+      }
+
+      return -1;
+   }
+
+   public boolean[] occupiedMask() {
+      this.fitOccupants();
+      boolean[] mask = new boolean[this.occupants.length];
+
+      for (int i = 0; i < this.occupants.length; i++) {
+         mask[i] = this.occupants[i] != null && this.occupants[i].isValid();
+      }
+
+      return mask;
+   }
+
+   public int occupiedCount() {
+      int count = 0;
+
+      for (boolean occupied : this.occupiedMask()) {
+         if (occupied) {
+            count++;
+         }
+      }
+
+      return count;
+   }
+
+   /** Копия списка седоков (без пустых мест). */
+   public List<Ref<EntityStore>> riders() {
+      List<Ref<EntityStore>> list = new ArrayList<>();
+
+      for (Ref<EntityStore> rider : this.occupants) {
+         if (rider != null) {
+            list.add(rider);
+         }
+      }
+
+      return list;
+   }
+
    public VehicleRuntimeComponent clone() {
       VehicleRuntimeComponent var1 = new VehicleRuntimeComponent();
       var1.bodyX = this.bodyX;
       var1.bodyY = this.bodyY;
       var1.bodyZ = this.bodyZ;
       var1.bodySupported = this.bodySupported;
-      var1.seated = this.seated;
       var1.seatX = this.seatX;
       var1.seatY = this.seatY;
       var1.seatZ = this.seatZ;
+      var1.seatLayout = this.seatLayout;
+      var1.occupants = newOccupants(this.seatLayout.size());
       var1.mass = this.mass;
       var1.verticalVelocity = this.verticalVelocity;
       var1.pitch = this.pitch;
@@ -123,13 +218,6 @@ public final class VehicleRuntimeComponent implements Component<EntityStore> {
       var1.engineForce = this.engineForce;
       var1.driverDistance = this.driverDistance;
       var1.driver = this.driver;
-      var1.proxy = this.proxy;
-      var1.seatFloor = this.seatFloor;
-      var1.driverUuid = this.driverUuid;
-      var1.mountInput = this.mountInput;
-      var1.mountPending = this.mountPending;
-      var1.mountWait = this.mountWait;
-      var1.proxyNetworkId = this.proxyNetworkId;
       var1.inputEvents = this.inputEvents;
       var1.wishEvents = this.wishEvents;
       var1.positionEvents = this.positionEvents;

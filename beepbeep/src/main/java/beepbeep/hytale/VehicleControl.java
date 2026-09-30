@@ -14,7 +14,6 @@ public final class VehicleControl {
    public static void reset(VehicleRuntimeComponent var0) {
       var0.driver = null;
       var0.driven = false;
-      var0.seated = false;
       var0.throttle = 0.0;
       var0.steer = 0.0;
       var0.brake = 1.0;

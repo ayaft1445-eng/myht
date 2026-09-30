@@ -16,21 +16,24 @@ import com.hypixel.hytale.server.core.modules.entity.system.TransformSystems.Ent
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.Set;
 
-public final class VehicleProxyFollowSystem extends EntityTickingSystem<EntityStore> {
+/**
+ * После физики машины ставит точки сидений и седоков на места, с поворотом, наклоном
+ * и креном машины, и досылает поворот камеры. Идёт до отправки позиций клиентам,
+ * поэтому машина и седок приходят к зрителям в одном и том же тике.
+ */
+public final class SeatFollowSystem extends EntityTickingSystem<EntityStore> {
    private final ComponentType<EntityStore, VehicleRuntimeComponent> type;
 
-   public VehicleProxyFollowSystem(ComponentType<EntityStore, VehicleRuntimeComponent> var1) {
-      this.type = var1;
+   public SeatFollowSystem(ComponentType<EntityStore, VehicleRuntimeComponent> type) {
+      this.type = type;
    }
 
+   @Override
    public Query<EntityStore> getQuery() {
       return Query.and(new Query[]{this.type, TransformComponent.getComponentType()});
    }
 
-   public boolean isParallel(int var1, int var2) {
-      return false;
-   }
-
+   @Override
    public Set<Dependency<EntityStore>> getDependencies() {
       return Set.of(
          new SystemDependency(Order.AFTER, VehiclePhysicsSystem.class),
@@ -40,19 +43,24 @@ public final class VehicleProxyFollowSystem extends EntityTickingSystem<EntitySt
       );
    }
 
-   public void tick(float var1, int var2, ArchetypeChunk<EntityStore> var3, Store<EntityStore> var4, CommandBuffer<EntityStore> var5) {
-      VehicleRuntimeComponent var6 = (VehicleRuntimeComponent)var3.getComponent(var2, this.type);
-      TransformComponent var7 = (TransformComponent)var3.getComponent(var2, TransformComponent.getComponentType());
-      if (var6.debug != null) {
-         var6.debug.snapshot(var4, var6, var7, "before-seat-correction");
-      }
+   @Override
+   public boolean isParallel(int archetypeChunkSize, int taskCount) {
+      return false;
+   }
 
-      if (var6.seated) {
-         VehicleMount.follow(var4, var6, ((TransformComponent)var3.getComponent(var2, TransformComponent.getComponentType())).getPosition());
-      }
+   @Override
+   public void tick(float dt, int index, ArchetypeChunk<EntityStore> chunk, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+      VehicleRuntimeComponent runtime = chunk.getComponent(index, this.type);
+      TransformComponent transform = chunk.getComponent(index, TransformComponent.getComponentType());
+      if (runtime != null && transform != null) {
+         if (runtime.debug != null) {
+            runtime.debug.snapshot(store, runtime, transform, "before-seat-follow");
+         }
 
-      if (var6.debug != null) {
-         var6.debug.snapshot(var4, var6, var7, "after-seat-correction");
+         VehicleSeats.follow(store, chunk.getReferenceTo(index), runtime, transform.getPosition(), System.nanoTime());
+         if (runtime.debug != null) {
+            runtime.debug.snapshot(store, runtime, transform, "after-seat-follow");
+         }
       }
    }
 }

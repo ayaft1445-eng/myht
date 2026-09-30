@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.hypixel.hytale.builtin.mounts.MountedComponent;
 import com.hypixel.hytale.component.ComponentAccessor;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.math.vector.Rotation3f;
@@ -13,11 +12,9 @@ import com.hypixel.hytale.protocol.Direction;
 import com.hypixel.hytale.protocol.MovementStates;
 import com.hypixel.hytale.protocol.Packet;
 import com.hypixel.hytale.protocol.Position;
-import com.hypixel.hytale.protocol.packets.entities.MountMovement;
 import com.hypixel.hytale.protocol.packets.interaction.DismountNPC;
 import com.hypixel.hytale.protocol.packets.player.ClientMovement;
 import com.hypixel.hytale.protocol.packets.player.MouseInteraction;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput;
@@ -57,54 +54,45 @@ final class VehicleDebug {
       }
    }
 
-   static void packet(VehicleMountInput.Session var0, Packet var1, boolean var2) {
-      VehicleDebug var3 = var0.debug;
-      if (var3 != null && var3.trace.active()) {
+   /** Пакет седока из сетевого потока: что пришло и что из этого прочитали. */
+   void packet(SeatInput var0, Packet var1, boolean var2) {
+      if (this.trace.active()) {
          JsonObject var4 = new JsonObject();
          var4.addProperty("packet", var1.getClass().getSimpleName());
          var4.addProperty("consumed", var2);
-         var4.addProperty("mountIdle", var0.mountIdle);
-         var4.addProperty("fixedControls", var0.fixedControls);
-         var4.addProperty("hookReady", var0.hookReady);
-         number(var4, "lookYaw", var0.lookYaw);
-         var4.add("decoded", sample(var0.sample));
-         var4.add("seatDirection", direction(var0.seatDirection));
-         number(var4, "mouseSteer", var0.mouseSteer);
-         var4.addProperty("mousePackets", var0.mousePackets);
+         var4.addProperty("player", String.valueOf(var0.player()));
          if (var1 instanceof ClientMovement var5) {
             var4.add("wish", position(var5.wishMovement));
             var4.add("velocity", (JsonElement)(var5.velocity == null ? JsonNull.INSTANCE : xyz(var5.velocity.x, var5.velocity.y, var5.velocity.z)));
             var4.add("position", position(var5.absolutePosition));
-            var4.addProperty("hasRelativePosition", var5.relativePosition != null);
             if (var5.relativePosition != null) {
                var4.add(
                   "relativePosition",
-                  xyz(
-                     (double)Float.float16ToFloat(var5.relativePosition.x),
-                     (double)Float.float16ToFloat(var5.relativePosition.y),
-                     (double)Float.float16ToFloat(var5.relativePosition.z)
-                  )
+                  xyz(var5.relativePosition.x / 10000.0, var5.relativePosition.y / 10000.0, var5.relativePosition.z / 10000.0)
                );
             }
 
             var4.add("body", direction(var5.bodyOrientation));
             var4.add("look", direction(var5.lookOrientation));
             var4.add("states", states(var5.movementStates));
-            var4.add("riderStates", states(var5.riderMovementStates));
             var4.addProperty("mountedTo", var5.mountedTo);
             var4.addProperty("teleportAck", var5.teleportAck != null);
-         } else if (var1 instanceof MountMovement var6) {
-            var4.add("position", position(var6.absolutePosition));
-            var4.add("body", direction(var6.bodyOrientation));
-            var4.add("states", states(var6.movementStates));
+            var4.add("decoded", control(var0.control(System.nanoTime())));
          } else if (var1 instanceof DismountNPC var7) {
             var4.addProperty("mountId", var7.mountEntityId);
-         } else if (var1 instanceof MouseInteraction var8 && var8.mouseMotion != null && var8.mouseMotion.relativeMotion != null) {
-            var4.addProperty("mouseDx", var8.mouseMotion.relativeMotion.x);
-            var4.addProperty("mouseDy", var8.mouseMotion.relativeMotion.y);
+         } else if (var1 instanceof MouseInteraction var8) {
+            if (var8.mouseButton != null) {
+               var4.addProperty("button", String.valueOf(var8.mouseButton.mouseButtonType));
+               var4.addProperty("state", String.valueOf(var8.mouseButton.state));
+            }
+
+            if (var8.mouseMotion != null && var8.mouseMotion.relativeMotion != null) {
+               var4.addProperty("mouseDx", var8.mouseMotion.relativeMotion.x);
+               var4.addProperty("mouseDy", var8.mouseMotion.relativeMotion.y);
+            }
          }
 
-         var3.trace.event("packet", var4);
+         this.trace.event("packet", var4);
       }
    }
 
@@ -114,8 +102,7 @@ final class VehicleDebug {
          var5.addProperty("phase", var4);
          var5.addProperty("tick", var2.ticks);
          var5.add("chassis", transform(var3));
-         var5.addProperty("seated", var2.seated);
-         var5.addProperty("pending", var2.mountPending);
+         var5.addProperty("occupied", var2.occupiedCount());
          var5.addProperty("terrain", var2.terrainState);
          var5.addProperty("bodySupported", var2.bodySupported);
          number(var5, "throttle", var2.throttle);
@@ -128,17 +115,22 @@ final class VehicleDebug {
          var5.addProperty("gear", var2.gear);
          var5.addProperty("inputSource", var2.inputSource);
          number(var5, "inputAge", var2.inputAge);
-         Ref var6 = var2.driver != null ? var2.driver : this.observer;
+         int var20 = var2.seatLayout.driverIndex();
+         Ref<EntityStore> var21 = var2.occupant(var20);
+         Ref<EntityStore> var6 = var21 != null ? var21 : (var2.driver != null ? var2.driver : this.observer);
          var5.add("rider", entity(var1, var6));
-         var5.add("proxy", entity(var1, var2.proxy));
-         var5.add("floor", entity(var1, var2.seatFloor));
-         if (var6 != null && var6.isValid() && var6.getStore() == ((EntityStore)var1.getExternalData()).getStore()) {
-            MountedComponent var7 = (MountedComponent)var1.getComponent(var6, MountedComponent.getComponentType());
-            Player var8 = (Player)var1.getComponent(var6, Player.getComponentType());
-            var5.addProperty("nativeRiderMount", var8 != null && var8.getMountEntityId() == var2.proxyNetworkId);
+         VehicleRiderComponent var22 = var21 != null && var21.isValid() && var21.getStore() == ((EntityStore)var1.getExternalData()).getStore()
+            ? (VehicleRiderComponent)var1.getComponent(var21, VehicleSeats.riderType)
+            : null;
+         if (var22 != null) {
+            var5.add("anchor", entity(var1, var22.anchor));
+            var5.addProperty("view", var22.view.id);
+            var5.addProperty("recenters", var22.recenters);
+            var5.addProperty("attachedViewers", var22.attachedViewers.size());
+            var5.add("puppetTarget", vector(var22.puppetTarget));
          }
 
-         Vector3d var14 = VehicleMount.seatPosition(var2, var3.getPosition());
+         Vector3d var14 = VehicleSeats.seatPosition(var2, var3.getPosition(), var20);
          var5.add("seat", xyz(var14.x, var14.y, var14.z));
          if (var6 != null && var6.isValid() && var6.getStore() == ((EntityStore)var1.getExternalData()).getStore()) {
             TransformComponent var15 = (TransformComponent)var1.getComponent(var6, TransformComponent.getComponentType());
@@ -159,13 +151,17 @@ final class VehicleDebug {
             var5.add("inputQueue", var10);
          }
 
-         if (var2.mountInput != null) {
-            var5.add("decoded", sample(var2.mountInput.sample));
-            var5.addProperty("packetCount", var2.mountInput.movementPackets);
-            var5.addProperty("wishCount", var2.mountInput.wishPackets);
-            var5.addProperty("mountPacketCount", var2.mountInput.blockedMountPackets);
-            var5.addProperty("mousePackets", var2.mountInput.mousePackets);
-            number(var5, "mouseSteer", var2.mountInput.mouseSteer);
+         if (var22 != null && var22.input != null) {
+            SeatInput var23 = var22.input;
+            var5.add("decoded", control(var23.control(System.nanoTime())));
+            var5.addProperty("packetCount", var23.packets);
+            var5.addProperty("consumedCount", var23.consumed);
+            var5.addProperty("positionCount", var23.positions);
+            var5.addProperty("ackCount", var23.acks);
+            var5.addProperty("wishCount", var23.wishes);
+            if (var23.hasPuppetPosition()) {
+               var5.add("puppet", xyz(var23.puppetX(), var23.puppetY(), var23.puppetZ()));
+            }
          }
 
          JsonArray var16 = new JsonArray();
@@ -223,12 +219,13 @@ final class VehicleDebug {
       }
    }
 
-   static JsonObject sample(VehicleMountInput.Sample var0) {
+   static JsonObject control(SeatInputDecoder.Control var0) {
       JsonObject var1 = new JsonObject();
-      number(var1, "right", var0.right());
-      number(var1, "forward", var0.forward());
-      var1.addProperty("source", var0.source());
-      number(var1, "age", var0.at() == 0L ? -1.0 : (double)(System.nanoTime() - var0.at()) / 1.0E9);
+      number(var1, "throttle", var0.throttle);
+      number(var1, "steer", var0.steer);
+      var1.addProperty("handbrake", var0.handbrake);
+      number(var1, "exitHold", var0.descendSeconds);
+      var1.addProperty("source", var0.source);
       return var1;
    }
 
@@ -257,6 +254,8 @@ final class VehicleDebug {
          var1.addProperty("walking", var0.walking);
          var1.addProperty("running", var0.running);
          var1.addProperty("jumping", var0.jumping);
+         var1.addProperty("crouching", var0.crouching);
+         var1.addProperty("mounting", var0.mounting);
          return var1;
       }
    }
