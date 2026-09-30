@@ -18,6 +18,7 @@ public final class VehiclePlugin extends JavaPlugin {
    private ComponentType<EntityStore, VehiclePhysicsComponent> vehicleType;
    private ComponentType<EntityStore, VehicleRuntimeComponent> runtimeType;
    private ComponentType<EntityStore, VehicleRiderComponent> riderType;
+   private ComponentType<EntityStore, SeatDummyComponent> dummyType;
    private PacketFilter seatFilter;
 
    public VehiclePlugin(JavaPluginInit init) {
@@ -44,13 +45,15 @@ public final class VehiclePlugin extends JavaPlugin {
       this.vehicleType = this.getEntityStoreRegistry().registerComponent(VehiclePhysicsComponent.class, VehiclePhysicsComponent::new);
       this.runtimeType = this.getEntityStoreRegistry().registerComponent(VehicleRuntimeComponent.class, VehicleRuntimeComponent::new);
       this.riderType = this.getEntityStoreRegistry().registerComponent(VehicleRiderComponent.class, VehicleRiderComponent::new);
-      VehicleSeats.init(this.runtimeType, this.riderType, this.loadSeatConfig(), this.getDataDirectory().resolve("seating.json"));
+      this.dummyType = this.getEntityStoreRegistry().registerComponent(SeatDummyComponent.class, SeatDummyComponent::new);
+      VehicleSeats.init(this.runtimeType, this.riderType, this.dummyType, this.loadSeatConfig(), this.getDataDirectory().resolve("seating.json"));
       this.registerUseInteraction();
       this.getEntityStoreRegistry().registerSystem(new VehicleProbeSystem(this.vehicleType));
       this.getEntityStoreRegistry().registerSystem(new SeatInputSystem(this.riderType));
       this.getEntityStoreRegistry().registerSystem(new VehiclePhysicsSystem(this.runtimeType));
       this.getEntityStoreRegistry().registerSystem(new SeatFollowSystem(this.runtimeType));
       this.getEntityStoreRegistry().registerSystem(new SeatTrackerSystem(this.riderType));
+      this.getEntityStoreRegistry().registerSystem(new SeatDummyVisibilitySystem(this.dummyType, this.riderType));
       this.getEntityStoreRegistry().registerSystem(new SeatTeleportWatcher(this.riderType));
       this.getEntityStoreRegistry().registerSystem(new VehicleInteractableSystem(this.runtimeType));
       this.getEntityStoreRegistry().registerSystem(new VehicleMountCleanupSystem(this.runtimeType));

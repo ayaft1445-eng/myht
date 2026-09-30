@@ -42,7 +42,7 @@ public final class SeatTrackerSystem extends EntityTickingSystem<EntityStore> {
       VehicleRiderComponent rider = chunk.getComponent(index, this.type);
       Visible visible = chunk.getComponent(index, Visible.getComponentType());
       if (rider != null && visible != null) {
-         VehicleSeats.queueAttachment(chunk.getReferenceTo(index), rider, visible);
+         VehicleSeats.queueAttachment(store, chunk.getReferenceTo(index), rider, visible);
       }
    }
 }

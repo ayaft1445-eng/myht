@@ -76,6 +76,8 @@ public final class SeatConfig {
    public static final class Riders {
       /** Показывать другим игрокам седока пристёгнутым к месту (MountedUpdate). */
       public boolean attachForOthers = true;
+      /** Показывать седоку его самого на сиденье (двойник, видимый только ему, кроме вида из кабины). */
+      public boolean selfModel = true;
       /** sitting или mounting — поза, которую видят другие. */
       public String pose = "sitting";
       /** Сдвиг седока по высоте относительно точки сиденья из профиля. */

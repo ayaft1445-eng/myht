@@ -40,6 +40,8 @@ public final class VehicleRiderComponent implements Component<EntityStore> {
    public int seat = -1;
    public Ref<EntityStore> anchor;
    public int anchorNetworkId;
+   /** Двойник, которого видит только сам седок (см. SeatDummyComponent). */
+   public Ref<EntityStore> dummy;
    public int vehicleNetworkId;
    public PlayerRef playerRef;
    public SeatInput input;
@@ -47,6 +49,7 @@ public final class VehicleRiderComponent implements Component<EntityStore> {
    SavedMovement savedMovement;
    /** Кому из зрителей уже отправлено «седок пристёгнут к точке сиденья». */
    public final Set<Ref<EntityStore>> attachedViewers = new HashSet<>();
+   public final Set<Ref<EntityStore>> dummyAttachedViewers = new HashSet<>();
    public boolean attachDirty = true;
    public final Vector3d puppetTarget = new Vector3d();
    public long enteredAt;
@@ -73,6 +76,7 @@ public final class VehicleRiderComponent implements Component<EntityStore> {
       copy.seat = this.seat;
       copy.anchor = this.anchor;
       copy.anchorNetworkId = this.anchorNetworkId;
+      copy.dummy = this.dummy;
       copy.vehicleNetworkId = this.vehicleNetworkId;
       copy.playerRef = this.playerRef;
       copy.input = this.input;

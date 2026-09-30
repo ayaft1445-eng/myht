@@ -34,6 +34,7 @@ import com.hypixel.hytale.server.core.modules.entity.component.Spectating;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput;
+import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.modules.entity.teleport.TeleportSystems;
 import com.hypixel.hytale.server.core.modules.entity.tracker.EntityTrackerSystems.EntityViewer;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.joml.Quaterniond;
@@ -76,12 +78,19 @@ public final class VehicleSeats {
    private static final long RECENTER_COOLDOWN_NANOS = 300_000_000L;
    private static final long LOST_PUPPET_RETRY_NANOS = 1_500_000_000L;
    private static final long CAMERA_INTERVAL_NANOS = 30_000_000L;
+   /**
+    * Первые секунды после посадки камера досылается повторно: клиент мог получить её
+    * раньше, чем узнал о точке сиденья, к которой она привязана.
+    */
+   private static final long CAMERA_REPEAT_NANOS = 1_500_000_000L;
+   private static final long CAMERA_REPEAT_STEP_NANOS = 250_000_000L;
    private static final float CAMERA_EPSILON = 0.002F;
    private static final Rotation3f KEEP_ROTATION = new Rotation3f(Float.NaN, Float.NaN, Float.NaN);
    private static final Box ANCHOR_BOX = new Box(-0.05, 0.0, -0.05, 0.05, 0.1, 0.05);
    private static final Box PLAYER_BOX = new Box(-0.3, 0.0, -0.3, 0.3, 1.8, 0.3);
    static ComponentType<EntityStore, VehicleRuntimeComponent> vehicleType;
    static ComponentType<EntityStore, VehicleRiderComponent> riderType;
+   static ComponentType<EntityStore, SeatDummyComponent> dummyType;
    private static volatile SeatConfig config = SeatConfig.defaults();
    private static volatile Path configPath;
 
@@ -89,10 +98,15 @@ public final class VehicleSeats {
    }
 
    static void init(
-      ComponentType<EntityStore, VehicleRuntimeComponent> vehicle, ComponentType<EntityStore, VehicleRiderComponent> rider, SeatConfig seatConfig, Path path
+      ComponentType<EntityStore, VehicleRuntimeComponent> vehicle,
+      ComponentType<EntityStore, VehicleRiderComponent> rider,
+      ComponentType<EntityStore, SeatDummyComponent> dummy,
+      SeatConfig seatConfig,
+      Path path
    ) {
       vehicleType = vehicle;
       riderType = rider;
+      dummyType = dummy;
       config = seatConfig;
       configPath = path;
    }
@@ -231,6 +245,10 @@ public final class VehicleSeats {
       rider.input = input;
       rider.view = SeatCamera.View.parse(settings.camera.defaultView, SeatCamera.View.CHASE);
       rider.enteredAt = now;
+      if (settings.riders.selfModel) {
+         rider.dummy = spawnDummy(store, player, seatPosition, seatRotation);
+      }
+
       input.debug(runtime.debug);
       store.putComponent(player, riderType, rider);
       runtime.setOccupant(seat, player);
@@ -375,12 +393,16 @@ public final class VehicleSeats {
 
       detachFromViewers(store, player, rider);
       removeAnchor(store, rider.anchor);
+      removeAnchor(store, rider.dummy);
       store.tryRemoveComponent(player, riderType);
-      restorePlayer(store, player, playerRef, rider);
+      // Сначала телепорт к двери, пока кукла ещё летает, потом обычные настройки движения:
+      // так персонаж не успевает начать падать с высоты куклы.
       if (teleportOut && exit != null && store.getComponent(player, Teleport.getComponentType()) == null) {
          Rotation3f facing = Float.isFinite(exitYaw) ? new Rotation3f(0.0F, exitYaw, 0.0F) : new Rotation3f(0.0F, 0.0F, 0.0F);
          store.putComponent(player, Teleport.getComponentType(), Teleport.createForPlayer(exit, facing));
       }
+
+      restorePlayer(store, player, playerRef, rider);
 
       if (playerRef != null) {
          playerRef.sendMessage(Message.raw("Вы вышли из машины (" + reason + ")."));
@@ -434,10 +456,19 @@ public final class VehicleSeats {
          MovementManager movement = store.getComponent(player, MovementManager.getComponentType());
          if (movement != null && rider.savedMovement != null && movement.getSettings() != null) {
             rider.savedMovement.restoreInto(movement.getSettings());
+            if (playerRef != null) {
+               movement.update(playerRef.getPacketHandler());
+            }
+         }
+
+         // При переходе в другой мир клиент остаётся жив: камера не должна висеть на машине из старого мира.
+         if (playerRef != null) {
+            playerRef.getPacketHandler().writeNoCache(SeatCamera.reset());
          }
 
          Ref<EntityStore> vehicle = rider.vehicle;
          Ref<EntityStore> anchor = rider.anchor;
+         Ref<EntityStore> dummy = rider.dummy;
          int seat = rider.seat;
          buffer.run(s -> {
             VehicleRuntimeComponent current = valid(s, vehicle) ? s.getComponent(vehicle, vehicleType) : null;
@@ -450,6 +481,7 @@ public final class VehicleSeats {
             }
 
             removeAnchor(s, anchor);
+            removeAnchor(s, dummy);
          });
       }
    }
@@ -595,6 +627,24 @@ public final class VehicleSeats {
             }
          }
 
+         if (valid(store, rider.dummy)) {
+            TransformComponent dummyTransform = store.getComponent(rider.dummy, TransformComponent.getComponentType());
+            if (dummyTransform != null) {
+               dummyTransform.setPosition(position);
+               dummyTransform.getRotation().set(rotation);
+            }
+
+            HeadRotation dummyHead = store.getComponent(rider.dummy, HeadRotation.getComponentType());
+            if (dummyHead != null) {
+               dummyHead.setRotation(rotation);
+            }
+
+            MovementStatesComponent dummyStates = store.getComponent(rider.dummy, MovementStatesComponent.getComponentType());
+            if (dummyStates != null && !isSeated(dummyStates.getMovementStates(), settings)) {
+               dummyStates.setMovementStates(seatedStates(settings));
+            }
+         }
+
          Player playerComponent = store.getComponent(player, Player.getComponentType());
          TransformComponent playerTransform = store.getComponent(player, TransformComponent.getComponentType());
          if (playerComponent != null && playerTransform != null) {
@@ -612,12 +662,20 @@ public final class VehicleSeats {
             states.setMovementStates(seatedStates(settings));
          }
 
-         sendCamera(rider, runtime, seat, false, now);
+         boolean justEntered = now - rider.enteredAt < CAMERA_REPEAT_NANOS && now - rider.cameraSentAt > CAMERA_REPEAT_STEP_NANOS;
+         sendCamera(rider, runtime, seat, justEntered, now);
       }
    }
 
    /** В группе отправки обновлений: остальным игрокам — «седок пристёгнут к точке сиденья». */
-   static void queueAttachment(Ref<EntityStore> player, VehicleRiderComponent rider, Visible visible) {
+   static void queueAttachment(Store<EntityStore> store, Ref<EntityStore> player, VehicleRiderComponent rider, Visible visible) {
+      if (!rider.releasing && valid(store, rider.dummy) && valid(store, rider.anchor)) {
+         Visible dummyVisible = store.getComponent(rider.dummy, Visible.getComponentType());
+         if (dummyVisible != null) {
+            attachTo(rider.dummy, rider.anchor, rider.anchorNetworkId, dummyVisible, rider.dummyAttachedViewers, null);
+         }
+      }
+
       boolean attach = config.riders.attachForOthers && !rider.releasing && rider.anchor != null && rider.anchor.isValid();
       if (!attach) {
          if (!rider.attachedViewers.isEmpty()) {
@@ -635,33 +693,43 @@ public final class VehicleSeats {
             rider.attachDirty = false;
          }
 
-         rider.attachedViewers.retainAll(visible.visibleTo.keySet());
-         MountedUpdate update = null;
+         attachTo(player, rider.anchor, rider.anchorNetworkId, visible, rider.attachedViewers, player);
+      }
+   }
 
-         for (Entry<Ref<EntityStore>, EntityViewer> entry : visible.visibleTo.entrySet()) {
-            Ref<EntityStore> viewer = entry.getKey();
-            if (player.equals(viewer)) {
-               continue;
-            }
+   /**
+    * Досылает зрителям сущности «пристёгнута к точке сиденья». Каждому — один раз, пока он
+    * её видит, и только когда точка сиденья у него уже есть. except — кому не отправлять.
+    */
+   private static void attachTo(
+      Ref<EntityStore> entity, Ref<EntityStore> anchor, int anchorNetworkId, Visible visible, Set<Ref<EntityStore>> attached, Ref<EntityStore> except
+   ) {
+      attached.retainAll(visible.visibleTo.keySet());
+      MountedUpdate update = null;
 
-            boolean fresh = visible.newlyVisibleTo.containsKey(viewer);
-            if (rider.attachedViewers.contains(viewer) && !fresh) {
-               continue;
-            }
-
-            EntityViewer entityViewer = entry.getValue();
-            if (!entityViewer.sent.containsKey(rider.anchor)) {
-               rider.attachedViewers.remove(viewer);
-               continue;
-            }
-
-            if (update == null) {
-               update = new MountedUpdate(rider.anchorNetworkId, new Vector3f(0.0F, 0.0F, 0.0F), MountController.Minecart, null);
-            }
-
-            entityViewer.queueUpdate(player, update);
-            rider.attachedViewers.add(viewer);
+      for (Entry<Ref<EntityStore>, EntityViewer> entry : visible.visibleTo.entrySet()) {
+         Ref<EntityStore> viewer = entry.getKey();
+         if (viewer.equals(except)) {
+            continue;
          }
+
+         boolean fresh = visible.newlyVisibleTo.containsKey(viewer);
+         if (attached.contains(viewer) && !fresh) {
+            continue;
+         }
+
+         EntityViewer entityViewer = entry.getValue();
+         if (!entityViewer.sent.containsKey(anchor)) {
+            attached.remove(viewer);
+            continue;
+         }
+
+         if (update == null) {
+            update = new MountedUpdate(anchorNetworkId, new Vector3f(0.0F, 0.0F, 0.0F), MountController.Minecart, null);
+         }
+
+         entityViewer.queueUpdate(entity, update);
+         attached.add(viewer);
       }
    }
 
@@ -675,8 +743,10 @@ public final class VehicleSeats {
          movement.update(playerRef.getPacketHandler());
       }
 
+      // Кукла смотрит строго на север (рыскание 0): тогда W/A/S/D двигают её по мировым
+      // осям, даже если клиент отсчитывает движение от головы, а не от movementForceRotation.
       Vector3d target = puppetTarget(origin);
-      TeleportSystems.queueAndSendClientTeleport(playerRef, target, new Rotation3f(KEEP_ROTATION), new Rotation3f(KEEP_ROTATION), true);
+      TeleportSystems.queueAndSendClientTeleport(playerRef, target, new Rotation3f(0.0F, 0.0F, 0.0F), new Rotation3f(0.0F, 0.0F, 0.0F), true);
       rider.puppetTarget.set(target);
       rider.lastRecenterAt = now;
       rider.recenters++;
@@ -991,6 +1061,36 @@ public final class VehicleSeats {
       }
 
       return anchor;
+   }
+
+   /** Копия модели и облика седока, сидящая на месте. Если модели нет — просто без двойника. */
+   private static Ref<EntityStore> spawnDummy(Store<EntityStore> store, Ref<EntityStore> player, Vector3d position, Rotation3f rotation) {
+      ModelComponent playerModel = store.getComponent(player, ModelComponent.getComponentType());
+      if (playerModel == null || playerModel.getModel() == null) {
+         return null;
+      }
+
+      Holder<EntityStore> holder = EntityStore.REGISTRY.newHolder();
+      holder.ensureComponent(EntityStore.REGISTRY.getNonSerializedComponentType());
+      holder.addComponent(UUIDComponent.getComponentType(), UUIDComponent.randomUUID());
+      holder.addComponent(NetworkId.getComponentType(), new NetworkId(store.getExternalData().takeNextNetworkId()));
+      holder.addComponent(TransformComponent.getComponentType(), new TransformComponent(position, rotation));
+      holder.addComponent(HeadRotation.getComponentType(), new HeadRotation(rotation));
+      holder.addComponent(ModelComponent.getComponentType(), new ModelComponent(playerModel.getModel()));
+      holder.addComponent(BoundingBox.getComponentType(), new BoundingBox(new Box(ANCHOR_BOX)));
+      holder.addComponent(Invulnerable.getComponentType(), Invulnerable.INSTANCE);
+      holder.addComponent(Intangible.getComponentType(), Intangible.INSTANCE);
+      PlayerSkinComponent skin = store.getComponent(player, PlayerSkinComponent.getComponentType());
+      if (skin != null && skin.getPlayerSkin() != null) {
+         holder.addComponent(PlayerSkinComponent.getComponentType(), new PlayerSkinComponent(skin.getPlayerSkin()));
+      }
+
+      MovementStatesComponent states = new MovementStatesComponent();
+      states.setMovementStates(seatedStates(config));
+      holder.addComponent(MovementStatesComponent.getComponentType(), states);
+      holder.addComponent(dummyType, new SeatDummyComponent(player));
+      Ref<EntityStore> dummy = store.addEntity(holder, AddReason.SPAWN);
+      return dummy != null && dummy.isValid() ? dummy : null;
    }
 
    private static void removeAnchor(Store<EntityStore> store, Ref<EntityStore> anchor) {

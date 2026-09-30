@@ -38,6 +38,9 @@ import org.joml.Vector3d;
 public final class VehicleCommand extends CommandBase {
    private static final float MODEL_SCALE = 2.5F;
    private static final double NEAR = 12.0;
+   /** Права на посадку: по умолчанию есть у всех игроков (группа Adventurer). */
+   static final String RIDE_PERMISSION = "beepbeep.vehicle.ride";
+   static final String DEFAULT_PLAYER_GROUP = "hytale:Adventurer";
 
    public VehicleCommand(
       ComponentType<EntityStore, VehiclePhysicsComponent> probeType, ComponentType<EntityStore, VehicleRuntimeComponent> type, VehicleProfiles profiles, Path debugFolder
@@ -144,7 +147,8 @@ public final class VehicleCommand extends CommandBase {
    private static final class MountVehicleCommand extends AbstractPlayerCommand {
       MountVehicleCommand() {
          super("mount", "Sit in the nearest free seat of the nearest vehicle");
-         this.requirePermission("beepbeep.vehicle.admin");
+         this.requirePermission(RIDE_PERMISSION);
+         this.setPermissionGroups(DEFAULT_PLAYER_GROUP);
       }
 
       @Override
@@ -161,7 +165,8 @@ public final class VehicleCommand extends CommandBase {
 
       SeatVehicleCommand() {
          super("seat", "Sit in (or move to) seat number N of the nearest vehicle");
-         this.requirePermission("beepbeep.vehicle.admin");
+         this.requirePermission(RIDE_PERMISSION);
+         this.setPermissionGroups(DEFAULT_PLAYER_GROUP);
          this.seat = this.withRequiredArg("number", "seat number, from 1", ArgTypes.INTEGER);
       }
 
@@ -180,7 +185,8 @@ public final class VehicleCommand extends CommandBase {
    private static final class DismountVehicleCommand extends AbstractPlayerCommand {
       DismountVehicleCommand() {
          super("dismount", "Leave the vehicle");
-         this.requirePermission("beepbeep.vehicle.admin");
+         this.requirePermission(RIDE_PERMISSION);
+         this.setPermissionGroups(DEFAULT_PLAYER_GROUP);
       }
 
       @Override
@@ -196,7 +202,8 @@ public final class VehicleCommand extends CommandBase {
 
       ViewVehicleCommand() {
          super("view", "Seat camera: first, third (mouse orbit) or chase");
-         this.requirePermission("beepbeep.vehicle.admin");
+         this.requirePermission(RIDE_PERMISSION);
+         this.setPermissionGroups(DEFAULT_PLAYER_GROUP);
          this.mode = this.withRequiredArg("mode", "first/third/chase", ArgTypes.STRING);
       }
 
@@ -210,7 +217,8 @@ public final class VehicleCommand extends CommandBase {
    private static final class SeatsVehicleCommand extends AbstractPlayerCommand {
       SeatsVehicleCommand() {
          super("seats", "List the seats of the nearest vehicle");
-         this.requirePermission("beepbeep.vehicle.admin");
+         this.requirePermission(RIDE_PERMISSION);
+         this.setPermissionGroups(DEFAULT_PLAYER_GROUP);
       }
 
       @Override
