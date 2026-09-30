@@ -1,0 +1,39 @@
+### Временный workflow: печатает то, что нужно узнать про API сервера Hytale.
+### Запускается при изменении самого файла и вручную. Потом удаляется.
+name: Dump Hytale API
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/api-dump.yml']
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-java@v5
+      with:
+        java-version: '25'
+        distribution: 'temurin'
+    - uses: gradle/actions/setup-gradle@v5
+    - name: Build (подтягивает зависимости сервера)
+      continue-on-error: true
+      run: ./gradlew build
+    - name: Anchor и UICommandBuilder
+      run: |
+        set +e
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        echo "JAR=$JAR"
+        unzip -l "$JAR" | awk '{print $4}' | grep -E '/Anchor[^/]*\.class$|/Value\.class$|ui/builder/' | head -30
+        for c in $(unzip -l "$JAR" | awk '{print $4}' | grep -E '(^|/)Anchor\.class$|server/core/ui/Value\.class$' | sed 's/\.class$//; s#/#.#g'); do
+          echo "──────── $c"; javap -cp "$JAR" -p "$c"
+        done
+        echo "──────── UICommandBuilder"
+        javap -cp "$JAR" com.hypixel.hytale.server.core.ui.builder.UICommandBuilder
+        echo "──────── InteractiveCustomUIPage"
+        javap -cp "$JAR" -p com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage
+        echo "──────── CustomUIPage"
+        javap -cp "$JAR" -p com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage
+        echo "──────── CustomUIEventBindingType"
+        javap -cp "$JAR" com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType
