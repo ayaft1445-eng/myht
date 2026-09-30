@@ -5,13 +5,13 @@
 @Card = TextButtonStyle(
   Default: (Background: #c9b3ff(0.04), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.16), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 26, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.32), LabelStyle: (FontSize: 24, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 @Flat = TextButtonStyle(
   Default: (Background: #c9b3ff(0.06), LabelStyle: (FontSize: 15, TextColor: #bfb2d9, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
   Hovered: (Background: #a35dff(0.55), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 15, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+  Pressed: (Background: #a35dff(0.80), LabelStyle: (FontSize: 13, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
 );
 
 Group {
@@ -57,6 +57,25 @@ Group {
                 Group {
                   FlexWeight: 1;
 
+                  // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
+                  Group #FxBackButtonA {
+                    Anchor: (Full: 0);
+                    Visible: false;
+                    Background: #a35dff(0.26);
+                    Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
+                    Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
+                    Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
+                    Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
+                  }
+                  Group #FxBackButtonB {
+                    Anchor: (Full: 0);
+                    Visible: false;
+                    Background: #d9c2ff(0.34);
+                    Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
+                    Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
+                    Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
+                    Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
+                  }
                   TextButton #BackButton {
                     Text: "НАЗАД";
                     Anchor: (Full: 0);
@@ -126,6 +145,25 @@ Group {
                   Group { Anchor: (Height: 49); Background: #291941(0.5); }
                   Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
                   Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
+                Group #FxMode0A {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #a35dff(0.26);
+                  Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
+                  Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
+                }
+                Group #FxMode0B {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #d9c2ff(0.34);
+                  Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
+                  Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
                 }
                 TextButton #Mode0 {
                   Text: "";
@@ -197,6 +235,25 @@ Group {
                   Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
                   Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
                 }
+                // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
+                Group #FxMode1A {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #a35dff(0.26);
+                  Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
+                  Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
+                }
+                Group #FxMode1B {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #d9c2ff(0.34);
+                  Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
+                  Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
+                }
                 TextButton #Mode1 {
                   Text: "";
                   Anchor: (Full: 0);
@@ -267,6 +324,25 @@ Group {
                   Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
                   Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
                 }
+                // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
+                Group #FxMode2A {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #a35dff(0.26);
+                  Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
+                  Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
+                }
+                Group #FxMode2B {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #d9c2ff(0.34);
+                  Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
+                  Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
+                }
                 TextButton #Mode2 {
                   Text: "";
                   Anchor: (Full: 0);
@@ -336,6 +412,25 @@ Group {
                   Group { Anchor: (Height: 49); Background: #291941(0.5); }
                   Group { Anchor: (Height: 49); Background: #2e1b47(0.5); }
                   Group { Anchor: (Height: 49); Background: #321e4e(0.5); }
+                }
+                // Кадры анимации нажатия: их по очереди включает сервер (HubMenuPage).
+                Group #FxMode3A {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #a35dff(0.26);
+                  Group { Anchor: (Top: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Bottom: 0, Height: 2); Background: #a35dff; }
+                  Group { Anchor: (Left: 0, Width: 2); Background: #a35dff; }
+                  Group { Anchor: (Right: 0, Width: 2); Background: #a35dff; }
+                }
+                Group #FxMode3B {
+                  Anchor: (Full: 0);
+                  Visible: false;
+                  Background: #d9c2ff(0.34);
+                  Group { Anchor: (Top: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Bottom: 0, Height: 4); Background: #ffffff; }
+                  Group { Anchor: (Left: 0, Width: 4); Background: #ffffff; }
+                  Group { Anchor: (Right: 0, Width: 4); Background: #ffffff; }
                 }
                 TextButton #Mode3 {
                   Text: "";
