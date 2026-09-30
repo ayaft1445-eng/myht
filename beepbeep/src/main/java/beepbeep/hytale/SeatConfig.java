@@ -33,6 +33,11 @@ public final class SeatConfig {
       public boolean useWish = false;
       /** Тормоз, когда газ не нажат: 1 — стоять на месте (как раньше), 0 — катиться накатом. */
       public double idleBrake = 1.0;
+      /**
+       * Отпускание клавиши замечается, когда кукла начинает тормозить: её шаг меньше этой
+       * доли от недавнего максимума. 0 — ждать полной остановки куклы.
+       */
+      public double releaseRatio = 0.8;
    }
 
    public static final class Puppet {
@@ -71,6 +76,8 @@ public final class SeatConfig {
       public boolean lockView = true;
       /** Не наводиться мышью на блоки и существа, пока сидишь (чтобы случайно не ломать блоки). */
       public boolean disableTargeting = true;
+      /** Поправка поворота камеры, градусы: 180 — если камера смотрит назад, а не вперёд машины. */
+      public double yawOffsetDegrees = 0.0;
    }
 
    public static final class Riders {
@@ -135,6 +142,7 @@ public final class SeatConfig {
       this.controls.exitHoldSeconds = clamp(this.controls.exitHoldSeconds, 0.2, 5.0);
       this.controls.enterGraceSeconds = clamp(this.controls.enterGraceSeconds, 0.0, 10.0);
       this.controls.idleBrake = clamp(this.controls.idleBrake, 0.0, 1.0);
+      this.controls.releaseRatio = clamp(this.controls.releaseRatio, 0.0, 0.99);
       this.puppet.altitude = clamp(this.puppet.altitude, -64.0, 316.0);
       this.puppet.relativeHeight = clamp(this.puppet.relativeHeight, 0.0, 250.0);
       this.puppet.flySpeed = clamp(this.puppet.flySpeed, 0.1, 10.0);
@@ -175,6 +183,7 @@ public final class SeatConfig {
       settings.invertForward = this.controls.invertForward;
       settings.invertSteer = this.controls.invertSteer;
       settings.deadzone = this.controls.deadzone;
+      settings.releaseRatio = this.controls.releaseRatio;
       return settings;
    }
 

@@ -33,6 +33,13 @@ public final class SeatInputDecoder {
       public long gapResetNanos = 500_000_000L;
       /** Сколько после подъёма/спуска считать пробел/приседание зажатыми. */
       public long verticalHoldNanos = 180_000_000L;
+      /**
+       * Клавишу отпустили, если кукла замедляется и её шаг стал меньше этой доли от
+       * недавнего максимума: дальше она только скользит по инерции. 0 — не распознавать.
+       */
+      public double releaseRatio = 0.8;
+      /** Насколько быстро забывается недавний максимум шага (за пакет). */
+      public double peakDecay = 0.97;
    }
 
    public static final class Control {
@@ -63,6 +70,10 @@ public final class SeatInputDecoder {
    private double dirX;
    private double dirZ;
    private long dirAt;
+   private double prevStep;
+   private double peakStep;
+   private boolean coasting;
+   private int stillPackets;
    private boolean statesKnown;
    private boolean horizontalIdle;
    /** Клиент хоть раз прислал horizontalIdle = false, значит флагу можно верить. */
@@ -143,10 +154,27 @@ public final class SeatInputDecoder {
 
       this.positionAt = now;
       if (horizontal > this.settings.minStep) {
-         this.dirX = dx / horizontal;
-         this.dirZ = dz / horizontal;
-         this.dirAt = now;
+         boolean slowing = this.settings.releaseRatio > 0.0
+            && horizontal < this.prevStep * 0.995
+            && horizontal < this.peakStep * this.settings.releaseRatio;
+         this.peakStep = Math.max(this.peakStep * this.settings.peakDecay, horizontal);
+         this.coasting = slowing;
+         this.stillPackets = 0;
+         if (!slowing) {
+            this.dirX = dx / horizontal;
+            this.dirZ = dz / horizontal;
+            this.dirAt = now;
+         }
+      } else {
+         this.peakStep *= this.settings.peakDecay;
+         // Два пакета подряд без сдвига — кукла стоит, клавиши отпущены. Один такой пакет
+         // бывает и при зажатой клавише (например, отдельный пакет поворота головы).
+         if (++this.stillPackets >= 2 && this.settings.releaseRatio > 0.0) {
+            this.coasting = true;
+         }
       }
+
+      this.prevStep = horizontal;
 
       if (dy > this.settings.minStep) {
          this.upAt = now;
@@ -219,6 +247,10 @@ public final class SeatInputDecoder {
       return this.lookYaw;
    }
 
+   public boolean coasting() {
+      return this.coasting;
+   }
+
    /** Сбрасывает опору после телепорта, чтобы прыжок не посчитался движением. */
    public void reset(double x, double y, double z, long now) {
       this.havePosition = true;
@@ -253,14 +285,14 @@ public final class SeatInputDecoder {
          x = this.wishX;
          z = this.wishZ;
          source = "wish";
-      } else if (!released && this.dirAt != 0L && now - this.dirAt < s.holdNanos) {
+      } else if (!released && !this.coasting && this.dirAt != 0L && now - this.dirAt < s.holdNanos) {
          x = this.dirX;
          z = this.dirZ;
          source = "move";
       } else {
          x = 0.0;
          z = 0.0;
-         source = released ? "idle" : "none";
+         source = released ? "idle" : (this.coasting ? "coast" : "none");
       }
 
       double forward;

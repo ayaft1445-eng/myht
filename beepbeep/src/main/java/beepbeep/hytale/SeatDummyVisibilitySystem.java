@@ -55,6 +55,10 @@ public final class SeatDummyVisibilitySystem extends EntityTickingSystem<EntityS
 
    @Override
    public void tick(float dt, int index, ArchetypeChunk<EntityStore> chunk, Store<EntityStore> store, CommandBuffer<EntityStore> buffer) {
+      if (!VehicleSeats.anyDummies()) {
+         return;
+      }
+
       EntityViewer viewer = chunk.getComponent(index, EntityViewer.getComponentType());
       if (viewer == null || viewer.visible.isEmpty()) {
          return;

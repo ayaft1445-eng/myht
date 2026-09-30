@@ -75,6 +75,7 @@ final class SeatCamera {
     * @param roll крен машины, радианы
     */
    static SetServerCamera packet(View view, SeatConfig.Camera config, int vehicleNetworkId, int anchorNetworkId, double yaw, double pitch, double roll) {
+      yaw += Math.toRadians(config.yawOffsetDegrees);
       ServerCameraSettings settings = new ServerCameraSettings();
       settings.attachedToType = AttachedToType.EntityId;
       settings.followAttachedEntity = true;

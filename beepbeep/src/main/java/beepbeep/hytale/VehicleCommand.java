@@ -469,7 +469,7 @@ public final class VehicleCommand extends CommandBase {
 
             context.sendMessage(
                Message.raw(
-                  "Машина создана, мест: " + runtime.seatCount() + ". Подойдите и нажмите F (или /vehicle mount), выйти — зажать «присесть» или F."
+                  "Машина создана, мест: " + runtime.seatCount() + ". Подойдите и нажмите F (или /vehicle mount), выйти — зажать «присесть» (или /vehicle dismount)."
                )
             );
          } catch (Exception error) {

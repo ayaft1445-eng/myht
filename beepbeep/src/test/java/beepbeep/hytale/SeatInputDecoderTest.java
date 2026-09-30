@@ -106,6 +106,73 @@ class SeatInputDecoderTest {
       assertEquals(0.0, d.evaluate(now + 300_000_000L).throttle);
    }
 
+   /**
+    * Полёт с разгоном и торможением, как у клиента: скорость экспоненциально тянется к
+    * скорости клавиши. Возвращает время последнего пакета.
+    */
+   private static long glide(SeatInputDecoder d, long start, double[] velocity, double targetX, double targetZ, int packets) {
+      long now = start;
+
+      for (int i = 0; i < packets; i++) {
+         now += TICK;
+         velocity[0] += (targetX - velocity[0]) * 0.35;
+         velocity[1] += (targetZ - velocity[1]) * 0.35;
+         d.onPosition(false, velocity[0], 0.0, velocity[1], false, now);
+      }
+
+      return now;
+   }
+
+   @Test
+   void releaseIsNoticedWhileStillGliding() {
+      SeatInputDecoder d = decoder();
+      double[] velocity = new double[2];
+      long now = glide(d, 0L, velocity, 0.0, -0.027, 20);
+      assertEquals(1.0, d.evaluate(now).throttle);
+      now = glide(d, now, velocity, 0.0, 0.0, 2);
+      assertEquals(0.0, d.evaluate(now).throttle, "после отпускания газа кукла ещё скользит, но газа нет");
+      assertEquals("coast", d.evaluate(now).source);
+   }
+
+   @Test
+   void steeringReleasesQuicklyWhileThrottleHeld() {
+      SeatInputDecoder d = decoder();
+      double[] velocity = new double[2];
+      long now = glide(d, 0L, velocity, 0.019, -0.019, 20);
+      assertEquals(1.0, d.evaluate(now).steer);
+      now = glide(d, now, velocity, 0.0, -0.027, 6);
+      SeatInputDecoder.Control c = d.evaluate(now);
+      assertEquals(0.0, c.steer);
+      assertEquals(1.0, c.throttle);
+   }
+
+   @Test
+   void steadyJitterDoesNotReleaseKeys() {
+      SeatInputDecoder d = decoder();
+      long now = 0L;
+
+      for (int i = 0; i < 60; i++) {
+         now += TICK;
+         double step = 0.027 * (i % 2 == 0 ? 1.03 : 0.97);
+         d.onPosition(false, 0.0, 0.0, -step, false, now);
+         assertEquals(1.0, d.evaluate(now).throttle, "пакет " + i);
+      }
+   }
+
+   @Test
+   void oneStillPacketDoesNotReleaseButTwoDo() {
+      SeatInputDecoder d = decoder();
+      long now = fly(d, 0L, 0.0, 0.0, -0.027, 5);
+      now += TICK;
+      d.onPosition(false, 0.0, 0.0, 0.0, false, now);
+      assertEquals(1.0, d.evaluate(now).throttle);
+      now += TICK;
+      d.onPosition(false, 0.0, 0.0, 0.0, false, now);
+      assertEquals(0.0, d.evaluate(now).throttle);
+      now = fly(d, now, 0.0, 0.0, -0.027, 1);
+      assertEquals(1.0, d.evaluate(now).throttle, "снова нажали — снова газ");
+   }
+
    @Test
    void jumpUpMeansHandbrake() {
       SeatInputDecoder d = decoder();

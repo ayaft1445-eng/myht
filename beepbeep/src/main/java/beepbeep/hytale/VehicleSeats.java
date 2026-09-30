@@ -50,6 +50,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -75,6 +76,8 @@ import org.joml.Vector3f;
 public final class VehicleSeats {
    private static final ConcurrentHashMap<UUID, SeatInput> INPUTS = new ConcurrentHashMap<>();
    private static final ConcurrentHashMap<UUID, VehicleRiderComponent> RIDERS = new ConcurrentHashMap<>();
+   /** Сколько двойников сейчас в мирах: пока их нет, фильтр видимости ничего не делает. */
+   private static final AtomicInteger DUMMIES = new AtomicInteger();
    private static final long RECENTER_COOLDOWN_NANOS = 300_000_000L;
    private static final long LOST_PUPPET_RETRY_NANOS = 1_500_000_000L;
    private static final long CAMERA_INTERVAL_NANOS = 30_000_000L;
@@ -246,7 +249,11 @@ public final class VehicleSeats {
       rider.view = SeatCamera.View.parse(settings.camera.defaultView, SeatCamera.View.CHASE);
       rider.enteredAt = now;
       if (settings.riders.selfModel) {
-         rider.dummy = spawnDummy(store, player, seatPosition, seatRotation);
+         try {
+            rider.dummy = spawnDummy(store, player, seatPosition, seatRotation);
+         } catch (RuntimeException error) {
+            rider.dummy = null;
+         }
       }
 
       input.debug(runtime.debug);
@@ -286,8 +293,8 @@ public final class VehicleSeats {
       playerRef.sendMessage(
          Message.raw(
             seatInfo.driver
-               ? "W/S — газ и задний ход, A/D — руль, пробел — ручник. Выйти — зажать «присесть» или F. Средняя кнопка мыши — вид (/vehicle view first|third|chase)."
-               : "Выйти — зажать «присесть» или F. Пересесть — /vehicle seat <номер>. Средняя кнопка мыши — вид."
+               ? "W/S — газ и задний ход, A/D — руль, пробел — ручник. Выйти — зажать «присесть» (или /vehicle dismount). Средняя кнопка мыши — вид (/vehicle view first|third|chase)."
+               : "Выйти — зажать «присесть» (или /vehicle dismount). Пересесть — /vehicle seat <номер>. Средняя кнопка мыши — вид."
          )
       );
       return null;
@@ -393,7 +400,7 @@ public final class VehicleSeats {
 
       detachFromViewers(store, player, rider);
       removeAnchor(store, rider.anchor);
-      removeAnchor(store, rider.dummy);
+      removeDummy(store, rider.dummy);
       store.tryRemoveComponent(player, riderType);
       // Сначала телепорт к двери, пока кукла ещё летает, потом обычные настройки движения:
       // так персонаж не успевает начать падать с высоты куклы.
@@ -481,7 +488,7 @@ public final class VehicleSeats {
             }
 
             removeAnchor(s, anchor);
-            removeAnchor(s, dummy);
+            removeDummy(s, dummy);
          });
       }
    }
@@ -1090,7 +1097,23 @@ public final class VehicleSeats {
       holder.addComponent(MovementStatesComponent.getComponentType(), states);
       holder.addComponent(dummyType, new SeatDummyComponent(player));
       Ref<EntityStore> dummy = store.addEntity(holder, AddReason.SPAWN);
-      return dummy != null && dummy.isValid() ? dummy : null;
+      if (dummy != null && dummy.isValid()) {
+         DUMMIES.incrementAndGet();
+         return dummy;
+      } else {
+         return null;
+      }
+   }
+
+   static boolean anyDummies() {
+      return DUMMIES.get() > 0;
+   }
+
+   private static void removeDummy(Store<EntityStore> store, Ref<EntityStore> dummy) {
+      if (valid(store, dummy)) {
+         store.removeEntity(dummy, RemoveReason.REMOVE);
+         DUMMIES.updateAndGet(count -> Math.max(0, count - 1));
+      }
    }
 
    private static void removeAnchor(Store<EntityStore> store, Ref<EntityStore> anchor) {
