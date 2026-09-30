@@ -62,10 +62,15 @@ Group {
                 Group {
                   FlexWeight: 1;
 
-                  TextButton #BackButton {
-                    Text: "НАЗАД · BACK";
+                  // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+                  Group #WobBackButton {
                     Anchor: (Full: 0);
-                    Style: @Flat;
+
+                    TextButton #BackButton {
+                      Text: "НАЗАД · BACK";
+                      Anchor: (Full: 0);
+                      Style: @Flat;
+                    }
                   }
                 }
 
@@ -167,10 +172,15 @@ Group {
                         Group {
                           FlexWeight: 1;
 
-                          TextButton #LangRu {
-                            Text: "РУССКИЙ";
+                          // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+                          Group #WobLangRu {
                             Anchor: (Full: 0);
-                            Style: @Lang;
+
+                            TextButton #LangRu {
+                              Text: "РУССКИЙ";
+                              Anchor: (Full: 0);
+                              Style: @Lang;
+                            }
                           }
                         }
 
@@ -200,10 +210,15 @@ Group {
                         Group {
                           FlexWeight: 1;
 
-                          TextButton #LangEn {
-                            Text: "ENGLISH";
+                          // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+                          Group #WobLangEn {
                             Anchor: (Full: 0);
-                            Style: @Lang;
+
+                            TextButton #LangEn {
+                              Text: "ENGLISH";
+                              Anchor: (Full: 0);
+                              Style: @Lang;
+                            }
                           }
                         }
 

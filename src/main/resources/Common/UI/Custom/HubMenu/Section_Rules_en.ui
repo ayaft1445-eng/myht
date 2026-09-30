@@ -55,10 +55,15 @@ Group {
                 Group {
                   FlexWeight: 1;
 
-                  TextButton #BackButton {
-                    Text: "BACK";
+                  // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+                  Group #WobBackButton {
                     Anchor: (Full: 0);
-                    Style: @Flat;
+
+                    TextButton #BackButton {
+                      Text: "BACK";
+                      Anchor: (Full: 0);
+                      Style: @Flat;
+                    }
                   }
                 }
 

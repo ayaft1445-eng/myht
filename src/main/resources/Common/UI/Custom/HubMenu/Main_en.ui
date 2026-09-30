@@ -68,25 +68,30 @@ Group {
       Group {
         Anchor: (Width: 460);
 
-        Group { Anchor: (Full: 0); Background: #120c22; }
-        Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Minigames.png"); }
-
-        TextButton #BtnMinigames {
-          Text: "";
+        // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+        Group #WobBtnMinigames {
           Anchor: (Full: 0);
-          Style: @Card;
-        }
 
-        Label {
-          Text: "4 MODES";
-          Anchor: (Height: 18, Bottom: 62, Left: 26);
-          Style: (FontSize: 14, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
-        }
+          Group { Anchor: (Full: 0); Background: #120c22; }
+          Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Minigames.png"); }
 
-        Label {
-          Text: "MINIGAMES";
-          Anchor: (Height: 38, Bottom: 22, Left: 24);
-          Style: (FontSize: 32, TextColor: #ffffff, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+          TextButton #BtnMinigames {
+            Text: "";
+            Anchor: (Full: 0);
+            Style: @Card;
+          }
+
+          Label {
+            Text: "4 MODES";
+            Anchor: (Height: 18, Bottom: 62, Left: 26);
+            Style: (FontSize: 14, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Label {
+            Text: "MINIGAMES";
+            Anchor: (Height: 38, Bottom: 22, Left: 24);
+            Style: (FontSize: 32, TextColor: #ffffff, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+          }
         }
       }
 
@@ -106,25 +111,30 @@ Group {
       Group {
         Anchor: (Width: 250);
 
-        Group { Anchor: (Full: 0); Background: #120c22; }
-        Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_News.png"); }
-
-        TextButton #BtnNews {
-          Text: "";
+        // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+        Group #WobBtnNews {
           Anchor: (Full: 0);
-          Style: @Card;
-        }
 
-        Label {
-          Text: "WHAT'S NEW";
-          Anchor: (Height: 16, Bottom: 56);
-          Style: (FontSize: 13, TextColor: #8a7aa8, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-        }
+          Group { Anchor: (Full: 0); Background: #120c22; }
+          Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_News.png"); }
 
-        Label {
-          Text: "NEWS";
-          Anchor: (Height: 30, Bottom: 22);
-          Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          TextButton #BtnNews {
+            Text: "";
+            Anchor: (Full: 0);
+            Style: @Card;
+          }
+
+          Label {
+            Text: "WHAT'S NEW";
+            Anchor: (Height: 16, Bottom: 56);
+            Style: (FontSize: 13, TextColor: #8a7aa8, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Label {
+            Text: "NEWS";
+            Anchor: (Height: 30, Bottom: 22);
+            Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
         }
       }
 
@@ -134,25 +144,30 @@ Group {
       Group {
         Anchor: (Width: 250);
 
-        Group { Anchor: (Full: 0); Background: #120c22; }
-        Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Rules.png"); }
-
-        TextButton #BtnRules {
-          Text: "";
+        // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+        Group #WobBtnRules {
           Anchor: (Full: 0);
-          Style: @Card;
-        }
 
-        Label {
-          Text: "MUST READ";
-          Anchor: (Height: 16, Bottom: 56);
-          Style: (FontSize: 13, TextColor: #8a7aa8, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-        }
+          Group { Anchor: (Full: 0); Background: #120c22; }
+          Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Card_Rules.png"); }
 
-        Label {
-          Text: "RULES";
-          Anchor: (Height: 30, Bottom: 22);
-          Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          TextButton #BtnRules {
+            Text: "";
+            Anchor: (Full: 0);
+            Style: @Card;
+          }
+
+          Label {
+            Text: "MUST READ";
+            Anchor: (Height: 16, Bottom: 56);
+            Style: (FontSize: 13, TextColor: #8a7aa8, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
+
+          Label {
+            Text: "RULES";
+            Anchor: (Height: 30, Bottom: 22);
+            Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
+          }
         }
       }
 
@@ -167,25 +182,30 @@ Group {
         Group {
           Anchor: (Height: 134);
 
-          Group { Anchor: (Full: 0); Background: #120c22; }
-          Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Row_Active.png"); }
-
-          TextButton #BtnLanguage {
-            Text: "";
+          // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+          Group #WobBtnLanguage {
             Anchor: (Full: 0);
-            Style: @Card;
-          }
 
-          Label {
-            Text: "РУССКИЙ · ENGLISH";
-            Anchor: (Height: 16, Top: 38, Left: 92);
-            Style: (FontSize: 12, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
-          }
+            Group { Anchor: (Full: 0); Background: #120c22; }
+            Group { Anchor: (Full: 0); Background: (TexturePath: "Assets/Row_Active.png"); }
 
-          Label {
-            Text: "LANGUAGE";
-            Anchor: (Height: 28, Top: 60, Left: 90);
-            Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+            TextButton #BtnLanguage {
+              Text: "";
+              Anchor: (Full: 0);
+              Style: @Card;
+            }
+
+            Label {
+              Text: "РУССКИЙ · ENGLISH";
+              Anchor: (Height: 16, Top: 38, Left: 92);
+              Style: (FontSize: 12, TextColor: #8a7aa8, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+            }
+
+            Label {
+              Text: "LANGUAGE";
+              Anchor: (Height: 28, Top: 60, Left: 90);
+              Style: (FontSize: 23, TextColor: #ffffff, HorizontalAlignment: Start, VerticalAlignment: Center, RenderBold: true);
+            }
           }
         }
 
@@ -265,10 +285,18 @@ Group {
 
         Group { Anchor: (Width: 8); }
 
-        TextButton #LangRu {
-          Text: "РУССКИЙ";
+        Group {
           FlexWeight: 1;
-          Style: @ChipOff;
+          // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+          Group #WobLangRu {
+            Anchor: (Full: 0);
+
+            TextButton #LangRu {
+              Text: "РУССКИЙ";
+              Style: @ChipOff;
+              Anchor: (Full: 0);
+            }
+          }
         }
       }
 
@@ -287,10 +315,18 @@ Group {
 
         Group { Anchor: (Width: 8); }
 
-        TextButton #LangEn {
-          Text: "ENGLISH";
+        Group {
           FlexWeight: 1;
-          Style: @ChipOn;
+          // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+          Group #WobLangEn {
+            Anchor: (Full: 0);
+
+            TextButton #LangEn {
+              Text: "ENGLISH";
+              Style: @ChipOn;
+              Anchor: (Full: 0);
+            }
+          }
         }
       }
 
@@ -299,10 +335,18 @@ Group {
 
     Group { Anchor: (Height: 12); }
 
-    TextButton #CloseButton {
-      Text: "CLOSE";
+    Group {
       Anchor: (Height: 44);
-      Style: @Close;
+      // Слой «дёргания» при наведении: его Anchor двигает сервер (HubMenuPage).
+      Group #WobCloseButton {
+        Anchor: (Full: 0);
+
+        TextButton #CloseButton {
+          Text: "CLOSE";
+          Style: @Close;
+          Anchor: (Full: 0);
+        }
+      }
     }
   }
 }
