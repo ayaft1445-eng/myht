@@ -45,8 +45,11 @@ jobs:
         path: emotes/build/libs/*.jar
         if-no-files-found: error
 
+    # Если у токена Actions нет права писать релизы (Settings → Actions →
+    # Workflow permissions), jar остаётся в артефакте сборки, а сборка зелёной.
     - name: Publish jar to Releases
       if: github.event_name == 'push'
+      continue-on-error: true
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
