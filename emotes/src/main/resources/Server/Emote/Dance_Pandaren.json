@@ -1,0 +1,7 @@
+{
+  "Name": "danceemotes.pandaren.name",
+  "Animation": "Characters/Animations/Emotes/DanceEmotes/Dance_Pandaren.blockyanim",
+  "Icon": "Icons/Emotes/Dance_Pandaren.png",
+  "IsLooping": true,
+  "HideItemInHand": true
+}

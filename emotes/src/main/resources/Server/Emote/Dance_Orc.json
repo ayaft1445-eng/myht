@@ -1,0 +1,7 @@
+{
+  "Name": "danceemotes.orc.name",
+  "Animation": "Characters/Animations/Emotes/DanceEmotes/Dance_Orc.blockyanim",
+  "Icon": "Icons/Emotes/Dance_Orc.png",
+  "IsLooping": true,
+  "HideItemInHand": true
+}

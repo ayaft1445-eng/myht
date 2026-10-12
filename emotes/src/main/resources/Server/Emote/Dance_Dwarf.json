@@ -1,0 +1,7 @@
+{
+  "Name": "danceemotes.dwarf.name",
+  "Animation": "Characters/Animations/Emotes/DanceEmotes/Dance_Dwarf.blockyanim",
+  "Icon": "Icons/Emotes/Dance_Dwarf.png",
+  "IsLooping": true,
+  "HideItemInHand": true
+}

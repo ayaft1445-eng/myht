@@ -3,6 +3,11 @@ name: Build plugin jar
 on:
   push:
     branches: [ "**" ]
+    # Мод эмоций собирается своим workflow (emotes.yml) и не должен
+    # перезаписывать релиз HubMenu.
+    paths-ignore:
+      - 'emotes/**'
+      - '.github/workflows/emotes.yml'
   pull_request:
   workflow_dispatch:
 
