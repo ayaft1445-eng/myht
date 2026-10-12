@@ -20,26 +20,16 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       continue-on-error: true
       run: ./gradlew build
-    - name: Эмоции в сервере
+    - name: Где регистрируется EmoteAsset
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        echo "JAR=$JAR"
-        echo "──────── zip-архивы ассетов в кэше"
-        find ~/.gradle ~ -maxdepth 8 -iname '*assets*.zip' 2>/dev/null | head
-        echo "──────── классы с Emote"
-        unzip -l "$JAR" | awk '{print $4}' | grep -i emote | head -60
-        echo "──────── ресурсы (не class) с emote/anim"
-        unzip -l "$JAR" | awk '{print $4}' | grep -v '\.class$' | grep -iE 'emote|blockyanim|animation' | head -40
-        for c in $(unzip -l "$JAR" | awk '{print $4}' | grep -i emote | grep '\.class$' | grep -v 'protocol/packets' | sed 's/\.class$//; s#/#.#g' | head -25); do
-          echo "════════ $c"
-          javap -cp "$JAR" -p "$c" | head -60
-          echo "── строки"
-          javap -cp "$JAR" -c -p "$c" | grep -oE 'String [^ ].*' | sort -u | head -60
-        done
-        echo "──────── AssetPack / manifest"
-        for c in com.hypixel.hytale.common.plugin.PluginManifest; do javap -cp "$JAR" -c -p "$c" | grep -oE 'String [^ ].*' | sort -u | head -60; done
-        echo "──────── строки Emote в любых классах"
         mkdir -p /tmp/srv && unzip -oq "$JAR" -d /tmp/srv
-        grep -rla --include='*.class' -i 'emote' /tmp/srv | head -40
-        grep -rhao --include='*.class' -E '[A-Za-z0-9_/.-]*[Ee]mote[A-Za-z0-9_/.-]*' /tmp/srv | sort | uniq -c | sort -rn | head -80
+        cd /tmp/srv
+        for f in $(grep -rla --include='*.class' -E 'cosmetics/EmoteAsset|getEmotesInGame|PlayEmote' . | grep -v 'protocol/' ); do
+          c=$(echo "$f" | sed 's#^\./##; s/\.class$//; s#/#.#g')
+          echo "════════ $c"
+          javap -cp /tmp/srv -c -p "$c" | grep -nE 'ldc|EmoteAsset|Emote|setPath|Path|invoke.*(build|register|setPath|loadsAfter)' | grep -vE 'lambda\$' | head -80
+        done
+        echo "──────── строки путей ассетов (setPath) в загрузчике"
+        for c in $(grep -rla --include='*.class' 'setPath' com/hypixel/hytale/server/core/asset | head -5 | sed 's#^\./##; s/\.class$//; s#/#.#g'); do echo "== $c"; javap -cp /tmp/srv -c -p "$c" | grep -B3 'setPath' | grep ldc | head -80; done
