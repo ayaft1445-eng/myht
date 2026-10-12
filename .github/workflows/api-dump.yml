@@ -1,0 +1,45 @@
+### Временный workflow: печатает то, что нужно узнать про API сервера Hytale.
+### Запускается при изменении самого файла и вручную. Потом удаляется.
+name: Dump Hytale API
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/api-dump.yml']
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-java@v5
+      with:
+        java-version: '25'
+        distribution: 'temurin'
+    - uses: gradle/actions/setup-gradle@v5
+    - name: Build (подтягивает зависимости сервера)
+      continue-on-error: true
+      run: ./gradlew build
+    - name: Эмоции в сервере
+      run: |
+        set +e
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        echo "JAR=$JAR"
+        echo "──────── zip-архивы ассетов в кэше"
+        find ~/.gradle ~ -maxdepth 8 -iname '*assets*.zip' 2>/dev/null | head
+        echo "──────── классы с Emote"
+        unzip -l "$JAR" | awk '{print $4}' | grep -i emote | head -60
+        echo "──────── ресурсы (не class) с emote/anim"
+        unzip -l "$JAR" | awk '{print $4}' | grep -v '\.class$' | grep -iE 'emote|blockyanim|animation' | head -40
+        for c in $(unzip -l "$JAR" | awk '{print $4}' | grep -i emote | grep '\.class$' | grep -v 'protocol/packets' | sed 's/\.class$//; s#/#.#g' | head -25); do
+          echo "════════ $c"
+          javap -cp "$JAR" -p "$c" | head -60
+          echo "── строки"
+          javap -cp "$JAR" -c -p "$c" | grep -oE 'String [^ ].*' | sort -u | head -60
+        done
+        echo "──────── AssetPack / manifest"
+        for c in com.hypixel.hytale.common.plugin.PluginManifest; do javap -cp "$JAR" -c -p "$c" | grep -oE 'String [^ ].*' | sort -u | head -60; done
+        echo "──────── строки Emote в любых классах"
+        mkdir -p /tmp/srv && unzip -oq "$JAR" -d /tmp/srv
+        grep -rla --include='*.class' -i 'emote' /tmp/srv | head -40
+        grep -rhao --include='*.class' -E '[A-Za-z0-9_/.-]*[Ee]mote[A-Za-z0-9_/.-]*' /tmp/srv | sort | uniq -c | sort -rn | head -80
