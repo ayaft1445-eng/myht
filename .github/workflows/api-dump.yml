@@ -20,16 +20,14 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       continue-on-error: true
       run: ./gradlew build
-    - name: Где регистрируется EmoteAsset
+    - name: Валидаторы EmoteAsset
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        mkdir -p /tmp/srv && unzip -oq "$JAR" -d /tmp/srv
-        cd /tmp/srv
-        for f in $(grep -rla --include='*.class' -E 'cosmetics/EmoteAsset|getEmotesInGame|PlayEmote' . | grep -v 'protocol/' ); do
-          c=$(echo "$f" | sed 's#^\./##; s/\.class$//; s#/#.#g')
-          echo "════════ $c"
-          javap -cp /tmp/srv -c -p "$c" | grep -nE 'ldc|EmoteAsset|Emote|setPath|Path|invoke.*(build|register|setPath|loadsAfter)' | grep -vE 'lambda\$' | head -80
-        done
-        echo "──────── строки путей ассетов (setPath) в загрузчике"
-        for c in $(grep -rla --include='*.class' 'setPath' com/hypixel/hytale/server/core/asset | head -5 | sed 's#^\./##; s/\.class$//; s#/#.#g'); do echo "== $c"; javap -cp /tmp/srv -c -p "$c" | grep -B3 'setPath' | grep ldc | head -80; done
+        echo "════════ EmoteAsset <clinit>"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.EmoteAsset | sed -n '/static {}/,$p' | head -140
+        echo "════════ CommonAssetValidator"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.asset.common.CommonAssetValidator | grep -E 'public|static|ldc|getstatic|putstatic' | head -120
+        echo "════════ CosmeticsModule setup + emotes"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.CosmeticsModule | sed -n '1,120p'
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.CosmeticsModule | grep -n -B30 -A40 'anewarray.*EmoteAsset' | head -120
