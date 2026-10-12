@@ -20,14 +20,14 @@ jobs:
     - name: Build (подтягивает зависимости сервера)
       continue-on-error: true
       run: ./gradlew build
-    - name: Валидаторы EmoteAsset
+    - name: Папка анимаций эмоций и меню
       run: |
         set +e
         JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
-        echo "════════ EmoteAsset <clinit>"
-        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.EmoteAsset | sed -n '/static {}/,$p' | head -140
-        echo "════════ CommonAssetValidator"
-        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.asset.common.CommonAssetValidator | grep -E 'public|static|ldc|getstatic|putstatic' | head -120
-        echo "════════ CosmeticsModule setup + emotes"
-        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.CosmeticsModule | sed -n '1,120p'
-        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.CosmeticsModule | grep -n -B30 -A40 'anewarray.*EmoteAsset' | head -120
+        echo "════════ CommonAssetValidator хвост"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.asset.common.CommonAssetValidator | sed -n '/static {}/,$p' | grep -E 'ldc|putstatic' | tail -45
+        echo "════════ CosmeticsModule — всё про EmoteAsset"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.cosmetics.CosmeticsModule > /tmp/cm.txt
+        grep -n -E '^  [a-z].*\(|EmoteAsset|Emote|ldc' /tmp/cm.txt | sed -n '1,400p' | grep -v 'String [a-z ]*$' | head -150
+        echo "════════ GamePacketHandler.handlePlayEmote"
+        javap -cp "$JAR" -c -p com.hypixel.hytale.server.core.io.handlers.game.GamePacketHandler | sed -n '/handlePlayEmote/,/^$/p' | head -80
