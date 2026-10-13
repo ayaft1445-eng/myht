@@ -8,6 +8,8 @@ on:
     paths-ignore:
       - 'emotes/**'
       - '.github/workflows/emotes.yml'
+      - 'armor/**'
+      - '.github/workflows/armor.yml'
   pull_request:
   workflow_dispatch:
 

@@ -1,0 +1,78 @@
+{
+  "TranslationProperties": {
+    "Name": "armorsets.items.Armor_Red_Legs.name"
+  },
+  "Parent": "Armor_Iron_Legs",
+  "ItemLevel": 25,
+  "Icon": "Icons/ItemsGenerated/Armor_Red_Legs.png",
+  "Model": "Items/Armors/Red/Legs.blockymodel",
+  "Texture": "Items/Armors/Red/Legs_Texture.png",
+  "Recipe": {
+    "TimeSeconds": 2,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Bronze",
+        "Quantity": 4
+      },
+      {
+        "ResourceTypeId": "Wood_Trunk",
+        "Quantity": 2
+      },
+      {
+        "ItemId": "Ingredient_Leather_Light",
+        "Quantity": 3
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Armor_Bench",
+        "Type": "Crafting",
+        "Categories": [
+          "Armor_Legs"
+        ]
+      }
+    ],
+    "KnowledgeRequired": false
+  },
+  "Armor": {
+    "ArmorSlot": "Legs",
+    "BaseDamageResistance": 0,
+    "CosmeticsToHide": [
+      "Pants",
+      "Shoes"
+    ],
+    "StatModifiers": {
+      "Health": [
+        {
+          "Amount": 13,
+          "CalculationType": "Additive"
+        }
+      ]
+    },
+    "DamageResistance": {
+      "Physical": [
+        {
+          "Amount": 0.07,
+          "CalculationType": "Percent"
+        }
+      ],
+      "Projectile": [
+        {
+          "Amount": 0.07,
+          "CalculationType": "Percent"
+        }
+      ]
+    }
+  },
+  "MaxDurability": 250,
+  "Tags": {
+    "Type": [
+      "Armor"
+    ],
+    "Family": [
+      "Red"
+    ]
+  },
+  "ItemSoundSetId": "ISS_Armor_Heavy",
+  "Quality": "Uncommon"
+}

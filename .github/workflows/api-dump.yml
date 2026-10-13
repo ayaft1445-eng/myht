@@ -1,0 +1,36 @@
+### Временный workflow: печатает то, что нужно узнать про API сервера Hytale.
+name: Dump Hytale API
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/api-dump.yml']
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-java@v5
+      with:
+        java-version: '25'
+        distribution: 'temurin'
+    - uses: gradle/actions/setup-gradle@v5
+    - name: Build (подтягивает зависимости сервера)
+      continue-on-error: true
+      run: ./gradlew build
+    - name: Пути предметов и брони
+      run: |
+        set +e
+        JAR=$(find ~/.gradle/caches -name 'Server-*.jar' | head -1)
+        mkdir -p /tmp/srv && unzip -oq "$JAR" -d /tmp/srv
+        cd /tmp/srv
+        echo "════════ setPath рядом с Item.class"
+        for f in $(grep -rla --include='*.class' 'setPath' com/hypixel/hytale/server/core | head -40); do
+          c=$(echo "$f" | sed 's/\.class$//; s#/#.#g')
+          javap -cp /tmp/srv -c -p "$c" 2>/dev/null | grep -B6 'setPath' | grep -E 'ldc .*(class|String)' | grep -iE 'Item|String' | head -12 | sed "s#^#$c: #"
+        done 2>/dev/null | grep -iE 'item|armor|Items' | head -40
+        echo "════════ ItemArmor поля"
+        for c in $(find com/hypixel/hytale/server/core/asset/type/item -name '*Armor*.class' | sed 's/\.class$//; s#/#.#g'); do echo "== $c"; javap -cp /tmp/srv -c -p "$c" | grep -oE 'String [A-Z][A-Za-z]+$' | sort -u | head -30; done
+        echo "════════ CommonAssetValidator MODEL_ITEM / ICON_ITEM"
+        javap -cp /tmp/srv -c -p com.hypixel.hytale.server.core.asset.common.CommonAssetValidator | sed -n '/static {}/,$p' | grep -E 'ldc|putstatic' | sed -n '/ICON_EMOTE/,/MODEL_CHARACTER:/p'
