@@ -409,7 +409,7 @@
                 },
                 "visible": true,
                 "doubleSided": false,
-                "shadingMode": "flat"
+                "shadingMode": "fullbright"
               }
             },
             {

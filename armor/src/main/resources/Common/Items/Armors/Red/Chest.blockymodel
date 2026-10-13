@@ -460,7 +460,7 @@
                 },
                 "visible": true,
                 "doubleSided": false,
-                "shadingMode": "flat",
+                "shadingMode": "fullbright",
                 "unwrapMode": "custom",
                 "textureLayout": {
                   "front": {
@@ -792,7 +792,114 @@
             {
               "id": "147",
               "name": "Back_Cloth_2",
-              "children": [],
+              "children": [
+                {
+                  "id": "341",
+                  "name": "Back_Cloth_2_GlowA",
+                  "children": [],
+                  "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.25
+                  },
+                  "orientation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "shape": {
+                    "type": "quad",
+                    "offset": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "stretch": {
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    },
+                    "settings": {
+                      "size": {
+                        "x": 28,
+                        "y": 18
+                      },
+                      "normal": "+Z"
+                    },
+                    "textureLayout": {
+                      "front": {
+                        "offset": {
+                          "x": 96,
+                          "y": 18
+                        },
+                        "mirror": {
+                          "x": false,
+                          "y": false
+                        },
+                        "angle": 0
+                      }
+                    },
+                    "unwrapMode": "custom",
+                    "visible": true,
+                    "doubleSided": true,
+                    "shadingMode": "fullbright"
+                  }
+                },
+                {
+                  "id": "342",
+                  "name": "Back_Cloth_2_GlowB",
+                  "children": [],
+                  "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.25
+                  },
+                  "orientation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "shape": {
+                    "type": "quad",
+                    "offset": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "stretch": {
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    },
+                    "settings": {
+                      "size": {
+                        "x": 28,
+                        "y": 18
+                      },
+                      "normal": "+Z"
+                    },
+                    "textureLayout": {
+                      "front": {
+                        "offset": {
+                          "x": 96,
+                          "y": 18
+                        },
+                        "mirror": {
+                          "x": false,
+                          "y": false
+                        },
+                        "angle": 0
+                      }
+                    },
+                    "unwrapMode": "custom",
+                    "visible": true,
+                    "doubleSided": true,
+                    "shadingMode": "fullbright"
+                  }
+                }
+              ],
               "position": {
                 "x": 0,
                 "y": -9,
@@ -841,6 +948,112 @@
                 "doubleSided": true,
                 "shadingMode": "flat"
               }
+            },
+            {
+              "id": "339",
+              "name": "Back_Cloth_1_GlowA",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.25
+              },
+              "orientation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "shape": {
+                "offset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "stretch": {
+                  "x": 1,
+                  "y": 1,
+                  "z": -1
+                },
+                "textureLayout": {
+                  "front": {
+                    "offset": {
+                      "x": 96,
+                      "y": 0
+                    },
+                    "mirror": {
+                      "x": false,
+                      "y": false
+                    },
+                    "angle": 0
+                  }
+                },
+                "type": "quad",
+                "settings": {
+                  "size": {
+                    "x": 28,
+                    "y": 18
+                  },
+                  "normal": "+Z"
+                },
+                "unwrapMode": "custom",
+                "visible": true,
+                "doubleSided": true,
+                "shadingMode": "fullbright"
+              },
+              "children": []
+            },
+            {
+              "id": "340",
+              "name": "Back_Cloth_1_GlowB",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -0.25
+              },
+              "orientation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "shape": {
+                "offset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "stretch": {
+                  "x": 1,
+                  "y": 1,
+                  "z": -1
+                },
+                "textureLayout": {
+                  "front": {
+                    "offset": {
+                      "x": 96,
+                      "y": 0
+                    },
+                    "mirror": {
+                      "x": false,
+                      "y": false
+                    },
+                    "angle": 0
+                  }
+                },
+                "type": "quad",
+                "settings": {
+                  "size": {
+                    "x": 28,
+                    "y": 18
+                  },
+                  "normal": "+Z"
+                },
+                "unwrapMode": "custom",
+                "visible": true,
+                "doubleSided": true,
+                "shadingMode": "fullbright"
+              },
+              "children": []
             }
           ]
         },
@@ -851,7 +1064,114 @@
             {
               "id": "160",
               "name": "Front_Cloth_2",
-              "children": [],
+              "children": [
+                {
+                  "id": "345",
+                  "name": "Front_Cloth_2_GlowA",
+                  "children": [],
+                  "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.25
+                  },
+                  "orientation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "shape": {
+                    "type": "quad",
+                    "offset": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "stretch": {
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    },
+                    "settings": {
+                      "size": {
+                        "x": 28,
+                        "y": 18
+                      },
+                      "normal": "+Z"
+                    },
+                    "textureLayout": {
+                      "front": {
+                        "offset": {
+                          "x": 96,
+                          "y": 18
+                        },
+                        "mirror": {
+                          "x": false,
+                          "y": false
+                        },
+                        "angle": 0
+                      }
+                    },
+                    "unwrapMode": "custom",
+                    "visible": true,
+                    "doubleSided": true,
+                    "shadingMode": "fullbright"
+                  }
+                },
+                {
+                  "id": "346",
+                  "name": "Front_Cloth_2_GlowB",
+                  "children": [],
+                  "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.25
+                  },
+                  "orientation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "shape": {
+                    "type": "quad",
+                    "offset": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "stretch": {
+                      "x": 1,
+                      "y": 1,
+                      "z": 1
+                    },
+                    "settings": {
+                      "size": {
+                        "x": 28,
+                        "y": 18
+                      },
+                      "normal": "+Z"
+                    },
+                    "textureLayout": {
+                      "front": {
+                        "offset": {
+                          "x": 96,
+                          "y": 18
+                        },
+                        "mirror": {
+                          "x": false,
+                          "y": false
+                        },
+                        "angle": 0
+                      }
+                    },
+                    "unwrapMode": "custom",
+                    "visible": true,
+                    "doubleSided": true,
+                    "shadingMode": "fullbright"
+                  }
+                }
+              ],
               "position": {
                 "x": 0,
                 "y": -9,
@@ -899,6 +1219,112 @@
                 "visible": true,
                 "doubleSided": true,
                 "shadingMode": "flat"
+              }
+            },
+            {
+              "id": "343",
+              "name": "Front_Cloth_1_GlowA",
+              "children": [],
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0.25
+              },
+              "orientation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "shape": {
+                "offset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "stretch": {
+                  "x": 1,
+                  "y": 1,
+                  "z": -1
+                },
+                "textureLayout": {
+                  "front": {
+                    "offset": {
+                      "x": 96,
+                      "y": 0
+                    },
+                    "mirror": {
+                      "x": false,
+                      "y": false
+                    },
+                    "angle": 0
+                  }
+                },
+                "type": "quad",
+                "settings": {
+                  "size": {
+                    "x": 28,
+                    "y": 18
+                  },
+                  "normal": "+Z"
+                },
+                "unwrapMode": "custom",
+                "visible": true,
+                "doubleSided": true,
+                "shadingMode": "fullbright"
+              }
+            },
+            {
+              "id": "344",
+              "name": "Front_Cloth_1_GlowB",
+              "children": [],
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -0.25
+              },
+              "orientation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "shape": {
+                "offset": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "stretch": {
+                  "x": 1,
+                  "y": 1,
+                  "z": -1
+                },
+                "textureLayout": {
+                  "front": {
+                    "offset": {
+                      "x": 96,
+                      "y": 0
+                    },
+                    "mirror": {
+                      "x": false,
+                      "y": false
+                    },
+                    "angle": 0
+                  }
+                },
+                "type": "quad",
+                "settings": {
+                  "size": {
+                    "x": 28,
+                    "y": 18
+                  },
+                  "normal": "+Z"
+                },
+                "unwrapMode": "custom",
+                "visible": true,
+                "doubleSided": true,
+                "shadingMode": "fullbright"
               }
             }
           ],
@@ -996,7 +1422,7 @@
                   "name": "Rope",
                   "children": [],
                   "position": {
-                    "x": -0.000003,
+                    "x": -3e-06,
                     "y": -5.000004,
                     "z": 0
                   },
@@ -1106,7 +1532,7 @@
                   "position": {
                     "x": 1.109329,
                     "y": 7.121563,
-                    "z": -0.000001
+                    "z": -1e-06
                   },
                   "orientation": {
                     "x": 0,
@@ -1193,7 +1619,7 @@
                     "unwrapMode": "custom",
                     "visible": true,
                     "doubleSided": false,
-                    "shadingMode": "flat"
+                    "shadingMode": "fullbright"
                   }
                 }
               ],
@@ -1316,7 +1742,7 @@
                   "name": "Rope",
                   "children": [],
                   "position": {
-                    "x": 0.000003,
+                    "x": 3e-06,
                     "y": -5.000004,
                     "z": 0
                   },
@@ -1426,7 +1852,7 @@
                   "position": {
                     "x": -1.109329,
                     "y": 7.121563,
-                    "z": -0.000001
+                    "z": -1e-06
                   },
                   "orientation": {
                     "x": 0,
@@ -1513,7 +1939,7 @@
                     "unwrapMode": "custom",
                     "visible": true,
                     "doubleSided": false,
-                    "shadingMode": "flat"
+                    "shadingMode": "fullbright"
                   }
                 }
               ],
